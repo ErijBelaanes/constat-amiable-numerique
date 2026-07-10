@@ -3,6 +3,8 @@ import '../models/constat_model.dart';
 class ConstatProvider extends ChangeNotifier {
   final ConstatModel constat = ConstatModel(lieuAccident: '');
 
+  bool estFrancais = true;
+
   void setDateAccident(DateTime date) {
     constat.dateAccident = date;
     notifyListeners();
@@ -25,6 +27,11 @@ class ConstatProvider extends ChangeNotifier {
 
   void setTemoins(bool temoins){
     constat.temoins=temoins;
+    notifyListeners();
+  }
+
+  void changerLangue(){
+    estFrancais = !estFrancais;
     notifyListeners();
   }
 }

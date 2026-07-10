@@ -26,7 +26,7 @@ class ConstatApp extends StatelessWidget{
         initialRoute: '/',
         routes: {
           '/': (context) => const EcranAccueil(),
-          '/accident': (context) => const EcranAccident(),
+          // '/accident': (context) => const EcranAccident(),
           // '/vehiculeA': (context) => const EcranVehicule(nomVehicule: 'A'),
           // '/vehiculeB': (context) => const EcranVehicule(nomVehicule: 'B'),
         },
