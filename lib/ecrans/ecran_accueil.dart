@@ -69,8 +69,9 @@ class EcranAccueil extends StatelessWidget{
 
               // Positionnement du selecteur du langue (fr/ar)
               Positioned(
-                top: 8,
-                left: 8,
+                top: 20,
+                left: enFrancais ? 8 : null,
+                right: enFrancais ? null : 8,
                 child: SelecteurLangue(
                     estFrancais : enFrancais,
                     click : provider.changerLangue,

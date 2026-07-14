@@ -49,7 +49,7 @@ class ChampBouton extends StatelessWidget{
             child: Text(
                 valeur,
                 style: TextStyle(
-                    color: CouleursApp.texteSecondaire,
+                    color: CouleursApp.texte,
                     fontStyle: FontStyle.italic,
                     fontFamily: estFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
                     fontSize: 16,

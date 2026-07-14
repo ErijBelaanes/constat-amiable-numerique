@@ -28,35 +28,9 @@ class EnteteEtape extends StatelessWidget{
   Widget build (BuildContext context){
     return Column(
       children: [
-
-        //Titre de la page
-        // Text(
-        //   estFrancais ? 'Constat Amiable' : 'المعاينة الودية',
-        //   textAlign: estFrancais ? TextAlign.left : TextAlign.right,
-        //   textDirection: estFrancais ? TextDirection.ltr : TextDirection.rtl,
-        //   style: TextStyle(
-        //     color: CouleursApp.titre,
-        //     fontWeight: FontWeight.bold,
-        //     fontSize: 32.0,
-        //     fontFamily: estFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
-        //   ),
-        // ),
-
-        Directionality(
-            textDirection: TextDirection.ltr,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-
-                BoutonRetour(estFrancais: estFrancais),
-
-                SelecteurLangue(
-                  estFrancais: estFrancais,
-                  click: changerLangue,
-                ),
-
-              ],
-            ),
+        Align(
+          alignment: estFrancais ? Alignment.centerLeft : Alignment.centerRight,
+          child: BoutonRetour(estFrancais: estFrancais),
         ),
 
         const SizedBox(height: 20),

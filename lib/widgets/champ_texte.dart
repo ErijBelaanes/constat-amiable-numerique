@@ -36,13 +36,13 @@ class ChampTexte extends StatelessWidget {
         TextField(
           controller: controleur,
           style: TextStyle(
-            color: CouleursApp.texteSecondaire,
+            color: CouleursApp.texte,
             fontFamily: estFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
           ),
           decoration: InputDecoration(
             hintText: hintText,
             hintStyle: TextStyle(
-              color: CouleursApp.texteSecondaire,
+              color: CouleursApp.texte,
               fontFamily: estFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
               fontSize: 16,
             ),

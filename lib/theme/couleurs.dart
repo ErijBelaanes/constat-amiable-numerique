@@ -17,6 +17,5 @@ class CouleursApp {
 
   static const texte = Color.fromRGBO(44, 58, 79, 1);
   static const texteSecondaire = Color.fromRGBO(145, 168, 190, 1);
-  static const texteMuet = Color.fromRGBO(197, 213, 224, 1);
 
 }

@@ -7,6 +7,7 @@ import '../widgets/question_oui_non.dart';
 import '../theme/couleurs.dart';
 import '../widgets/champ_texte.dart';
 import '../widgets/section_temoins.dart';
+import '../utils/dialogues.dart';
 
 class EcranAccident extends StatefulWidget {
   const EcranAccident({super.key});
@@ -72,28 +73,65 @@ class _EcranAccidentState extends State<EcranAccident>{
 
   void validerEtSauvegarder(){
     final provider = context.read<ConstatProvider>();
+    final estFrancais = provider.estFrancais;
 
-    if(dateChoisie != null && heureChoisie != null){
-      final dateComplet = DateTime(
-        dateChoisie!.year,
-        dateChoisie!.month,
-        dateChoisie!.day,
-        heureChoisie!.hour,
-        heureChoisie!.minute,
+    if(dateChoisie == null || heureChoisie == null){
+      afficherErreur(
+        context,
+        estFrancais
+            ? 'Veuillez indiquer la date et l\'heure de l\'accident'
+            : 'يرجى تحديد تاريخ ووقت الحادث',
+        estFrancais,
       );
-      provider.setDateAccident(dateComplet);
+      return;
     }
-    if(lieuController.text.isNotEmpty){
-      provider.setLieuAccident(lieuController.text);
+
+    if(lieuController.text.trim().isEmpty){
+      afficherErreur(
+        context,
+        estFrancais
+            ? 'Veuillez indiquer le lieu de l\'accident'
+            : 'يرجى تحديد مكان الحادث',
+        estFrancais,
+      );
+      return;
     }
-    //degats, blesses, temoins
+
+    if(provider.constat.temoins){
+      for(final t in provider.constat.listeTemoins){
+        if(t.nom.trim().isEmpty
+          || t.prenom.trim().isEmpty
+          || t.adresse.trim().isEmpty
+          || t.numTel.trim().isEmpty){
+          afficherErreur(
+            context,
+            estFrancais
+               ? 'Veuillez renseigner le nom et le numéro de téléphone de chaque témoin'
+               : 'يرجى إدخال اسم ورقم هاتف كل شاهد',
+            estFrancais,
+          );
+          return;
+        }
+      }
+    }
+
+    final dateComplet = DateTime(
+      dateChoisie!.year,
+      dateChoisie!.month,
+      dateChoisie!.day,
+      heureChoisie!.hour,
+      heureChoisie!.minute,
+    );
+    provider.setDateAccident(dateComplet);
+    provider.setLieuAccident(lieuController.text.trim());
     Navigator.pushNamed(context, '/vehiculeA');
   }
+
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<ConstatProvider>();
-
     final estFrancais = provider.estFrancais;
+
     final constat = provider.constat;
 
     return Directionality(
