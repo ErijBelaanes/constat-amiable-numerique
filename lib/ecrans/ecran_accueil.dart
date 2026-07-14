@@ -87,7 +87,7 @@ class EcranAccueil extends StatelessWidget{
                   height: 56,  //Bouton d'hauteur fixe
                   child: ElevatedButton(
                     onPressed: (){
-                      Navigator.pushNamed(context, '/accident');
+                      Navigator.pushNamed(context, '/avertissement');
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: CouleursApp.titre,
