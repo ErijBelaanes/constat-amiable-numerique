@@ -4,6 +4,7 @@ import 'providers/constat_provider.dart';
 import 'ecrans/ecran_accueil.dart';
 import 'ecrans/ecran_accident.dart';
 import 'ecrans/ecran_vehicule.dart';
+import 'ecrans/ecran_logo.dart';
 
 
 void main(){
@@ -25,8 +26,10 @@ class ConstatApp extends StatelessWidget{
         ),
         initialRoute: '/',
         routes: {
-          '/': (context) => const EcranAccueil(),
-          // '/accident': (context) => const EcranAccident(),
+          '/': (context) => const EcranLogo(),
+          '/accueil': (context) => const EcranAccueil(),
+          // '/avertissement': (context) => const EcranAvertissement(),
+          '/accident': (context) => const EcranAccident(),
           // '/vehiculeA': (context) => const EcranVehicule(nomVehicule: 'A'),
           // '/vehiculeB': (context) => const EcranVehicule(nomVehicule: 'B'),
         },

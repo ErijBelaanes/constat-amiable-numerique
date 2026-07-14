@@ -26,7 +26,7 @@ class ConstatProvider extends ChangeNotifier {
   }
 
   void setTemoins(bool temoins){
-    constat.temoins=temoins;
+    constat.temoins = temoins;
     notifyListeners();
   }
 

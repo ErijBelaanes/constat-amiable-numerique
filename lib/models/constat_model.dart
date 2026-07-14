@@ -1,3 +1,31 @@
+import 'package:flutter/material.dart';
+
+class ConstatModel {
+  DateTime? dateAccident;
+  String lieuAccident;
+  bool degatsMat = false;
+  bool blesses = false;
+  bool temoins = false;
+
+  ConstatModel({required this.lieuAccident}){
+    dateAccident = DateTime.now();
+  }
+}
+
+class Temoin{
+  String nom;
+  String prenom;
+  String adresse;
+  String numTel;
+
+  Temoin({
+    required this.nom,
+    required this.prenom,
+    required this.adresse,
+    required this.numTel,
+  });
+}
+
 class VehiculeInfo{
   //Societe d'assurances
   String assureur;
@@ -60,16 +88,4 @@ class VehiculeInfo{
 
     required this.observations,
   });
-}
-
-class ConstatModel {
-  DateTime? dateAccident;
-  String lieuAccident;
-  bool degatsMat = false;
-  bool blesses = false;
-  bool temoins = false;
-
-  ConstatModel({required this.lieuAccident}){
-    dateAccident = DateTime.now();
-  }
 }

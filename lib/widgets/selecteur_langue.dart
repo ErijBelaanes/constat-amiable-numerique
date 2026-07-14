@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../theme/couleurs.dart';
+
 class SelecteurLangue extends StatelessWidget{
   final bool estFrancais;
   final VoidCallback click;
@@ -16,10 +18,10 @@ class SelecteurLangue extends StatelessWidget{
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 6),
         decoration: BoxDecoration(
-          color: const Color.fromRGBO(230, 238, 156, 1),
+          color: CouleursApp.champ,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: const Color.fromRGBO(198, 97, 63, 1),
+            color: CouleursApp.bordure,
             width: 1.5,
           ),
         ),
@@ -34,16 +36,16 @@ class SelecteurLangue extends StatelessWidget{
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
               decoration: BoxDecoration(
                 color: estFrancais
-                    ? const Color.fromRGBO(198, 97, 63, 1)  //actif
-                    : const Color.fromRGBO(230, 238, 156, 1),  //inactif
+                    ? CouleursApp.bordure  //actif
+                    : CouleursApp.champ,  //inactif
                 borderRadius: BorderRadius.circular(10),
               ),
               child: const Text(
                 'FR',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: CouleursApp.texte,
                   fontWeight: FontWeight.bold,
-                  fontSize: 15,
+                  fontSize: 13,
                 ),
               ),
             ),
@@ -55,16 +57,16 @@ class SelecteurLangue extends StatelessWidget{
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
               decoration: BoxDecoration(
                 color: !estFrancais
-                    ? const Color.fromRGBO(198, 97, 63, 1)  //actif
-                    : const Color.fromRGBO(230, 238, 156, 1),  //inactif
+                    ? CouleursApp.bordure  //actif
+                    : CouleursApp.champ,  //inactif
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Text(
                 'AR',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: CouleursApp.texte,
                   fontWeight: FontWeight.bold,
-                  fontSize: 15,
+                  fontSize: 13,
                 ),
               ),
             )

@@ -1,23 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../widgets/selecteur_langue.dart';
+import '../theme/couleurs.dart';
+import '../providers/constat_provider.dart';
 
-class EcranAccueil extends StatefulWidget{
+class EcranAccueil extends StatelessWidget{
   const EcranAccueil ({super.key});
 
   @override
-  State <EcranAccueil> createState() => _EcranAccueilEtat();
-}
-class _EcranAccueilEtat extends State <EcranAccueil>{
-  bool enFrancais=true;  //La langue par défaut est le français
-
-  void changerLangue(){
-    setState(() {
-      enFrancais =! enFrancais;
-    });
-  }
-
-  @override
   Widget build(BuildContext context){
+    final provider = context.watch<ConstatProvider>();
+    final enFrancais = provider.estFrancais;
     final titre = enFrancais ? 'Bienvenue dans Constat' : 'مرحبًا بكم في تطبيق "Constat"';
 
     final description = enFrancais ?
@@ -33,7 +26,7 @@ class _EcranAccueilEtat extends State <EcranAccueil>{
         "ومشاركتها مع شركة التأمين.";
 
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(240, 244, 195, 1),
+      backgroundColor: CouleursApp.fond,
       body: SafeArea(
           child: Stack(
             children: [Center(
@@ -50,7 +43,7 @@ class _EcranAccueilEtat extends State <EcranAccueil>{
                           textAlign: enFrancais ? TextAlign.left : TextAlign.right,
                           textDirection: enFrancais ? TextDirection.ltr : TextDirection.rtl,
                           style: TextStyle(
-                            color: Color.fromRGBO(198, 97, 63, 1),
+                            color: CouleursApp.titre,
                             fontWeight: FontWeight.bold,
                             fontSize: 32.0,
                             fontFamily: enFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
@@ -64,7 +57,7 @@ class _EcranAccueilEtat extends State <EcranAccueil>{
                           textAlign: enFrancais ? TextAlign.left : TextAlign.right,
                           textDirection: enFrancais ? TextDirection.ltr : TextDirection.rtl,
                           style: TextStyle(
-                            color: const Color.fromRGBO(74, 80, 104,1),
+                            color: CouleursApp.texte,
                             fontSize: 20.0,
                             fontFamily: enFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
                           )
@@ -80,7 +73,7 @@ class _EcranAccueilEtat extends State <EcranAccueil>{
                 left: 8,
                 child: SelecteurLangue(
                     estFrancais : enFrancais,
-                    click : changerLangue,
+                    click : provider.changerLangue,
                 ),
               ),
 
@@ -96,7 +89,7 @@ class _EcranAccueilEtat extends State <EcranAccueil>{
                       Navigator.pushNamed(context, '/accident');
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromRGBO(198, 97, 63, 1),
+                      backgroundColor: CouleursApp.titre,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                       ),
