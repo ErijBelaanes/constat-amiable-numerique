@@ -26,11 +26,12 @@ class ChampBouton extends StatelessWidget{
           textDirection: estFrancais ? TextDirection.ltr : TextDirection.rtl,
           style: TextStyle(
             color: CouleursApp.texteSecondaire,
-            fontSize: 14,
+            fontFamily: estFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
+            fontSize: 16.5,
             fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 6),
         GestureDetector(
           onTap: click,
           child: Container(
@@ -38,16 +39,20 @@ class ChampBouton extends StatelessWidget{
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
             decoration: BoxDecoration(
               color: CouleursApp.champ,
+              borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: CouleursApp.bordure,
+                color: CouleursApp.bordure2,
                 width: 1.5,
               ),
+
             ),
             child: Text(
                 valeur,
-                style: const TextStyle(
-                    color: CouleursApp.texteMuet,
+                style: TextStyle(
+                    color: CouleursApp.texteSecondaire,
                     fontStyle: FontStyle.italic,
+                    fontFamily: estFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
+                    fontSize: 16,
                 ),
             )
           ),

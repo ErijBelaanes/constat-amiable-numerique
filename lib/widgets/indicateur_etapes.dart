@@ -20,7 +20,6 @@ class IndicateurEtapes extends StatelessWidget{
     return Directionality(
       textDirection: enFrancais ? TextDirection.ltr : TextDirection.rtl,
       child: Column(
-      crossAxisAlignment: enFrancais ? CrossAxisAlignment.start : CrossAxisAlignment.end,
       children: [
         Row(
           mainAxisSize: MainAxisSize.min,
@@ -45,7 +44,7 @@ class IndicateurEtapes extends StatelessWidget{
               : 'الخطوة $etapeAct من $totalEtapes',
           style: TextStyle(
             color: CouleursApp.texteSecondaire,
-            fontSize: 14,
+            fontSize: 15,
             fontFamily: enFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
             fontWeight: FontWeight.bold,
           ),

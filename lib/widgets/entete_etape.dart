@@ -69,7 +69,7 @@ class EnteteEtape extends StatelessWidget{
             Container(
               padding: const EdgeInsets.all(5),
               decoration: BoxDecoration(
-                 color: couleurIcone.withOpacity(0.15),
+                 color: couleurIcone.withValues(alpha: 0.15),
                  borderRadius: BorderRadius.circular(15),
                ),
               child: Icon(icone, color: couleurIcone),
@@ -84,14 +84,14 @@ class EnteteEtape extends StatelessWidget{
               style: TextStyle(
                 color: couleurIcone,
                 fontWeight: FontWeight.bold,
-                fontSize: 19.0,
+                fontSize: 24.0,
                 fontFamily: estFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
               ),
             ),
 
           ],
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 15),
         //Indicateur des étapes
         IndicateurEtapes(
           etapeAct: etapeActuelle,

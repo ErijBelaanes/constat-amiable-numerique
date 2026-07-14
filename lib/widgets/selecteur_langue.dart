@@ -21,7 +21,7 @@ class SelecteurLangue extends StatelessWidget{
           color: CouleursApp.champ,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: CouleursApp.bordure,
+            color: CouleursApp.bordure2,
             width: 1.5,
           ),
         ),
@@ -36,12 +36,12 @@ class SelecteurLangue extends StatelessWidget{
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
               decoration: BoxDecoration(
                 color: estFrancais
-                    ? CouleursApp.bordure  //actif
+                    ? CouleursApp.bordure2  //actif
                     : CouleursApp.champ,  //inactif
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: const Text(
-                'FR',
+              child: Text(
+                estFrancais ? 'FR' : 'فر',
                 style: TextStyle(
                   color: CouleursApp.texte,
                   fontWeight: FontWeight.bold,
@@ -57,12 +57,12 @@ class SelecteurLangue extends StatelessWidget{
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
               decoration: BoxDecoration(
                 color: !estFrancais
-                    ? CouleursApp.bordure  //actif
+                    ? CouleursApp.bordure2  //actif
                     : CouleursApp.champ,  //inactif
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Text(
-                'AR',
+                estFrancais ? 'AR' : 'عر',
                 style: TextStyle(
                   color: CouleursApp.texte,
                   fontWeight: FontWeight.bold,

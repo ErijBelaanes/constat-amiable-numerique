@@ -5,6 +5,8 @@ import '../widgets/entete_etape.dart';
 import '../widgets/champ_bouton.dart';
 import '../widgets/question_oui_non.dart';
 import '../theme/couleurs.dart';
+import '../widgets/champ_texte.dart';
+import '../widgets/section_temoins.dart';
 
 class EcranAccident extends StatefulWidget {
   const EcranAccident({super.key});
@@ -97,6 +99,7 @@ class _EcranAccidentState extends State<EcranAccident>{
     return Directionality(
       textDirection: estFrancais ? TextDirection.ltr : TextDirection.rtl,
       child: Scaffold(
+
         //Bouton "Suivant"
         bottomNavigationBar: SafeArea(
           child: Padding(
@@ -106,7 +109,7 @@ class _EcranAccidentState extends State<EcranAccident>{
               child: ElevatedButton(
                 onPressed: validerEtSauvegarder,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.redAccent,
+                  backgroundColor: CouleursApp.alerte,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
                   ),
@@ -130,11 +133,15 @@ class _EcranAccidentState extends State<EcranAccident>{
         body: SafeArea(
             child: Padding(
               padding: const EdgeInsets.all(20),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    EnteteEtape(
+              child: Scrollbar(
+               thumbVisibility: true,
+               thickness: 8,
+               radius: const Radius.circular(4),
+               child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      EnteteEtape(
                         icone: Icons.warning_amber_rounded,
                         couleurIcone: CouleursApp.alerte,
                         titreFr: 'Informations communes',
@@ -142,15 +149,15 @@ class _EcranAccidentState extends State<EcranAccident>{
                         etapeActuelle: 1,
                         estFrancais: provider.estFrancais,
                         changerLangue: provider.changerLangue
-                    ),
-                    const SizedBox(height: 36),
+                      ),
+                      const SizedBox(height: 36),
 
-                    //Formulaire
-                    //Date et heure
-                    Row(
-                      children: [
-                        //Date
-                        Expanded(
+                      //Formulaire
+                      //Date et heure
+                      Row(
+                        children: [
+                          //Date
+                          Expanded(
                             child: ChampBouton(
                               label: estFrancais ? 'Date' : 'التاريخ',
                               valeur: dateChoisie == null
@@ -158,92 +165,67 @@ class _EcranAccidentState extends State<EcranAccident>{
                                   : '${dateChoisie!.day}/${dateChoisie!.month}/${dateChoisie!.year}',
                               click: choisirDate,
                               estFrancais: estFrancais,
-                          )  ,
-                        ),
-                        const SizedBox(width: 25),
-                        //Heure
-                        Expanded(
-                          child: ChampBouton(
-                            label: estFrancais ? 'Heure' : 'الساعة',
-                            valeur: heureChoisie == null
+                            )  ,
+                          ),
+                          const SizedBox(width: 25),
+                          //Heure
+                          Expanded(
+                            child: ChampBouton(
+                              label: estFrancais ? 'Heure' : 'الساعة',
+                              valeur: heureChoisie == null
                                 ? (estFrancais ? 'Choisir' : 'اختر')
                                 : heureChoisie!.format(context),
-                            click: choisirHeure,
-                            estFrancais: estFrancais,
+                              click: choisirHeure,
+                              estFrancais: estFrancais,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 25),
-                    //Lieu
-                    Text(
-                      estFrancais ? 'Lieu de l\'accident' : 'مكان الحادث',
-                      textAlign: estFrancais ? TextAlign.left : TextAlign.right,
-                      textDirection: estFrancais ? TextDirection.ltr : TextDirection.rtl,
-                      style: TextStyle(
-                        color: CouleursApp.texteSecondaire,
-                        fontFamily: estFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
-                        fontWeight: FontWeight.bold,
+                        ],
                       ),
-                    ),
-                    const SizedBox(height: 10),
-                    TextField(
-                      controller: lieuController,
-                      style: TextStyle(
-                        color: CouleursApp.texteSecondaire,
-                        fontFamily: estFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
-                      ),
-                      decoration: InputDecoration(
+                      const SizedBox(height: 30),
+                      //Lieu
+                      ChampTexte(
+                        label: estFrancais ? 'Lieu de l\'accident' : 'مكان الحادث',
+                        controleur: lieuController,
+                        estFrancais: estFrancais,
                         hintText: estFrancais ? 'Ex: Avenue Habib Bourguiba, Tunis' : 'مثال: شارع الحبيب بورقيبة، تونس',
-                        hintStyle: TextStyle(
-                          color: CouleursApp.texteSecondaire,
-                          fontFamily: estFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
-                        ),
-                        filled: true,
-                        fillColor: CouleursApp.champ,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(
-                            color: CouleursApp.bordure,
-                            width: 1.5,
-                          ),
-                        ),
                       ),
-                    ),
-                    const SizedBox(height: 35),
 
-                    //Questions Oui/Non
-                    //Blesses
-                    QuestionOuiNon(
-                      label: estFrancais ? 'Y a-t-il des blessés (Même légers)?' : 'هل يوجد جرحى (حتى الخفيفة منها)؟',
-                      valeur: constat.blesses,
-                      change: provider.setBlesses,
-                      estFrancais: estFrancais,
-                    ),
-                    const SizedBox(height: 25),
+                      const SizedBox(height: 35),
 
-                    //Dégâts matériels
-                    QuestionOuiNon(
-                      label: estFrancais ? 'Y a-t-il des dégâts matériels autres qu\'aux véhicules A et B?' : 'هل يوجد أضرار مادية غير السيارتين أ و ب؟',
-                      valeur: constat.degatsMat,
-                      change: provider.setDegatsMat,
-                      estFrancais: estFrancais,
-                    ),
-                    const SizedBox(height: 20),
+                      //Questions Oui/Non
+                      //Blesses
+                      QuestionOuiNon(
+                        label: estFrancais ? 'Y a-t-il des blessés (Même légers)?' : 'هل يوجد جرحى (حتى الخفيفة منها)؟',
+                        valeur: constat.blesses,
+                        change: provider.setBlesses,
+                        estFrancais: estFrancais,
+                      ),
+                      const SizedBox(height: 30),
 
-                    //Témoins
-                    QuestionOuiNon(
-                      label: estFrancais ? 'Y a-t-il des témoins?' : 'هل يوجد شهود؟',
-                      valeur: constat.temoins,
-                      change: provider.setTemoins,
-                      estFrancais: estFrancais,
-                    ),
-                    // if(constat.temoins){
-                    //
-                    // },
-                    const SizedBox(height: 20),
-                  ],
-                ),
+                      //Dégâts matériels
+                      QuestionOuiNon(
+                        label: estFrancais ? 'Y a-t-il des dégâts matériels autres qu\'aux véhicules A et B?' : 'هل يوجد أضرار مادية غير السيارتين أ و ب؟',
+                        valeur: constat.degatsMat,
+                        change: provider.setDegatsMat,
+                        estFrancais: estFrancais,
+                      ),
+                      const SizedBox(height: 30),
+
+                      //Témoins
+                      QuestionOuiNon(
+                        label: estFrancais ? 'Y a-t-il des témoins?' : 'هل يوجد شهود؟',
+                        valeur: constat.temoins,
+                        change: provider.setTemoins,
+                        estFrancais: estFrancais,
+                      ),
+                      const SizedBox(height: 30),
+
+                      //Section des témoins
+                      if(constat.temoins)
+                        SectionTemoins(estFrancais: estFrancais),
+                    ],
+                  ),
+               ),
             ),
           ),
         ),

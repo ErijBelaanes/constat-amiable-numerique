@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 
 class CouleursApp {
-  static const fond = Color.fromRGBO(221, 232, 240, 1.0);
+  static const fond = Color.fromRGBO(221, 232, 240, 1);
   static const champ = Color.fromRGBO(247, 249, 251, 1);
-  static const bordure = Color.fromRGBO(78, 127, 168, 1);
+  static const bordure1 = Color.fromRGBO(247, 249, 251, 1);
+  static const bordure2 = Color.fromRGBO(78, 127, 168, 1);
+
+
   static const titre = Color.fromRGBO(198, 97, 63, 1);
 
   static const vehiculeA = Color(0xFFF5A623);

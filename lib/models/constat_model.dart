@@ -1,17 +1,5 @@
 import 'package:flutter/material.dart';
 
-class ConstatModel {
-  DateTime? dateAccident;
-  String lieuAccident;
-  bool degatsMat = false;
-  bool blesses = false;
-  bool temoins = false;
-
-  ConstatModel({required this.lieuAccident}){
-    dateAccident = DateTime.now();
-  }
-}
-
 class Temoin{
   String nom;
   String prenom;
@@ -24,6 +12,19 @@ class Temoin{
     required this.adresse,
     required this.numTel,
   });
+}
+
+class ConstatModel {
+  DateTime? dateAccident;
+  String lieuAccident;
+  bool degatsMat = false;
+  bool blesses = false;
+  bool temoins = false;
+  List<Temoin> listeTemoins = [];  //La liste des témoins ajoutés
+
+  ConstatModel({required this.lieuAccident}){
+    dateAccident = DateTime.now();
+  }
 }
 
 class VehiculeInfo{

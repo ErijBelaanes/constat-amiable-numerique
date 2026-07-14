@@ -6,7 +6,6 @@ import 'ecrans/ecran_accident.dart';
 import 'ecrans/ecran_vehicule.dart';
 import 'ecrans/ecran_logo.dart';
 
-
 void main(){
   runApp(const ConstatApp());
 }

@@ -25,12 +25,14 @@ class QuestionOuiNon extends StatelessWidget{
               textAlign: estFrancais ? TextAlign.left : TextAlign.right,
               textDirection: estFrancais ? TextDirection.ltr : TextDirection.rtl,
               style: TextStyle(
-                color: Colors.black,
+                color: CouleursApp.texte,
                 fontFamily: estFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
-                fontSize: 15,
+                fontSize: 16.5,
+                fontWeight: FontWeight.bold,
               ),
             ),
         ),
+        const SizedBox(width: 5),
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -44,10 +46,11 @@ class QuestionOuiNon extends StatelessWidget{
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                 decoration: BoxDecoration(
                   color: valeur
-                      ? CouleursApp.bordure  //actif
+                      ? CouleursApp.bordure2  //actif
                       : CouleursApp.champ,  //inactif
+                  borderRadius: BorderRadius.circular(5),
                   border: Border.all(
-                    // color: const Color.fromRGBO(127, 62, 40, 1.0),
+                    color: CouleursApp.bordure1,
                     width: 1.5,
                   ),
               ),
@@ -73,11 +76,12 @@ class QuestionOuiNon extends StatelessWidget{
                 curve: Curves.easeInOut,
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                 decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
                   color: !valeur
-                      ? CouleursApp.bordure  //actif
+                      ? CouleursApp.bordure2  //actif
                       : CouleursApp.champ,  //inactif
                   border: Border.all(
-                    // color: const Color.fromRGBO(127, 62, 40, 1.0),
+                    color: CouleursApp.bordure1,
                     width: 1.5,
                   ),
                 ),
