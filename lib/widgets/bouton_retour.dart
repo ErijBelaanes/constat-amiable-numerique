@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import '../theme/couleurs.dart';
 
 class BoutonRetour extends StatelessWidget {
-  final bool estFrancais;
 
   const BoutonRetour({
     super.key,
-    required this.estFrancais,
   });
 
   @override

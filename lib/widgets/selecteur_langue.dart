@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import '../theme/couleurs.dart';
 
 class SelecteurLangue extends StatelessWidget{
-  final bool estFrancais;
+  final bool enFrancais;
   final VoidCallback click;
 
   const SelecteurLangue({
     super.key,
-    required this.estFrancais,
+    required this.enFrancais,
     required this.click,
   });
 
@@ -35,13 +35,13 @@ class SelecteurLangue extends StatelessWidget{
               curve: Curves.easeInOut,
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
               decoration: BoxDecoration(
-                color: estFrancais
+                color: enFrancais
                     ? CouleursApp.bordure2  //actif
                     : CouleursApp.champ,  //inactif
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Text(
-                estFrancais ? 'FR' : 'فر',
+                enFrancais ? 'FR' : 'فر',
                 style: TextStyle(
                   color: CouleursApp.texte,
                   fontWeight: FontWeight.bold,
@@ -56,13 +56,13 @@ class SelecteurLangue extends StatelessWidget{
               curve: Curves.easeInOut,
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
               decoration: BoxDecoration(
-                color: !estFrancais
+                color: !enFrancais
                     ? CouleursApp.bordure2  //actif
                     : CouleursApp.champ,  //inactif
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Text(
-                estFrancais ? 'AR' : 'عر',
+                enFrancais ? 'AR' : 'عر',
                 style: TextStyle(
                   color: CouleursApp.texte,
                   fontWeight: FontWeight.bold,

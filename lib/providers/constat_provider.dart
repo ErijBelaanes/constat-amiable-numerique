@@ -2,10 +2,10 @@ import 'package:flutter/foundation.dart';
 import '../models/constat_model.dart';
 class ConstatProvider extends ChangeNotifier {
   final ConstatModel constat = ConstatModel(lieuAccident: '');
-  bool estFrancais = true;
+  bool enFrancais = true;
 
   void changerLangue(){
-    estFrancais = !estFrancais;
+    enFrancais = !enFrancais;
     notifyListeners();
   }
 

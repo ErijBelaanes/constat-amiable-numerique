@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../widgets/selecteur_langue.dart';
 import '../theme/couleurs.dart';
 import '../providers/constat_provider.dart';
+import '../widgets/bouton_principal.dart';
 
 class EcranAccueil extends StatelessWidget{
   const EcranAccueil ({super.key});
@@ -10,7 +11,7 @@ class EcranAccueil extends StatelessWidget{
   @override
   Widget build(BuildContext context){
     final provider = context.watch<ConstatProvider>();
-    final enFrancais = provider.estFrancais;
+    final enFrancais = provider.enFrancais;
     final titre = enFrancais ? 'Bienvenue dans Constat' : 'مرحبًا بكم في تطبيق "Constat"';
 
     final description = enFrancais ?
@@ -29,6 +30,7 @@ class EcranAccueil extends StatelessWidget{
       backgroundColor: CouleursApp.fond,
       body: SafeArea(
           child: Stack(
+            fit: StackFit.expand,
             children: [Center(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 28),
@@ -73,40 +75,17 @@ class EcranAccueil extends StatelessWidget{
                 left: enFrancais ? 8 : null,
                 right: enFrancais ? null : 8,
                 child: SelecteurLangue(
-                    estFrancais : enFrancais,
+                    enFrancais : enFrancais,
                     click : provider.changerLangue,
                 ),
               ),
 
               //Bouton "Commencer"
-              Positioned(
-                left: 24,
-                right: 24,
-                bottom: 24,
-                child: SizedBox(
-                  height: 56,  //Bouton d'hauteur fixe
-                  child: ElevatedButton(
-                    onPressed: (){
-                      Navigator.pushNamed(context, '/avertissement');
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: CouleursApp.titre,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      elevation: 6, //Effet flottant
-                    ),
-                    child: Text(
-                      enFrancais ? 'Commencer' : 'ابدأ',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 25.0,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: enFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
-                      ),
-                    ),
-                  ),
-                ),
+              BoutonPrincipal(
+                  label: enFrancais ? 'Commencer' : 'ابدأ',
+                  couleur: CouleursApp.titre,
+                  click: () {Navigator.pushNamed(context, '/avertissement');},
+                  enFrancais: enFrancais,
               ),
             ],
           ),

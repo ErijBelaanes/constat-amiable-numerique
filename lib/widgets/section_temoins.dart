@@ -5,11 +5,11 @@ import '../theme/couleurs.dart';
 import 'champ_texte.dart';
 
 class SectionTemoins extends StatefulWidget {
-  final bool estFrancais;
+  final bool enFrancais;
 
   const SectionTemoins({
     super.key,
-    required this.estFrancais,
+    required this.enFrancais,
   });
 
   @override
@@ -47,7 +47,7 @@ class _SectionTemoinsState extends State<SectionTemoins>{
               padding: const EdgeInsets.only(bottom: 12),
               child: _CarteTemoin(
                   index: i,
-                  estFrancais: widget.estFrancais,
+                  enFrancais: widget.enFrancais,
                   controleurNom: _controleurPour(i, 'nom', temoins[i].nom),
                   controleurPrenom: _controleurPour(i, 'prenom', temoins[i].prenom),
                   controleurAdresse: _controleurPour(i, 'adresse', temoins[i].adresse),
@@ -63,10 +63,10 @@ class _SectionTemoinsState extends State<SectionTemoins>{
               color: CouleursApp.alerte,
             ),
             label:Text(
-              widget.estFrancais ? 'Ajouter un témoin' : 'إضافة شاهد',
+              widget.enFrancais ? 'Ajouter un témoin' : 'إضافة شاهد',
               style: TextStyle(
                 color: CouleursApp.alerte,
-                fontFamily: widget.estFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
+                fontFamily: widget.enFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
                 fontSize: 16.5,
                 fontWeight: FontWeight.bold,
               ),
@@ -89,7 +89,7 @@ class _SectionTemoinsState extends State<SectionTemoins>{
 
 class _CarteTemoin extends StatelessWidget{
   final int index;
-  final bool estFrancais;
+  final bool enFrancais;
   final TextEditingController controleurNom;
   final TextEditingController controleurPrenom;
   final TextEditingController controleurAdresse;
@@ -98,7 +98,7 @@ class _CarteTemoin extends StatelessWidget{
 
   const _CarteTemoin({
     required this.index,
-    required this.estFrancais,
+    required this.enFrancais,
     required this.controleurNom,
     required this.controleurPrenom,
     required this.controleurAdresse,
@@ -128,10 +128,10 @@ class _CarteTemoin extends StatelessWidget{
             children: [
               Expanded(
                 child: Text(
-                  estFrancais ? 'Témoin ${index+1}' : 'الشاهد ${index + 1}',
+                  enFrancais ? 'Témoin ${index+1}' : 'الشاهد ${index + 1}',
                   style: TextStyle(
                     color: CouleursApp.alerte,
-                    fontFamily: estFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
+                    fontFamily: enFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
@@ -161,10 +161,11 @@ class _CarteTemoin extends StatelessWidget{
               //Nom
               Expanded(
                 child: ChampTexte(
-                  label: estFrancais ? 'Nom' : 'اللقب',
+                  label: enFrancais ? 'Nom' : 'اللقب',
                   controleur: controleurNom,
-                  estFrancais: estFrancais,
-                  hintText: estFrancais ? 'Mhiri' : 'المهيري',
+                  enFrancais: enFrancais,
+                  changed: (value) {provider.setNomTemoin(index, value);},
+                  hintText: enFrancais ? 'Ex: Mhiri' : 'مثال: المهيري',
                 ),
               ),
               const SizedBox(width: 8),
@@ -172,10 +173,11 @@ class _CarteTemoin extends StatelessWidget{
               //Prénom
               Expanded(
                 child: ChampTexte(
-                  label: estFrancais ? 'Prénom' : 'الاسم',
+                  label: enFrancais ? 'Prénom' : 'الاسم',
                   controleur: controleurPrenom,
-                  estFrancais: estFrancais,
-                  hintText: estFrancais ? 'Ahmed' : 'أحمد',
+                  enFrancais: enFrancais,
+                  changed: (value) {provider.setPrenomTemoin(index, value);},
+                  hintText: enFrancais ? 'Ex: Ahmed' : 'مثال: أحمد',
                 ),
               ),
             ],
@@ -184,19 +186,25 @@ class _CarteTemoin extends StatelessWidget{
 
           //Adresse
           ChampTexte(
-              label: estFrancais ? 'Adresse' : 'العنوان',
-              controleur: controleurAdresse,
-              estFrancais: estFrancais,
-              hintText: estFrancais ? 'Ex: Rue de Marseille, Tunis' : 'مثال: نهج مرسيليا، تونس',
+            label: enFrancais ? 'Adresse' : 'العنوان',
+            controleur: controleurAdresse,
+            enFrancais: enFrancais,
+            changed: (value) {
+              provider.setAdresseTemoin(index, value);
+            },
+            hintText: enFrancais
+                ? 'Ex: Rue de Marseille, Tunis'
+                : 'مثال: نهج مرسيليا، تونس',
           ),
           const SizedBox(height: 25),
 
           //Numéro du téléphone
           ChampTexte(
-            label: estFrancais ? 'Numéro de téléphone' : 'رقم الهاتف',
+            label: enFrancais ? 'Numéro de téléphone' : 'رقم الهاتف',
             controleur: controleurNumTel,
-            estFrancais: estFrancais,
-            hintText: estFrancais ? 'Ex: 98 123 456' : 'مثال: 98 123 456',
+            enFrancais: enFrancais,
+            changed: (value) {provider.setNumTelTemoin(index, value);},
+            hintText: enFrancais ? 'Ex: 98 123 456' : 'مثال: 98 123 456',
           ),
         ],
       ),

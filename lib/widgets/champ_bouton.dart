@@ -5,14 +5,14 @@ class ChampBouton extends StatelessWidget{
   final String label;
   final String valeur;
   final VoidCallback click;
-  final bool estFrancais;
+  final bool enFrancais;
 
   const ChampBouton({
     super.key,
     required this.label,
     required this.valeur,
     required this.click,
-    required this.estFrancais,
+    required this.enFrancais,
   });
 
   @override
@@ -22,11 +22,11 @@ class ChampBouton extends StatelessWidget{
       children: [
         Text(
           label,
-          textAlign: estFrancais ? TextAlign.left : TextAlign.right,
-          textDirection: estFrancais ? TextDirection.ltr : TextDirection.rtl,
+          textAlign: enFrancais ? TextAlign.left : TextAlign.right,
+          textDirection: enFrancais ? TextDirection.ltr : TextDirection.rtl,
           style: TextStyle(
             color: CouleursApp.texteSecondaire,
-            fontFamily: estFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
+            fontFamily: enFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
             fontSize: 16.5,
             fontWeight: FontWeight.bold,
           ),
@@ -51,7 +51,7 @@ class ChampBouton extends StatelessWidget{
                 style: TextStyle(
                     color: CouleursApp.texte,
                     fontStyle: FontStyle.italic,
-                    fontFamily: estFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
+                    fontFamily: enFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
                     fontSize: 16,
                 ),
             )

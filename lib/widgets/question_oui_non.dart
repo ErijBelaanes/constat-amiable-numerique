@@ -5,14 +5,14 @@ class QuestionOuiNon extends StatelessWidget{
   final String label;
   final bool valeur;
   final ValueChanged<bool> change;
-  final bool estFrancais;
+  final bool enFrancais;
 
   const QuestionOuiNon({
     super.key,
     required this.label,
     required this.valeur,
     required this.change,
-    required this.estFrancais,
+    required this.enFrancais,
   });
 
   @override
@@ -22,11 +22,11 @@ class QuestionOuiNon extends StatelessWidget{
         Expanded(
             child: Text(
               label,
-              textAlign: estFrancais ? TextAlign.left : TextAlign.right,
-              textDirection: estFrancais ? TextDirection.ltr : TextDirection.rtl,
+              textAlign: enFrancais ? TextAlign.left : TextAlign.right,
+              textDirection: enFrancais ? TextDirection.ltr : TextDirection.rtl,
               style: TextStyle(
                 color: CouleursApp.texte,
-                fontFamily: estFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
+                fontFamily: enFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
                 fontSize: 16.5,
                 fontWeight: FontWeight.bold,
               ),
@@ -55,11 +55,11 @@ class QuestionOuiNon extends StatelessWidget{
                   ),
               ),
               child: Text(
-                estFrancais ? 'Oui' : 'نعم',
+                enFrancais ? 'Oui' : 'نعم',
                 style: TextStyle(
                   color: CouleursApp.texte,
                   fontWeight: FontWeight.bold,
-                  fontFamily: estFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
+                  fontFamily: enFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
                   fontSize: 15,
                 ),
               ),
@@ -86,11 +86,11 @@ class QuestionOuiNon extends StatelessWidget{
                   ),
                 ),
                 child: Text(
-                  estFrancais ? 'Non' : 'لا',
+                  enFrancais ? 'Non' : 'لا',
                   style: TextStyle(
                     color: CouleursApp.texte,
                     fontWeight: FontWeight.bold,
-                    fontFamily: estFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
+                    fontFamily: enFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
                     fontSize: 15,
                   ),
                 ),

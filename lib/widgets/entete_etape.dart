@@ -10,7 +10,7 @@ class EnteteEtape extends StatelessWidget{
   final String titreFr;
   final String titreAr;
   final int etapeActuelle;
-  final bool estFrancais;
+  final bool enFrancais;
   final VoidCallback changerLangue;
 
   const EnteteEtape({
@@ -20,7 +20,7 @@ class EnteteEtape extends StatelessWidget{
     required this.titreFr,
     required this.titreAr,
     required this.etapeActuelle,
-    required this.estFrancais,
+    required this.enFrancais,
     required this.changerLangue,
   });
 
@@ -29,8 +29,8 @@ class EnteteEtape extends StatelessWidget{
     return Column(
       children: [
         Align(
-          alignment: estFrancais ? Alignment.centerLeft : Alignment.centerRight,
-          child: BoutonRetour(estFrancais: estFrancais),
+          alignment: enFrancais ? Alignment.centerLeft : Alignment.centerRight,
+          child: BoutonRetour(),
         ),
 
         const SizedBox(height: 20),
@@ -52,14 +52,14 @@ class EnteteEtape extends StatelessWidget{
 
             //Titre de l'étape
             Text(
-              estFrancais ? titreFr : titreAr,
-              textAlign: estFrancais ? TextAlign.left : TextAlign.right,
-              textDirection: estFrancais ? TextDirection.ltr : TextDirection.rtl,
+              enFrancais ? titreFr : titreAr,
+              textAlign: enFrancais ? TextAlign.left : TextAlign.right,
+              textDirection: enFrancais ? TextDirection.ltr : TextDirection.rtl,
               style: TextStyle(
                 color: couleurIcone,
                 fontWeight: FontWeight.bold,
                 fontSize: 24.0,
-                fontFamily: estFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
+                fontFamily: enFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
               ),
             ),
 
@@ -69,7 +69,7 @@ class EnteteEtape extends StatelessWidget{
         //Indicateur des étapes
         IndicateurEtapes(
           etapeAct: etapeActuelle,
-          enFrancais: estFrancais,
+          enFrancais: enFrancais,
           couleur: couleurIcone,
         ),
       ],

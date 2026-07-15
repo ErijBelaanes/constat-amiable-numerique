@@ -5,13 +5,15 @@ class ChampTexte extends StatelessWidget {
   final String label;
   final TextEditingController controleur;
   final String? hintText;
-  final bool estFrancais;
+  final ValueChanged<String>? changed;
+  final bool enFrancais;
 
   const ChampTexte({
     super.key,
     required this.label,
     required this.controleur,
-    required this.estFrancais,
+    required this.enFrancais,
+    this.changed,
     required this.hintText,
   });
 
@@ -22,11 +24,11 @@ class ChampTexte extends StatelessWidget {
       children: [
         Text(
           label,
-          textAlign: estFrancais ? TextAlign.left : TextAlign.right,
-          textDirection: estFrancais ? TextDirection.ltr : TextDirection.rtl,
+          textAlign: enFrancais ? TextAlign.left : TextAlign.right,
+          textDirection: enFrancais ? TextDirection.ltr : TextDirection.rtl,
           style: TextStyle(
             color: CouleursApp.texteSecondaire,
-            fontFamily: estFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
+            fontFamily: enFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
             fontWeight: FontWeight.bold,
             fontSize: 16.5,
           ),
@@ -35,15 +37,16 @@ class ChampTexte extends StatelessWidget {
 
         TextField(
           controller: controleur,
+          onChanged: changed,
           style: TextStyle(
             color: CouleursApp.texte,
-            fontFamily: estFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
+            fontFamily: enFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
           ),
           decoration: InputDecoration(
             hintText: hintText,
             hintStyle: TextStyle(
               color: CouleursApp.texte,
-              fontFamily: estFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
+              fontFamily: enFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
               fontSize: 16,
             ),
             filled: true,
