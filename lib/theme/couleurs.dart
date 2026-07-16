@@ -10,7 +10,7 @@ class CouleursApp {
   static const titre = Color.fromRGBO(198, 97, 63, 1);
 
   static const fondVehiculeA = Color.fromRGBO(255, 236, 179, 1);
-  static const fondVehiculeA2 = Color.fromRGBO(255, 229, 127, 1);
+  static const fondVehiculeA2 = Color.fromRGBO(211, 195, 129, 1.0);
   static const texteVehiculeA = Color.fromRGBO(255, 143, 0, 1);
 
   static const fondVehiculeB = Color.fromRGBO(179, 229, 252, 1);

@@ -39,12 +39,8 @@ class ConstatProvider extends ChangeNotifier {
 
   void ajouterTemoin(){
     constat.listeTemoins.add(
-        Temoin(
-          nom: '',
-          prenom: '',
-          adresse: '',
-          numTel: '',
-        ));
+        Temoin(nom: '', prenom: '', adresse: '', numTel: '',),
+    );
     notifyListeners();
   }
 
@@ -86,6 +82,16 @@ class ConstatProvider extends ChangeNotifier {
 
   void setVehiculeB(VehiculeInfo vehicule){
     vehiculeB = vehicule;
+    notifyListeners();
+  }
+
+  void toggleCirconstanceA(int index, bool value){
+    constat.circonstancesA[index] = value;
+    notifyListeners();
+  }
+
+  void toggleCirconstanceB(int index, bool value){
+    constat.circonstancesB[index] = value;
     notifyListeners();
   }
 }

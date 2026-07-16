@@ -432,10 +432,10 @@ class _EcranVehiculeState extends State<EcranVehicule>{
                           Container(
                             padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
                             decoration: BoxDecoration(
-                              color: (widget.nomVehicule == 'A') ? CouleursApp.fondVehiculeA2 : CouleursApp.fond,
+                              color: (widget.nomVehicule == 'A') ? CouleursApp.bordure1 : CouleursApp.fond,
                               borderRadius: BorderRadius.circular(15),
                               border: Border.all(
-                                color: (widget.nomVehicule == 'A') ? CouleursApp.fondVehiculeA2 : CouleursApp.fond,
+                                color: (widget.nomVehicule == 'A') ? CouleursApp.bordure1 : CouleursApp.fond,
                                 width: 1.5,
                               ),
                             ),
@@ -540,7 +540,7 @@ class _EcranVehiculeState extends State<EcranVehicule>{
                                   style: TextStyle(
                                     color: (widget.nomVehicule == 'A') ? CouleursApp.texteVehiculeA : CouleursApp.texteVehiculeB,
                                     fontFamily: enFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
-                                    fontSize: 20,
+                                    fontSize: 23,
                                     fontWeight: FontWeight.bold,
                                     decoration: TextDecoration.underline,
                                     decorationColor: (widget.nomVehicule == 'A') ? CouleursApp.texteVehiculeA : CouleursApp.texteVehiculeB,

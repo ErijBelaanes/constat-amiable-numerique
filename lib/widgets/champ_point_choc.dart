@@ -95,7 +95,7 @@ class _ChampPointChocState extends State <ChampPointChoc> {
                                       contraintesImage.maxHeight - 14,
                                   //Position verticale de la flèche
                                   child: Icon(
-                                    Icons.arrow_downward_rounded,
+                                    Icons.close_rounded,
                                     color: CouleursApp.alerte,
                                     size: 28,
                                   ),

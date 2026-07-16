@@ -23,6 +23,9 @@ class ConstatModel {
   bool blesses = false;
   bool temoins = false;
   List<Temoin> listeTemoins = [];  //La liste des témoins ajoutés
+  List<bool> circonstancesA = List.filled(17, false);
+  List<bool> circonstancesB = List.filled(17, false);
+
 
   ConstatModel({required this.lieuAccident}){
     dateAccident = DateTime.now();
@@ -99,3 +102,4 @@ class VehiculeInfo{
     this.observations = '',
   });
 }
+

@@ -4,7 +4,7 @@ import '../theme/couleurs.dart';
 class QuestionOuiNon extends StatelessWidget{
   final String label;
   final bool valeur;
-  final ValueChanged<bool> change;
+  final ValueChanged<bool> change;   //Reçoit oui ou non
   final bool enFrancais;
 
   const QuestionOuiNon({
