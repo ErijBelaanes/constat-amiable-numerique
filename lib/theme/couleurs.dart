@@ -9,8 +9,16 @@ class CouleursApp {
 
   static const titre = Color.fromRGBO(198, 97, 63, 1);
 
-  static const vehiculeA = Color(0xFFF5A623);
-  static const vehiculeB = Color(0xFF3B82F6);
+  static const fondVehiculeA = Color.fromRGBO(255, 236, 179, 1);
+  static const fondVehiculeA2 = Color.fromRGBO(255, 229, 127, 1);
+  static const texteVehiculeA = Color.fromRGBO(255, 143, 0, 1);
+
+  static const fondVehiculeB = Color.fromRGBO(179, 229, 252, 1);
+  static const fondVehiculeB2 = Color.fromRGBO(100, 181, 246, 1);
+
+  static const texteVehiculeB = Color.fromRGBO(13, 71, 161, 1);
+
+
 
   static const alerte = Colors.redAccent;
   static const succes = Color(0xFF639922);

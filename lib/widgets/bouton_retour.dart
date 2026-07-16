@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import '../theme/couleurs.dart';
 
 class BoutonRetour extends StatelessWidget {
+  final VoidCallback? click;  //Si null => Navigator.pop(context)
 
   const BoutonRetour({
     super.key,
+    this.click,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
+      onTap: click ?? () {      //Si on ne fournit pas click alors le comportement reste inchangé sinon il prend le dessus
         Navigator.pop(context);
       },
       child: Container(

@@ -87,7 +87,7 @@ class EcranAvertissement extends StatelessWidget {
                   label: enFrancais ? 'Commencer' : 'ابدأ',
                   couleur: CouleursApp.titre,
                   click: () {
-                    Navigator.pushNamed(context, '/accident');
+                    Navigator.pushReplacementNamed(context, '/accident');
                   },
                   enFrancais: enFrancais,
                 ),

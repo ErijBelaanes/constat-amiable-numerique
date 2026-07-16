@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class BoutonPrincipal extends StatelessWidget{
   final String label;
   final Color couleur;
-  final VoidCallback click;
+  final VoidCallback? click;
   final bool enFrancais;
 
   const BoutonPrincipal({
@@ -23,7 +23,7 @@ class BoutonPrincipal extends StatelessWidget{
       child: SizedBox(
         height: 56,  //Bouton d'hauteur fixe
         child: ElevatedButton(
-          onPressed: click,
+          onPressed: click,  //null == bouton désactivé
           style: ElevatedButton.styleFrom(
             backgroundColor: couleur,
             shape: RoundedRectangleBorder(

@@ -162,7 +162,6 @@ class _EcranAccidentState extends State<EcranAccident>{
                                 titreAr: 'معلومات عامة',
                                 etapeActuelle: 1,
                                 enFrancais: provider.enFrancais,
-                                changerLangue: provider.changerLangue
                             ),
                             const SizedBox(height: 36),
 

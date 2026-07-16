@@ -1,7 +1,10 @@
 import 'package:flutter/foundation.dart';
 import '../models/constat_model.dart';
+
 class ConstatProvider extends ChangeNotifier {
   final ConstatModel constat = ConstatModel(lieuAccident: '');
+  VehiculeInfo vehiculeA = VehiculeInfo();
+  VehiculeInfo vehiculeB = VehiculeInfo();
   bool enFrancais = true;
 
   void changerLangue(){
@@ -47,6 +50,12 @@ class ConstatProvider extends ChangeNotifier {
 
   void supprimerTemoin(int index){
     constat.listeTemoins.removeAt(index);
+
+    //S'il n'y a plus de témoins, on décoche automatiquement la question.
+    if(constat.listeTemoins.isEmpty) {
+      constat.temoins = false;
+    }
+
     notifyListeners();
   }
 
@@ -67,6 +76,16 @@ class ConstatProvider extends ChangeNotifier {
 
   void setNumTelTemoin(int index, String numTel){
     constat.listeTemoins[index].numTel = numTel;
+    notifyListeners();
+  }
+
+  void setVehiculeA(VehiculeInfo vehicule){
+    vehiculeA = vehicule;
+    notifyListeners();
+  }
+
+  void setVehiculeB(VehiculeInfo vehicule){
+    vehiculeB = vehicule;
     notifyListeners();
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 
 class Temoin{
@@ -29,11 +31,11 @@ class ConstatModel {
 
 class VehiculeInfo{
   //Societe d'assurances
-  String assureur;
+  String assurance;
   String numContrat;
   String agence;
-  DateTime dateDebutAttestation;
-  DateTime dateFinAttestation;
+  DateTime? dateDebutAttestation;
+  DateTime? dateFinAttestation;
 
   //Identite du conducteur
   String nomConducteur;
@@ -55,6 +57,10 @@ class VehiculeInfo{
   String venantDe;
   String allantA;
 
+  //Point de choc
+  Offset? pointChoc;
+  Uint8List? imagePointChoc;
+
   //Degat apparents
   String degatsApparents;
 
@@ -62,31 +68,34 @@ class VehiculeInfo{
   String observations;
 
   VehiculeInfo({
-    required this.assureur,
-    required this.numContrat,
-    required this.agence,
-    required this.dateDebutAttestation,
-    required this.dateFinAttestation,
+    this.assurance = '',
+    this.numContrat = '',
+    this.agence = '',
+    this.dateDebutAttestation,
+    this.dateFinAttestation,
 
-    required this.nomConducteur,
-    required this.prenomConducteur,
-    required this.adresseConducteur,
-    required this.numPermis,
-    required this.datePermis,
+    this.nomConducteur = '',
+    this.prenomConducteur = '',
+    this.adresseConducteur = '',
+    this.numPermis = '',
+    this.datePermis,
 
-    required this.nomAssure,
-    required this.prenomAssure,
-    required this.adresseAssure,
-    required this.numTel,
+    this.nomAssure = '',
+    this.prenomAssure = '',
+    this.adresseAssure = '',
+    this.numTel = '',
 
-    required this.marque,
-    required this.type,
-    required this.sensSuivi,
-    required this.venantDe,
-    required this.allantA,
+    this.marque = '',
+    this.type = '',
+    this.sensSuivi = '',
+    this.venantDe = '',
+    this.allantA = '',
 
-    required this.degatsApparents,
+    this.pointChoc,
+    this.imagePointChoc,
 
-    required this.observations,
+    this.degatsApparents = '',
+
+    this.observations = '',
   });
 }

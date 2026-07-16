@@ -11,7 +11,6 @@ class EnteteEtape extends StatelessWidget{
   final String titreAr;
   final int etapeActuelle;
   final bool enFrancais;
-  final VoidCallback changerLangue;
 
   const EnteteEtape({
     super.key,
@@ -21,7 +20,6 @@ class EnteteEtape extends StatelessWidget{
     required this.titreAr,
     required this.etapeActuelle,
     required this.enFrancais,
-    required this.changerLangue,
   });
 
   @override

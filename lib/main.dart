@@ -31,7 +31,7 @@ class ConstatApp extends StatelessWidget{
           '/avertissement': (context) => const EcranAvertissement(),
           '/accident': (context) => const EcranAccident(),
           '/vehiculeA': (context) => const EcranVehicule(nomVehicule: 'A'),
-          // '/vehiculeB': (context) => const EcranVehicule(nomVehicule: 'B'),
+          '/vehiculeB': (context) => const EcranVehicule(nomVehicule: 'B'),
         },
       ),
     );
