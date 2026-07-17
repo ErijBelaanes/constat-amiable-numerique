@@ -202,7 +202,6 @@ class _EcranVehiculeState extends State<EcranVehicule>{
         ]
     ),
   ];
-
   @override
   void initState() {
     super.initState();
@@ -215,14 +214,105 @@ class _EcranVehiculeState extends State<EcranVehicule>{
         }
       }
     }
+
+  }
+  late ConstatProvider provider;
+  bool donneesChargees = false;
+  @override
+  void didChangeDependencies(){
+    super.didChangeDependencies();
+    provider = context.read<ConstatProvider>();
+
+    if(!donneesChargees){
+      chargerDonneesExistantes();
+      donneesChargees = true;
+    }
+  }
+
+  void chargerDonneesExistantes(){
+    final info = (widget.nomVehicule == 'A') ? provider.vehiculeA : provider.vehiculeB;
+    if(info == null){
+      return;
+    }
+
+    controleursTexte['assurance']!.text = info.assurance;
+    controleursTexte['numContrat']!.text = info.numContrat;
+    controleursTexte['agence']!.text = info.agence;
+    reponsesDate['dateDebutAttestation'] = info.dateDebutAttestation;
+    reponsesDate['dateFinAttestation'] = info.dateFinAttestation;
+
+    controleursTexte['nomConducteur']!.text = info.nomConducteur;
+    controleursTexte['prenomConducteur']!.text = info.prenomConducteur;
+    controleursTexte['adresseConducteur']!.text = info.adresseConducteur;
+    controleursTexte['numPermis']!.text = info.numPermis;
+    reponsesDate['datePermis'] = info.datePermis;
+
+    controleursTexte['nomAssure']!.text = info.nomAssure;
+    controleursTexte['prenomAssure']!.text = info.prenomAssure;
+    controleursTexte['adresseAssure']!.text = info.adresseAssure;
+    controleursTexte['numTel']!.text = info.numTel;
+
+    controleursTexte['marque']!.text = info.marque;
+    controleursTexte['type']!.text = info.type;
+    controleursTexte['sensSuivi']!.text = info.sensSuivi;
+    controleursTexte['venantDe']!.text = info.venantDe;
+    controleursTexte['allantA']!.text = info.allantA;
+
+    pointChocSelectionne = info.pointChoc;
+    imagePointChocSelectionne = info.imagePointChoc;
+
+    controleursTexte['degatsApparents']!.text = info.degatsApparents;
+    controleursTexte['observations']!.text = info.observations;
+
+    setState(() {});
   }
 
   @override
   void dispose() {
+    sauvegarderDonnees();
     for(final c in controleursTexte.values) {
       c.dispose();
     }
     super.dispose();
+  }
+
+  void sauvegarderDonnees(){
+    final infoVehicule = VehiculeInfo(
+      assurance: controleursTexte['assurance']!.text.trim(),
+      numContrat: controleursTexte['numContrat']!.text.trim(),
+      agence: controleursTexte['agence']!.text.trim(),
+      dateDebutAttestation: reponsesDate['dateDebutAttestation'],
+      dateFinAttestation: reponsesDate['dateFinAttestation'],
+
+      nomConducteur: controleursTexte['nomConducteur']!.text.trim(),
+      prenomConducteur: controleursTexte['prenomConducteur']!.text.trim(),
+      adresseConducteur: controleursTexte['adresseConducteur']!.text.trim(),
+      numPermis: controleursTexte['numPermis']!.text.trim(),
+      datePermis: reponsesDate['datePermis'],
+
+      nomAssure: controleursTexte['nomAssure']!.text.trim(),
+      prenomAssure: controleursTexte['prenomAssure']!.text.trim(),
+      adresseAssure: controleursTexte['adresseAssure']!.text.trim(),
+      numTel: controleursTexte['numTel']!.text.trim(),
+
+      marque: controleursTexte['marque']!.text.trim(),
+      type: controleursTexte['type']!.text.trim(),
+      sensSuivi: controleursTexte['sensSuivi']!.text.trim(),
+      venantDe: controleursTexte['venantDe']!.text.trim(),
+      allantA: controleursTexte['allantA']!.text.trim(),
+
+      pointChoc: pointChocSelectionne,
+      imagePointChoc: imagePointChocSelectionne,
+
+      degatsApparents: controleursTexte['degatsApparents']!.text.trim(),
+      observations: controleursTexte['observations']!.text.trim(),
+    );
+
+    if (widget.nomVehicule == 'A') {
+      provider.setVehiculeA(infoVehicule);
+    } else {
+      provider.setVehiculeB(infoVehicule);
+    }
   }
 
   //Fonction pour sélectionner une date
@@ -273,15 +363,16 @@ class _EcranVehiculeState extends State<EcranVehicule>{
 
     //Contrôle des champs nomConducteur, prenomConducteur, nomAssure, prenomAssure
     const clesNomPrenom = [('nomConducteur', 'nom du conducteur'),
-                            ('prenomConducteur', 'prénom du conducteur'),
-                            ('nomAssure', 'nom de l\'assuré'),
-                            ('prenomAssure', 'prénom de l\'assuré')];
+                           ('prenomConducteur', 'prénom du conducteur'),
+                           ('nomAssure', 'nom de l\'assuré'),
+                           ('prenomAssure', 'prénom de l\'assuré')
+    ];
     for(final cle in clesNomPrenom){
       if(g.questions.any((q) => (q.cle == cle.$1))){
         final valeur = controleursTexte[cle.$1]!.text.trim();
         if(!RegExp(r"^[a-zA-ZÀ-ÿ\s'-]+$").hasMatch(valeur)){
           return enFrancais ? 'Le ${cle.$2} ne doit contenir que des lettres'
-              : 'يجب أن يحتوي هذا الحقل على أحرف فقط';
+                            : 'يجب أن يحتوي هذا الحقل على أحرف فقط';
         }
       }
     }
@@ -308,7 +399,7 @@ class _EcranVehiculeState extends State<EcranVehicule>{
     //Contrôle du champ numPermis (composé seulement par des chiffres)
     if(g.questions.any((q) => (q.cle == 'numPermis'))){
       final nPermis = controleursTexte['numPermis']!.text.trim();
-      if(!RegExp(r'^[0-9]$').hasMatch(nPermis)){
+      if(!RegExp(r'^[0-9]+$').hasMatch(nPermis)){
         return enFrancais ? 'Le numéro de permis doit contenir que des chiffres'
             : 'يجب أن يحتوي رقم التصريح على أرقام فقط';
       }

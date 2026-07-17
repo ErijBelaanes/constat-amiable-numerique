@@ -81,6 +81,7 @@ class _SectionTemoinsState extends State<SectionTemoins>{
                 borderRadius: BorderRadius.circular(12),
               )
             ),
+
         ),
       ],
     );
@@ -126,17 +127,40 @@ class _CarteTemoin extends StatelessWidget{
         children: [
           Row(
             children: [
-              Expanded(
-                child: Text(
-                  enFrancais ? 'Témoin ${index+1}' : 'الشاهد ${index + 1}',
-                  style: TextStyle(
-                    color: CouleursApp.alerte,
-                    fontFamily: enFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+              //Titre de l'étape et l'icone d'un témoin
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  //Icone
+                  Container(
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      color: CouleursApp.alerte.withValues(alpha: 0.15),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Icon(
+                        Icons.person,
+                        color: CouleursApp.alerte,
+                    ),
                   ),
-                ),
+                  const SizedBox(width: 10),
+
+                  //Titre de l'étape
+                  Text(
+                    enFrancais ? 'Témoin ${index+1}' : 'الشاهد ${index + 1}',
+                    textAlign: enFrancais ? TextAlign.left : TextAlign.right,
+                    textDirection: enFrancais ? TextDirection.ltr : TextDirection.rtl,
+                    style: TextStyle(
+                      color: CouleursApp.alerte,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18.0,
+                      fontFamily: enFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
+                    ),
+                  ),
+
+                ],
               ),
+
               GestureDetector(
                 onTap: () => provider.supprimerTemoin(index),
                 child: const Icon(

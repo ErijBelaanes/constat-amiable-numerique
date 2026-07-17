@@ -13,7 +13,7 @@ class IndicateurEtapes extends StatelessWidget{
     required this.couleur,
   });
 
-  static const int totalEtapes = 6;
+  static const int totalEtapes = 7;
 
   @override
   Widget build(BuildContext context) {

@@ -9,6 +9,7 @@ import 'ecrans/ecran_avertissement.dart';
 import 'ecrans/ecran_circonstances.dart';
 import 'ecrans/ecran_croquis.dart';
 import 'ecrans/ecran_signatures.dart';
+import 'ecrans/ecran_recapitulatif.dart';
 
 void main(){
   runApp(const ConstatApp());

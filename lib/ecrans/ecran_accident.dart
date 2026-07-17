@@ -74,15 +74,17 @@ class _EcranAccidentState extends State<EcranAccident>{
 
   void validerEtSauvegarder(){
     final provider = context.read<ConstatProvider>();
-    final estFrancais = provider.enFrancais;
+    final enFrancais = provider.enFrancais;
+    final temoins = provider.constat.temoins;
+    final listeTemoins = provider.constat.listeTemoins;
 
     if(dateChoisie == null || heureChoisie == null){
       afficherErreur(
         context,
-        estFrancais
+        enFrancais
             ? 'Veuillez indiquer la date et l\'heure de l\'accident'
             : 'يرجى تحديد تاريخ ووقت الحادث',
-        estFrancais,
+        enFrancais,
       );
       return;
     }
@@ -90,31 +92,61 @@ class _EcranAccidentState extends State<EcranAccident>{
     if(lieuController.text.trim().isEmpty){
       afficherErreur(
         context,
-        estFrancais
+        enFrancais
             ? 'Veuillez indiquer le lieu de l\'accident'
             : 'يرجى تحديد مكان الحادث',
-        estFrancais,
+        enFrancais,
       );
       return;
     }
 
-    if(provider.constat.temoins){
-      for(final t in provider.constat.listeTemoins){
+    if(temoins){
+      for(final t in listeTemoins){
         if(t.nom.trim().isEmpty
           || t.prenom.trim().isEmpty
           || t.adresse.trim().isEmpty
           || t.numTel.trim().isEmpty){
           afficherErreur(
             context,
-            estFrancais
+            enFrancais
                ? 'Veuillez renseigner les informations nécessaires de chaque témoin'
                : 'يرجى إدخال المعلومات اللازمة لكل شاهد',
-            estFrancais,
+            enFrancais,
+          );
+          return;
+        }
+        //Contrôle du nom (Composé que par des lettres)
+        if(!RegExp(r"^[a-zA-ZÀ-ÿ\s'-]+$").hasMatch(t.nom.trim())){
+          return afficherErreur(
+            context,
+            enFrancais ? 'Le nom du témoin ne doit contenir que des lettres'
+                : 'يجب أن يحتوي لقب الشاهد على أحرف فقط',
+            enFrancais,
+          );
+        }
+        //Contrôle du prénom (Composé que par des lettres)
+        if(!RegExp(r"^[a-zA-ZÀ-ÿ\s'-]+$").hasMatch(t.prenom.trim())){
+          return afficherErreur(
+            context,
+            enFrancais ? 'Le prénom du témoin ne doit contenir que des lettres'
+                : 'يجب أن يحتوي اسم الشاهد على أحرف فقط',
+            enFrancais,
+          );
+        }
+        //Contrôle du numéro de téléphone (Composé par 8 chiffres)
+        if(!RegExp(r'^[0-9]{8}$').hasMatch(t.numTel.trim())){
+          afficherErreur(
+            context,
+            enFrancais
+                ? 'Le numéro de téléphone du témoin doit contenir exactement 8 chiffres'
+                : 'يجب أن يتكون رقم هاتف الشاهد من 8 أرقام بالضبط',
+            enFrancais,
           );
           return;
         }
       }
     }
+
 
     final dateComplet = DateTime(
       dateChoisie!.year,
