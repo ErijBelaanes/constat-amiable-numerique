@@ -241,11 +241,17 @@ class _EcranVehiculeState extends State<EcranVehicule>{
     }
   }
 
-  bool validerGroupe(){
-    for(final q in groupes[groupeAct].questions){
+  String? erreurPourGroupe(Groupe g){
+    final provider = context.read<ConstatProvider>();
+    final enFrancais = provider.enFrancais;
+
+    //Vérifier que TOUS les champs, SAUF observations, sont remplis
+    for (final q in g.questions) {
+      if (q.cle == 'observations')
+        continue; //Le champ "Observations" n'est pas obligatoire
       bool questionVide;
 
-      switch(q.type){
+      switch (q.type) {
         case 'texte':
           questionVide = controleursTexte[q.cle]!.text.trim().isEmpty;
           break;
@@ -253,60 +259,78 @@ class _EcranVehiculeState extends State<EcranVehicule>{
           questionVide = (reponsesDate[q.cle] == null);
           break;
         case 'pointChoc':
-          questionVide = (pointChocSelectionne == null) || imagePointChocSelectionne == null;
+          questionVide = (pointChocSelectionne == null) || (imagePointChocSelectionne == null);
           break;
         default:
           questionVide = true;
           break;
       }
-      if(questionVide){
-        return false;
+      if (questionVide) {
+        return enFrancais ? 'Veuillez remplir tous les champs avant de continuer'
+                          : 'يرجى ملء جميع الحقول قبل المتابعة';
       }
     }
-    //Toutes les questions sont remplies
-    return true;
-  }
 
-  bool dernierGroupeValider(){
-    for(final q in groupes[groupes.length -1].questions){
-      bool questionVide;
-
-      switch(q.type){
-        case 'texte':
-          questionVide = controleursTexte[q.cle]!.text.trim().isEmpty;
-          break;
-        case 'date':
-          questionVide = (reponsesDate[q.cle] == null);
-          break;
-        case 'pointChoc':
-          questionVide = (pointChocSelectionne == null) || imagePointChocSelectionne == null;
-          break;
-        default:
-          questionVide = true;
-          break;
-      }
-      if(questionVide){
-        return false;
+    //Contrôle des champs nomConducteur, prenomConducteur, nomAssure, prenomAssure
+    const clesNomPrenom = [('nomConducteur', 'nom du conducteur'),
+                            ('prenomConducteur', 'prénom du conducteur'),
+                            ('nomAssure', 'nom de l\'assuré'),
+                            ('prenomAssure', 'prénom de l\'assuré')];
+    for(final cle in clesNomPrenom){
+      if(g.questions.any((q) => (q.cle == cle.$1))){
+        final valeur = controleursTexte[cle.$1]!.text.trim();
+        if(!RegExp(r"^[a-zA-ZÀ-ÿ\s'-]+$").hasMatch(valeur)){
+          return enFrancais ? 'Le ${cle.$2} ne doit contenir que des lettres'
+              : 'يجب أن يحتوي هذا الحقل على أحرف فقط';
+        }
       }
     }
-    //Toutes les questions du dernier groupe sont remplies
-    return true;
+
+    //Contrôle du champ numTel (8 chiffres)
+    if(g.questions.any((q) => (q.cle == 'numTel'))){
+      final tel = controleursTexte['numTel']!.text.trim();
+      if(!RegExp(r'^[0-9]{8}$').hasMatch(tel)){
+        return enFrancais ? 'Le numéro de téléphone doit contenir exactement 8 chiffres'
+                          : 'يجب أن يتكون رقم الهاتف من 8 أرقام بالضبط';
+      }
+    }
+
+    //Contrôle des champs dateDebutAttestaion et dateFinAttestation (dateDebutAttestaion < dateFinAttestation)
+    if(g.questions.any((q) => (q.cle == 'dateDebutAttestation'))){
+      final debut = reponsesDate['dateDebutAttestation'];
+      final fin = reponsesDate['dateFinAttestation'];
+      if((debut != null) && (fin != null) && (!debut.isBefore(fin))){
+        return enFrancais ? 'La date de début doit être antérieure à la date de fin'
+                          : 'يجب أن يكون تاريخ البداية قبل تاريخ النهاية';
+      }
+    }
+
+    //Contrôle du champ numPermis (composé seulement par des chiffres)
+    if(g.questions.any((q) => (q.cle == 'numPermis'))){
+      final nPermis = controleursTexte['numPermis']!.text.trim();
+      if(!RegExp(r'^[0-9]$').hasMatch(nPermis)){
+        return enFrancais ? 'Le numéro de permis doit contenir que des chiffres'
+            : 'يجب أن يحتوي رقم التصريح على أرقام فقط';
+      }
+    }
+
+    return null;  //Tous les champs sont valide
   }
 
   void groupeSuivant(){
     final provider = context.read<ConstatProvider>();
     final enFrancais = provider.enFrancais;
+    final erreur = erreurPourGroupe(groupes[groupeAct]);
 
-    if (!validerGroupe()) {
+    if (erreur != null) {
       afficherErreur(
         context,
-        enFrancais ? 'Veuillez remplir tous les champs avant de continuer'
-            : 'يرجى ملء جميع الحقول قبل المتابعة',
+        erreur,
         enFrancais,
       );
       return;
     }
-    //Si toutes les questions du groupe sont remplies
+
     if(groupeAct < groupes.length - 1){
       setState(() {
         groupeAct++;
@@ -322,14 +346,14 @@ class _EcranVehiculeState extends State<EcranVehicule>{
 
   void terminer(){
     final provider = context.read<ConstatProvider>();
+    final erreur = erreurPourGroupe(groupes[groupes.length - 1]);
+    final enFrancais = provider.enFrancais;
 
-    if (!dernierGroupeValider()) {
+    if (erreur != null) {
       afficherErreur(
         context,
-        provider.enFrancais
-            ? 'Veuillez remplir tous les champs avant de terminer'
-            : 'يرجى ملء جميع الحقول قبل الإنهاء',
-        provider.enFrancais,
+        erreur,
+        enFrancais,
       );
       return;
     }
@@ -447,17 +471,11 @@ class _EcranVehiculeState extends State<EcranVehicule>{
                                       label: Text(
                                         enFrancais ? 'Précédent' : 'السابق',
                                       ),
-                                      style: ButtonStyle(
-                                        foregroundColor: WidgetStateProperty
-                                            .resolveWith<Color>((states) {
-                                          if (states.contains(
-                                              WidgetState.disabled)) {
-                                            return Colors
-                                                .grey; //Couleur du texte et de l'icône désactivés
+                                      style: ButtonStyle(foregroundColor: WidgetStateProperty.resolveWith<Color>((states) {
+                                          if (states.contains(WidgetState.disabled)) {
+                                            return Colors.grey; //Couleur du texte et de l'icône désactivés
                                           }
-                                          return (widget.nomVehicule == 'A')
-                                              ? CouleursApp.texteVehiculeA
-                                              : CouleursApp.texteVehiculeB;
+                                          return (widget.nomVehicule == 'A') ? CouleursApp.texteVehiculeA : CouleursApp.texteVehiculeB;
                                         }),
                                         minimumSize: WidgetStatePropertyAll(
                                           const Size(0, 28),
@@ -467,9 +485,7 @@ class _EcranVehiculeState extends State<EcranVehicule>{
                                             fontFamily: enFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
                                             fontSize: 15,
                                             fontWeight: FontWeight.bold,
-                                            color: (widget.nomVehicule == 'A')
-                                                ? CouleursApp.texteVehiculeA
-                                                : CouleursApp.texteVehiculeB,
+                                            color: (widget.nomVehicule == 'A') ? CouleursApp.texteVehiculeA : CouleursApp.texteVehiculeB,
                                           ),
 
                                         ),
@@ -487,11 +503,9 @@ class _EcranVehiculeState extends State<EcranVehicule>{
                                         label: Text(
                                           enFrancais ? 'Suivant' : 'التالي',
                                         ),
-                                        style: ButtonStyle(
-                                          foregroundColor: WidgetStateProperty.resolveWith<Color>((states) {
+                                        style: ButtonStyle(foregroundColor: WidgetStateProperty.resolveWith<Color>((states) {
                                             if (states.contains(WidgetState.disabled)) {
-                                              return Colors
-                                                  .grey; //Couleur du texte et de l'icône désactivés
+                                              return Colors.grey; //Couleur du texte et de l'icône désactivés
                                             }
                                             return (widget.nomVehicule == 'A') ? CouleursApp.texteVehiculeA : CouleursApp.texteVehiculeB;
                                           }),
@@ -500,9 +514,7 @@ class _EcranVehiculeState extends State<EcranVehicule>{
                                           ),
                                           textStyle: WidgetStatePropertyAll(
                                             TextStyle(
-                                              fontFamily: enFrancais
-                                                  ? 'PlayfairDisplay'
-                                                  : 'NoteNaskhArabic',
+                                              fontFamily: enFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
                                               fontSize: 15,
                                               fontWeight: FontWeight.bold,
                                               color: (widget.nomVehicule == 'A') ? CouleursApp.texteVehiculeA : CouleursApp.texteVehiculeB,
@@ -545,13 +557,10 @@ class _EcranVehiculeState extends State<EcranVehicule>{
                                     //Champ texte
                                       case "texte":
                                         champ = ChampTexte(
-                                          label: enFrancais ? q.labelFR : q
-                                              .labelAR,
+                                          label: enFrancais ? q.labelFR : q.labelAR,
                                           controleur: controleursTexte[q.cle]!,
                                           enFrancais: enFrancais,
-                                          changed: (value) {
-                                            setState(() {});
-                                          },
+                                          changed: (value) {setState(() {});},
                                           hintText: "",
                                         );
                                         break;
@@ -621,7 +630,7 @@ class _EcranVehiculeState extends State<EcranVehicule>{
               BoutonPrincipal(
                 label: enFrancais ? 'Suivant' : 'التالي',
                 couleur: (widget.nomVehicule == 'A') ? CouleursApp.texteVehiculeA : CouleursApp.texteVehiculeB,
-                click: dernierGroupeValider() ? terminer : null,
+                click: erreurPourGroupe(groupes[groupes.length - 1]) == null ? terminer : null,
                 enFrancais: enFrancais,
               ),
             ],
