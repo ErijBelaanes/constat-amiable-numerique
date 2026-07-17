@@ -8,7 +8,7 @@ import '../widgets/entete_etape.dart';
 import '../theme/couleurs.dart';
 import '../utils/dialogues.dart';
 import '../widgets/bouton_principal.dart';
-import '../widgets/zone_croquis.dart';
+import '../widgets/zone_dessin.dart';
 
 class EcranCroquis extends StatefulWidget{
   const EcranCroquis({super.key});
@@ -17,11 +17,11 @@ class EcranCroquis extends StatefulWidget{
 }
 
 class _EcranCroquisState extends State<EcranCroquis>{
-  final GlobalKey<ZoneCroquisState> _cleZone = GlobalKey();
+  final GlobalKey<ZoneDessinState> _cleZone = GlobalKey();
 
   Future<void> validerCroquis() async {
     final provider = context.read<ConstatProvider>();
-    final imageBytes = await _cleZone.currentState?.capturerImageCroquis();
+    final imageBytes = await _cleZone.currentState?.capturerImageDessin();
     final enFrancais = provider.enFrancais;
 
     if (_cleZone.currentState?.aDesTraits != true) {
@@ -66,7 +66,7 @@ class _EcranCroquisState extends State<EcranCroquis>{
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     EnteteEtape(
-                      icone: Icons.warning_amber_rounded,
+                      icone: Icons.car_crash_sharp,
                       couleurIcone: CouleursApp.alerte,
                       titreFr: 'Croquis de l\'accident',
                       titreAr: 'رسم تخطيطي للحادث',
@@ -93,7 +93,7 @@ class _EcranCroquisState extends State<EcranCroquis>{
                         children: [
                           SizedBox(
                             height: 400,
-                            child: ZoneCroquis(
+                            child: ZoneDessin(
                                 key: _cleZone,
                                 change: dessinChange,
                             ),
@@ -176,7 +176,9 @@ class _EcranCroquisState extends State<EcranCroquis>{
               BoutonPrincipal(
                 label: enFrancais ? 'Suivant' : 'التالي',
                 couleur: CouleursApp.alerte,
-                click: validerCroquis,
+                click: (_cleZone.currentState?.aDesTraits ?? false)
+                    ? validerCroquis
+                    : null,
                 enFrancais: enFrancais,
               ),
             ],

@@ -4,25 +4,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import '../theme/couleurs.dart';
 
-class ZoneCroquis extends StatefulWidget{
+class ZoneDessin extends StatefulWidget{
   final VoidCallback? change;  //Pour prévenir le parent d'un changement (utiles pour les boutons)
   final List<List<Offset>>? valeurInitiale;
 
-  const ZoneCroquis({
+  const ZoneDessin({
     super.key,
     this.change,
     this.valeurInitiale,
   });
 
   @override
-  State<ZoneCroquis> createState() => ZoneCroquisState();
+  State<ZoneDessin> createState() => ZoneDessinState();
 }
 
-class ZoneCroquisState extends State<ZoneCroquis>{
+class ZoneDessinState extends State<ZoneDessin>{
   final GlobalKey _cleCapture = GlobalKey();
   late final List<List<Offset>> traits;  //Liste de plusieurs traits/Un trait = liste de points
   List<Offset>? traitEnCours;  //Une fois le doigt est levé, traitEnCours = null
-  bool get aDesTraits => traits.isNotEmpty;  //Getter pour savoir s'il y a des traits à annuler/effacer
+  bool get aDesTraits => traits.isNotEmpty;
+
+  get validerCroquis => null;  //Getter pour savoir s'il y a des traits à annuler/effacer
 
   @override
   void initState(){
@@ -73,7 +75,7 @@ class ZoneCroquisState extends State<ZoneCroquis>{
     }
   }
 
-  Future<Uint8List?> capturerImageCroquis() async {
+  Future<Uint8List?> capturerImageDessin() async {
     //Capture de l'image actuelle, appelée plus tard au moment de générer le PDF
     final boundary = _cleCapture.currentContext?.findRenderObject() as RenderRepaintBoundary?;
     if (boundary == null) return null;

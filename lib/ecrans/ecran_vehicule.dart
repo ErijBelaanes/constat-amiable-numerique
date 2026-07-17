@@ -464,7 +464,7 @@ class _EcranVehiculeState extends State<EcranVehicule>{
                                     ElevatedButton.icon(
                                       onPressed: (groupeAct > 0) ? groupePrecedent
                                                                  : null, //Si c'est le 1er groupe alors le bouton est désactivé
-                                      icon: Icon(
+                                      icon: const Icon(
                                         Icons.arrow_back,
                                         size: 15,
                                       ),
@@ -496,7 +496,7 @@ class _EcranVehiculeState extends State<EcranVehicule>{
                                     ElevatedButton.icon(
                                         onPressed: (groupeAct < groupes.length - 1) ? groupeSuivant
                                                                                     : null,   //Si c'est le dernier groupe alors le bouton est désactivé
-                                        icon: Icon(
+                                        icon: const Icon(
                                           Icons.arrow_forward,
                                           size: 15,
                                         ),

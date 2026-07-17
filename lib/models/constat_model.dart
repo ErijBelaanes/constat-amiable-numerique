@@ -27,6 +27,8 @@ class ConstatModel {
   List<bool> circonstancesB = List.filled(17, false);
   Uint8List? croquis;  //L'image finale
   List<List<Offset>> traitsCroquis = [];  //Les traits
+  Uint8List? signatureA;
+  Uint8List? signatureB;
 
 
   ConstatModel({required this.lieuAccident}){

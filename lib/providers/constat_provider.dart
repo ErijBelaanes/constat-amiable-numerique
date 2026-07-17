@@ -106,4 +106,14 @@ class ConstatProvider extends ChangeNotifier {
     constat.traitsCroquis = traits;
     notifyListeners();
   }
+
+  void setSignatureA(Uint8List imageA){
+    constat.signatureA = imageA;
+    notifyListeners();
+  }
+
+  void setSignatureB(Uint8List imageB){
+    constat.signatureB = imageB;
+    notifyListeners();
+  }
 }
