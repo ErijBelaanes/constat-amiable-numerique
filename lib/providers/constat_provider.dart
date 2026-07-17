@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/foundation.dart';
 import '../models/constat_model.dart';
 
@@ -92,6 +94,16 @@ class ConstatProvider extends ChangeNotifier {
 
   void toggleCirconstanceB(int index, bool value){
     constat.circonstancesB[index] = value;
+    notifyListeners();
+  }
+
+  void setCroquis(Uint8List imageCroquis){
+    constat.croquis = imageCroquis;
+    notifyListeners();
+  }
+
+  void setTraitsCroquis(List<List<Offset>> traits){
+    constat.traitsCroquis = traits;
     notifyListeners();
   }
 }

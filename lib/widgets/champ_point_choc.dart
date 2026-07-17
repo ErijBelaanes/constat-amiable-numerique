@@ -44,8 +44,7 @@ class _ChampPointChocState extends State <ChampPointChoc> {
 
   Future<Uint8List?> capturerImage() async {
     //Capture de l'image actuelle, appelée plus tard au moment de générer le PDF
-    final boundary = _cleCapture.currentContext
-        ?.findRenderObject() as RenderRepaintBoundary?;
+    final boundary = _cleCapture.currentContext?.findRenderObject() as RenderRepaintBoundary?;
     if (boundary == null) return null;
     final image = await boundary.toImage(pixelRatio: 2.0);
     final byteData = await image.toByteData(format: ui.ImageByteFormat.png);

@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/constat_provider.dart';
 import '../widgets/entete_etape.dart';
-import '../widgets/question_oui_non.dart';
 import '../theme/couleurs.dart';
-import '../utils/dialogues.dart';
 import '../widgets/bouton_principal.dart';
 import '../widgets/case_circonstance.dart';
 

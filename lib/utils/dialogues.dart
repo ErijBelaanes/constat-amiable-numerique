@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../theme/couleurs.dart';
 
 //Méthode pour afficher un message d'erreur temporaire sous forme de boîte de dialogue
-void afficherErreur(BuildContext context, String message, bool estFrancais){
+void afficherErreur(BuildContext context, String message, bool enFrancais){
   showDialog(  //Popup
     context: context,
     barrierDismissible: true,
@@ -32,7 +32,7 @@ void afficherErreur(BuildContext context, String message, bool estFrancais){
             style: TextStyle(
               color: Colors.white,
               fontSize: 18,
-              fontFamily: estFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
+              fontFamily: enFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
               fontWeight: FontWeight.bold,
             ),
           ),

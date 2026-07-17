@@ -63,6 +63,7 @@ flutter:
     - assets/images/constat_logo.png
     - assets/images/constat_logo-removebg-preview.png
     - assets/images/schema_vehicule.png
+    - assets/images/champ_croquis.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

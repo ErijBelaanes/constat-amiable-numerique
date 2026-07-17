@@ -6,10 +6,8 @@ import '../providers/constat_provider.dart';
 import '../models/constat_model.dart';
 import '../widgets/entete_etape.dart';
 import '../widgets/champ_bouton.dart';
-import '../widgets/question_oui_non.dart';
 import '../theme/couleurs.dart';
 import '../widgets/champ_texte.dart';
-import '../widgets/section_temoins.dart';
 import '../utils/dialogues.dart';
 import '../widgets/bouton_principal.dart';
 import '../widgets/champ_point_choc.dart';
@@ -244,9 +242,6 @@ class _EcranVehiculeState extends State<EcranVehicule>{
   }
 
   bool validerGroupe(){
-    final provider = context.read<ConstatProvider>();
-    final enFrancais = provider.enFrancais;
-
     for(final q in groupes[groupeAct].questions){
       bool questionVide;
 
@@ -273,9 +268,6 @@ class _EcranVehiculeState extends State<EcranVehicule>{
   }
 
   bool dernierGroupeValider(){
-    final provider = context.read<ConstatProvider>();
-    final enFrancais = provider.enFrancais;
-
     for(final q in groupes[groupes.length -1].questions){
       bool questionVide;
 
@@ -396,9 +388,7 @@ class _EcranVehiculeState extends State<EcranVehicule>{
   Widget build(BuildContext context) {
     final provider = context.watch<ConstatProvider>();
     final enFrancais = provider.enFrancais;
-    final constat = provider.constat;
     final groupe = groupes[groupeAct];
-    final dernierGroupe = (groupeAct == (groupes.length-1));
 
     return Directionality(
       textDirection: enFrancais ? TextDirection.ltr : TextDirection.rtl,
@@ -432,10 +422,10 @@ class _EcranVehiculeState extends State<EcranVehicule>{
                           Container(
                             padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
                             decoration: BoxDecoration(
-                              color: (widget.nomVehicule == 'A') ? CouleursApp.bordure1 : CouleursApp.fond,
+                              color: CouleursApp.bordure1,
                               borderRadius: BorderRadius.circular(15),
                               border: Border.all(
-                                color: (widget.nomVehicule == 'A') ? CouleursApp.bordure1 : CouleursApp.fond,
+                                color: CouleursApp.bordure1,
                                 width: 1.5,
                               ),
                             ),
@@ -474,9 +464,7 @@ class _EcranVehiculeState extends State<EcranVehicule>{
                                         ),
                                         textStyle: WidgetStatePropertyAll(
                                           TextStyle(
-                                            fontFamily: enFrancais
-                                                ? 'PlayfairDisplay'
-                                                : 'NoteNaskhArabic',
+                                            fontFamily: enFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
                                             fontSize: 15,
                                             fontWeight: FontWeight.bold,
                                             color: (widget.nomVehicule == 'A')
@@ -490,11 +478,8 @@ class _EcranVehiculeState extends State<EcranVehicule>{
 
                                     //Bouton GroupeSuivant
                                     ElevatedButton.icon(
-                                        onPressed: (groupeAct <
-                                            groupes.length - 1)
-                                            ? groupeSuivant
-                                            : null,
-                                        //Si c'est le dernier groupe alors le bouton est désactivé
+                                        onPressed: (groupeAct < groupes.length - 1) ? groupeSuivant
+                                                                                    : null,   //Si c'est le dernier groupe alors le bouton est désactivé
                                         icon: Icon(
                                           Icons.arrow_forward,
                                           size: 15,
@@ -503,10 +488,8 @@ class _EcranVehiculeState extends State<EcranVehicule>{
                                           enFrancais ? 'Suivant' : 'التالي',
                                         ),
                                         style: ButtonStyle(
-                                          foregroundColor: WidgetStateProperty
-                                              .resolveWith<Color>((states) {
-                                            if (states.contains(
-                                                WidgetState.disabled)) {
+                                          foregroundColor: WidgetStateProperty.resolveWith<Color>((states) {
+                                            if (states.contains(WidgetState.disabled)) {
                                               return Colors
                                                   .grey; //Couleur du texte et de l'icône désactivés
                                             }
