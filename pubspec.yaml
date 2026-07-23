@@ -33,6 +33,7 @@ dependencies:
   pdf: ^3.12.0
   printing: ^5.12.0
   arabic_reshaper: ^0.0.1
+  arabic_tools: ^0.0.4
   intl: ^0.19.0
 
   # The following adds the Cupertino Icons font to your application.
@@ -68,6 +69,7 @@ flutter:
     - assets/images/constat_logo-removebg-preview.png
     - assets/images/schema_vehicule.png
     - assets/images/champ_croquis.jpg
+    - assets/images/constat-fr.pdf
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

@@ -160,6 +160,11 @@ class _EcranVehiculeState extends State<EcranVehicule>{
               labelAR: 'نوع المركبة:',
               type: 'texte'),
 
+          Question(cle: 'numImmatriculation',
+              labelFR: 'Numéro d\'immatriculation:',
+              labelAR: 'رقم تسجيل المركبة:',
+              type: 'texte'),
+
           Question(cle: 'sensSuivi',
               labelFR: 'Sens suivi:',
               labelAR: 'الاتجاه المتبع:',
@@ -252,6 +257,7 @@ class _EcranVehiculeState extends State<EcranVehicule>{
 
     controleursTexte['marque']!.text = info.marque;
     controleursTexte['type']!.text = info.type;
+    controleursTexte['numImmatriculation']!.text = info.numImmatriculation;
     controleursTexte['sensSuivi']!.text = info.sensSuivi;
     controleursTexte['venantDe']!.text = info.venantDe;
     controleursTexte['allantA']!.text = info.allantA;
@@ -295,6 +301,7 @@ class _EcranVehiculeState extends State<EcranVehicule>{
 
       marque: controleursTexte['marque']!.text.trim(),
       type: controleursTexte['type']!.text.trim(),
+      numImmatriculation: controleursTexte['numImmatriculation']!.text.trim(),
       sensSuivi: controleursTexte['sensSuivi']!.text.trim(),
       venantDe: controleursTexte['venantDe']!.text.trim(),
       allantA: controleursTexte['allantA']!.text.trim(),
@@ -472,6 +479,7 @@ class _EcranVehiculeState extends State<EcranVehicule>{
       //Identite du vehicule
       marque: controleursTexte['marque']!.text.trim(),
       type: controleursTexte['type']!.text.trim(),
+      numImmatriculation: controleursTexte['numImmatriculation']!.text.trim(),
       sensSuivi: controleursTexte['sensSuivi']!.text.trim(),
       venantDe: controleursTexte['venantDe']!.text.trim(),
       allantA: controleursTexte['allantA']!.text.trim(),

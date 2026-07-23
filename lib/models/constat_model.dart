@@ -62,6 +62,7 @@ class VehiculeInfo{
   //Identite du vehicule
   String marque;
   String type;
+  String numImmatriculation;
   String sensSuivi;
   String venantDe;
   String allantA;
@@ -96,6 +97,7 @@ class VehiculeInfo{
 
     this.marque = '',
     this.type = '',
+    this.numImmatriculation = '',
     this.sensSuivi = '',
     this.venantDe = '',
     this.allantA = '',

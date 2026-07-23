@@ -6,7 +6,8 @@ import '../models/constat_model.dart';
 import '../widgets/entete_etape.dart';
 import '../widgets/bouton_principal.dart';
 import '../theme/couleurs.dart';
-import '../utils/generateur_pdf.dart';
+// import '../utils/generateur_pdf.dart';
+import '../utils/generateurPDF.dart';
 
 class EcranRecapitulatif extends StatefulWidget{
   const EcranRecapitulatif({super.key});
@@ -22,11 +23,11 @@ class _EcranRecapitulatifState extends State<EcranRecapitulatif>{
     setState(() => enCoursDeGeneration = true);
     try {
       final provider = context.read<ConstatProvider>();
-      final bytes = await GenerateurPdf.genererConstat(
-        context,
+      final bytes = await GenerateurPDF.genererConstatSurModele(
         provider.constat,
         provider.constat.vehiculeA,
         provider.constat.vehiculeB,
+        provider.enFrancais,
       );
 
       setState(() =>
