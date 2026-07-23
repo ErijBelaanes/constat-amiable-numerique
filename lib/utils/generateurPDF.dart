@@ -23,11 +23,23 @@ class GenerateurPDF {
     _maFontAr = pw.Font.ttf(fontDataAr);
   }
 
+  static Future<pw.MemoryImage> _chargerImageDeFond() async {
+    final pdfBytes = (await rootBundle.load('assets/images/constat-fr.pdf')).buffer.asUint8List();
+
+    final page = await Printing.raster(pdfBytes, dpi: 200).first;
+    final imageBytes = await page.toPng();
+
+    return pw.MemoryImage(imageBytes);
+  }
+
   static final ArabicReshaper _reshaper = ArabicReshaper();
+
   static String _formaterTexte(String texte, bool enFrancais) {
     if (enFrancais || texte.isEmpty) return texte;
     return _reshaper.reshape(texte);
   }
+
+
 
   static pw.Widget _texteSurModele(
       bool enFrancais,
@@ -86,7 +98,6 @@ class GenerateurPDF {
     return c.listeTemoins
         .map((t) => '${t.nom} ${t.prenom} (${t.numTel})').join('\n');
   }
-
   static final double _largeurPage = PdfPageFormat.a4.width;
   static final double _hauteurPage = PdfPageFormat.a4.height;
 
@@ -601,4 +612,6 @@ class GenerateurPDF {
     );
     return doc.save();
   }
+
+
 }
