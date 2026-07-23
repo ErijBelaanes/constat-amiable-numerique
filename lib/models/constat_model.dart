@@ -23,10 +23,12 @@ class ConstatModel {
   bool blesses = false;
   bool temoins = false;
   List<Temoin> listeTemoins = [];  //La liste des témoins ajoutés
+  VehiculeInfo vehiculeA = VehiculeInfo();
+  VehiculeInfo vehiculeB = VehiculeInfo();
   List<bool> circonstancesA = List.filled(17, false);
   List<bool> circonstancesB = List.filled(17, false);
-  Uint8List? croquis;  //L'image finale
-  List<List<Offset>> traitsCroquis = [];  //Les traits
+  Uint8List? croquis;  //L'image finale du croquis
+  List<List<Offset>> traitsCroquis = [];  //Les traits du croquis
   Uint8List? signatureA;
   Uint8List? signatureB;
 

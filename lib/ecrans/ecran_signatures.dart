@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:projet_constat/widgets/titre_souligne.dart';
 import 'package:provider/provider.dart';
 import '../providers/constat_provider.dart';
 import '../models/constat_model.dart';
@@ -28,7 +29,7 @@ class _EcranSignaturesState extends State<EcranSignatures>{
     setState(() {});  //Forcer un rebuild
   }
 
-  void suivant(){
+  Future<void> suivant() async{
     final provider = context.read<ConstatProvider>();
     final enFrancais = provider.enFrancais;
 
@@ -42,11 +43,14 @@ class _EcranSignaturesState extends State<EcranSignatures>{
     }
 
     if(conducteurAct == 0){
+      final imageA = await _cleSignatureA.currentState?.capturerImageDessin();
+      provider.constat.signatureA = imageA;
+
       setState(() {
         conducteurAct = 1;
       });
     }else{
-      validerSignatures();
+      await validerSignatures();
     }
   }
 
@@ -60,10 +64,11 @@ class _EcranSignaturesState extends State<EcranSignatures>{
     final provider = context.read<ConstatProvider>();
     final enFrancais = provider.enFrancais;
 
-    final imageA = await _cleSignatureA.currentState?.capturerImageDessin();
     final imageB = await _cleSignatureB.currentState?.capturerImageDessin();
 
-    Navigator.pushNamed(context, '/recapitulatif');
+    provider.constat.signatureB = imageB;
+
+    Navigator.pushNamed(context, '/recapitulation');
   }
 
   @override
@@ -168,19 +173,19 @@ class _EcranSignaturesState extends State<EcranSignatures>{
                             ],
                           ),
                           const SizedBox(height: 15),
-                          Text(
-                            estA ? (enFrancais ? 'Signature du conducteur A' : 'توقيع السائق أ')
-                                : (enFrancais ? 'Signature du conducteur B' : 'توقيع السائق ب'),
+                          TitreSouligne(
+                              texte: estA ? (enFrancais ? 'Signature du conducteur A' : 'توقيع السائق أ')
+                                    : (enFrancais ? 'Signature du conducteur B' : 'توقيع السائق ب'),
                             style: TextStyle(
                               color: CouleursApp.alerte,
                               fontSize: 18,
                               fontFamily: enFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
                               fontWeight: FontWeight.bold,
-                              decoration: TextDecoration.underline,
-                              decorationColor: CouleursApp.alerte,
-                              decorationThickness: 5,
-                              decorationStyle: TextDecorationStyle.wavy,
                             ),
+                              couleurLigne: CouleursApp.alerte,
+                            epaisseurLigne: 3,
+                            espacement: enFrancais ? 4 : 4.5,
+                            styleLigne: StyleLigne.wavy,
                           ),
                           const SizedBox(height: 20),
                           //Texte de rappel
@@ -306,7 +311,8 @@ class _EcranSignaturesState extends State<EcranSignatures>{
               BoutonPrincipal(
                 label: enFrancais ? 'Suivant' : 'التالي',
                 couleur: CouleursApp.alerte,
-                click: (conducteurAct == 0) ? null : validerSignatures,
+                click: (_cleSignatureA.currentState?.aDesTraits ?? false) && (_cleSignatureB.currentState?.aDesTraits ?? false)
+                    ? validerSignatures : null,
                 enFrancais: enFrancais,
               ),
             ],

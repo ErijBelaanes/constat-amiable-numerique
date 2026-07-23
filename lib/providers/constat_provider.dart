@@ -4,13 +4,16 @@ import 'package:flutter/foundation.dart';
 import '../models/constat_model.dart';
 
 class ConstatProvider extends ChangeNotifier {
-  final ConstatModel constat = ConstatModel(lieuAccident: '');
-  VehiculeInfo vehiculeA = VehiculeInfo();
-  VehiculeInfo vehiculeB = VehiculeInfo();
+  ConstatModel constat = ConstatModel(lieuAccident: '');
   bool enFrancais = true;
 
   void changerLangue(){
     enFrancais = !enFrancais;
+    notifyListeners();
+  }
+
+  void reinitialiserConstat() {
+    constat = ConstatModel(lieuAccident: '');
     notifyListeners();
   }
 
@@ -78,12 +81,12 @@ class ConstatProvider extends ChangeNotifier {
   }
 
   void setVehiculeA(VehiculeInfo vehicule){
-    vehiculeA = vehicule;
+    constat.vehiculeA = vehicule;
     notifyListeners();
   }
 
   void setVehiculeB(VehiculeInfo vehicule){
-    vehiculeB = vehicule;
+    constat.vehiculeB = vehicule;
     notifyListeners();
   }
 

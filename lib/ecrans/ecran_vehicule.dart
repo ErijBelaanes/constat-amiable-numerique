@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:projet_constat/widgets/titre_souligne.dart';
 import 'package:provider/provider.dart';
 import '../providers/constat_provider.dart';
 import '../models/constat_model.dart';
@@ -140,23 +141,23 @@ class _EcranVehiculeState extends State<EcranVehicule>{
 
           Question(cle: 'numTel',
               labelFR: 'Numéro de téléphone:',
-              labelAR: ':رقم الهاتف',
+              labelAR: 'رقم الهاتف:',
               type: 'texte'),
         ]
     ),
 
     Groupe(
         titreFR: 'Identité du véhicule',
-        titreAR: 'هوية السيارة',
+        titreAR: 'هوية المركبة',
         questions: [
           Question(cle: 'marque',
               labelFR: 'Marque du véhicule:',
-              labelAR: 'ماركة السيارة:',
+              labelAR: 'العلامة التجارية للمركبة:',
               type: 'texte'),
 
           Question(cle: 'type',
               labelFR: 'Type du véhicule:',
-              labelAR: 'نوع السيارة:',
+              labelAR: 'نوع المركبة:',
               type: 'texte'),
 
           Question(cle: 'sensSuivi',
@@ -230,10 +231,7 @@ class _EcranVehiculeState extends State<EcranVehicule>{
   }
 
   void chargerDonneesExistantes(){
-    final info = (widget.nomVehicule == 'A') ? provider.vehiculeA : provider.vehiculeB;
-    if(info == null){
-      return;
-    }
+    final info = (widget.nomVehicule == 'A') ? provider.constat.vehiculeA : provider.constat.vehiculeB;
 
     controleursTexte['assurance']!.text = info.assurance;
     controleursTexte['numContrat']!.text = info.numContrat;
@@ -362,17 +360,17 @@ class _EcranVehiculeState extends State<EcranVehicule>{
     }
 
     //Contrôle des champs nomConducteur, prenomConducteur, nomAssure, prenomAssure
-    const clesNomPrenom = [('nomConducteur', 'nom du conducteur'),
-                           ('prenomConducteur', 'prénom du conducteur'),
-                           ('nomAssure', 'nom de l\'assuré'),
-                           ('prenomAssure', 'prénom de l\'assuré')
+    const clesNomPrenom = [('nomConducteur', 'nom du conducteur', 'اسم السائق'),
+                           ('prenomConducteur', 'prénom du conducteur', 'لقب السائق'),
+                           ('nomAssure', 'nom de l\'assuré', 'اسم المؤمن عليه'),
+                           ('prenomAssure', 'prénom de l\'assuré', 'لقب المؤمن عليه')
     ];
     for(final cle in clesNomPrenom){
       if(g.questions.any((q) => (q.cle == cle.$1))){
         final valeur = controleursTexte[cle.$1]!.text.trim();
-        if(!RegExp(r"^[a-zA-ZÀ-ÿ\s'-]+$").hasMatch(valeur)){
+        if(!RegExp(r"^[a-zA-ZÀ-ÿ\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\s'-]+$").hasMatch(valeur)){
           return enFrancais ? 'Le ${cle.$2} ne doit contenir que des lettres'
-                            : 'يجب أن يحتوي هذا الحقل على أحرف فقط';
+                            : 'يجب أن يحتوي ${cle.$3} على أحرف فقط';
         }
       }
     }
@@ -529,7 +527,7 @@ class _EcranVehiculeState extends State<EcranVehicule>{
                               icone: Icons.car_crash_rounded,
                               couleurIcone: (widget.nomVehicule == 'A') ? CouleursApp.texteVehiculeA : CouleursApp.texteVehiculeB,
                               titreFr: (widget.nomVehicule == 'A') ? 'Véhicule A' : 'Véhicule B',
-                              titreAr: (widget.nomVehicule == 'A') ? 'السيارة "أ"' : 'السيارة "ب"',
+                              titreAr: (widget.nomVehicule == 'A') ? 'المركبة "أ"' : 'المركبة "ب"',
                               etapeActuelle: (widget.nomVehicule == 'A') ? 2 : 3,
                               enFrancais: provider.enFrancais,
                           ),
@@ -620,19 +618,18 @@ class _EcranVehiculeState extends State<EcranVehicule>{
                                 const SizedBox(height: 15),
 
                                 //Titre du groupe
-                                Text(
-                                  enFrancais ? groupes[groupeAct].titreFR
-                                             : groupes[groupeAct].titreAR,
+                                TitreSouligne(
+                                  texte: enFrancais ? groupes[groupeAct].titreFR
+                                                    : groupes[groupeAct].titreAR,
                                   style: TextStyle(
                                     color: (widget.nomVehicule == 'A') ? CouleursApp.texteVehiculeA : CouleursApp.texteVehiculeB,
                                     fontFamily: enFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
                                     fontSize: 23,
                                     fontWeight: FontWeight.bold,
-                                    decoration: TextDecoration.underline,
-                                    decorationColor: (widget.nomVehicule == 'A') ? CouleursApp.texteVehiculeA : CouleursApp.texteVehiculeB,
-                                    decorationThickness: 5,
-                                    decorationStyle: TextDecorationStyle.solid,
                                   ),
+                                  couleurLigne: (widget.nomVehicule == 'A') ? CouleursApp.texteVehiculeA : CouleursApp.texteVehiculeB,
+                                  espacement: enFrancais ? 4 : 4.5,
+                                  styleLigne: StyleLigne.wavy,
                                 ),
                                 const SizedBox(height: 25),
 
@@ -716,7 +713,6 @@ class _EcranVehiculeState extends State<EcranVehicule>{
                   ),
                 ),
               ),
-
               //Bouton "Suivant"
               BoutonPrincipal(
                 label: enFrancais ? 'Suivant' : 'التالي',

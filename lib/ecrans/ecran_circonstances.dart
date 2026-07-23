@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projet_constat/widgets/titre_souligne.dart';
 import 'package:provider/provider.dart';
 import '../providers/constat_provider.dart';
 import '../widgets/entete_etape.dart';
@@ -9,6 +10,48 @@ import '../widgets/case_circonstance.dart';
 class EcranCirconstances extends StatelessWidget{
   const EcranCirconstances({super.key});
 
+  Widget _ligneTableau({
+    required Widget colonneTexte,
+    required Widget colonneA,
+    required Widget colonneB,
+    double hauteurSeparateur = 55,
+  }){
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Expanded(
+          flex: 5,
+          child: colonneTexte,
+        ),
+        const SizedBox(width: 8),
+
+        Container(
+            width: 1,
+            height: hauteurSeparateur,
+            color: CouleursApp.texteSecondaire,
+        ),
+        const SizedBox(width: 8),
+
+        Expanded(
+            flex: 2,
+            child: Center(child: colonneA),
+        ),
+        const SizedBox(width: 8),
+
+        Container(
+            width: 1,
+            height: hauteurSeparateur,
+            color: CouleursApp.texteSecondaire,
+        ),
+        const SizedBox(width: 8),
+
+        Expanded(
+            flex: 2,
+            child: Center(child: colonneB),
+        ),
+      ],
+    );
+  }
   //Les 17 circonstances
   static const List<Map<String, String>> circonstances = [
     {'fr': 'En stationnement:', 'ar': 'كانت واقفة:'},
@@ -20,7 +63,7 @@ class EcranCirconstances extends StatelessWidget{
     {'fr': 'Frottement sans changement de file', 'ar': 'احتكاك دون تغيير المسار:'},
     {'fr': "Heurtait à l'arrière, en roulant dans le même sens et sur la même file:", 'ar': 'اصطدمت من الخلف في نفس الاتجاه والمسار:'},
     {'fr': 'Roulait dans le même sens et sur une file différente:', 'ar': 'كانت تسير في نفس الاتجاه على مسار مختلف:'},
-    {'fr': 'Vhangeait de file:', 'ar': 'كانت تغير المسار:'},
+    {'fr': 'Changeait de file:', 'ar': 'كانت تغير المسار:'},
     {'fr': 'Doublait:', 'ar': 'كانت بصدد تجاوز:'},
     {'fr': 'Virait à droite:', 'ar': 'كانت تنعطف يمينًا:'},
     {'fr': 'Virait à gauche:', 'ar': 'كانت تنعطف يسارًا:'},
@@ -84,57 +127,35 @@ class EcranCirconstances extends StatelessWidget{
 
                           const SizedBox(height: 20),
                           //Ligne d'entête
-                          Container(
-                            padding: const EdgeInsets.only(bottom: 3),
-                            child: Row(
-                              children: [
-                                const SizedBox(width: 30),
-                                Text(
-                                  enFrancais ? 'Circonstance' : 'ظرف',
-                                  style: TextStyle(
-                                    color: CouleursApp.alerte,
-                                    fontFamily: enFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                          _ligneTableau(
+                              hauteurSeparateur: 30,
+                              colonneTexte: Text(
+                                enFrancais ? 'Circonstance' : 'ظرف',
+                                style: TextStyle(
+                                  color: CouleursApp.alerte,
+                                  fontFamily: enFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                                const SizedBox(width: 75),
-                                //Séparateur vertical
-                                Container(
-                                  width: 1,
-                                  height: 30,
-                                  color: CouleursApp.texteSecondaire,
+                              ),
+                              colonneA: Text(
+                                enFrancais ? 'A' : 'أ',
+                                style: TextStyle(
+                                  color: CouleursApp.alerte,
+                                  fontFamily: enFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                                const SizedBox(width: 40),
-                                Text(
-                                  enFrancais ? 'A' : 'أ',
-                                  style: TextStyle(
-                                    color: CouleursApp.alerte,
-                                    fontFamily: enFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.bold,
-
-                                  ),
+                              ),
+                              colonneB: Text(
+                                enFrancais ? 'B' : 'ب',
+                                style: TextStyle(
+                                  color: CouleursApp.alerte,
+                                  fontFamily: enFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                                const SizedBox(width: 40),
-                                //Séparateur vertical (entre les cases de véhicule A et B)
-                                Container(
-                                  width: 1,
-                                  height: 30,
-                                  color: CouleursApp.texteSecondaire,
-                                ),
-                                const SizedBox(width: 40),
-                                Text(
-                                  enFrancais ? 'B' : 'ب',
-                                  style: TextStyle(
-                                    color: CouleursApp.alerte,
-                                    fontFamily: enFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
                           ),
                           Divider(
                             color: CouleursApp.texteSecondaire,
@@ -146,50 +167,27 @@ class EcranCirconstances extends StatelessWidget{
                               for(int i = 0; i < circonstances.length; i++) ...[
                                 Padding(
                                   padding: const EdgeInsets.only(bottom: 3),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                          child: Text(
-                                            enFrancais ? circonstances[i]['fr']! :circonstances[i]['ar']!,
-                                            style: TextStyle(
-                                              color: CouleursApp.texte,
-                                              fontFamily: enFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
-                                              fontSize: 16.5,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
+                                  child: _ligneTableau(
+                                    hauteurSeparateur: 55,
+                                    colonneTexte: Text(
+                                      enFrancais ? circonstances[i]['fr']! :circonstances[i]['ar']!,
+                                      style: TextStyle(
+                                        color: CouleursApp.texte,
+                                        fontFamily: enFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
+                                        fontSize: 16.5,
+                                        fontWeight: FontWeight.bold,
                                       ),
-                                      const SizedBox(width: 3),
-                                      //Séparateur vertical
-                                      Container(
-                                        width: 1,
-                                        height: 55,
-                                        color: CouleursApp.texteSecondaire,
-                                      ),
-                                      const SizedBox(width: 10),
-
-                                      //Cases pour la véhicule A
-                                      CaseCirconstance(
-                                          cochee: constat.circonstancesA[i],
-                                          click: (value) => provider.toggleCirconstanceA(i, value),
-                                          enFrancais: enFrancais
-                                      ),
-                                      const SizedBox(width: 10),
-                                      //Séparateur vertical (entre les cases de véhicule A et B)
-                                      Container(
-                                        width: 1,
-                                        height: 55,
-                                        color: CouleursApp.texteSecondaire,
-                                      ),
-                                      const SizedBox(width: 10),
-
-                                      //Cases pour la véhicule B
-                                      CaseCirconstance(
-                                          cochee: constat.circonstancesB[i],
-                                          click: (value) => provider.toggleCirconstanceB(i, value),
-                                          enFrancais: enFrancais
-                                      ),
-                                    ],
+                                    ),
+                                    colonneA: CaseCirconstance(
+                                       cochee: constat.circonstancesA[i],
+                                       click: (value) => provider.toggleCirconstanceA(i, value),
+                                       enFrancais: enFrancais,
+                                    ),
+                                    colonneB: CaseCirconstance(
+                                       cochee: constat.circonstancesB[i],
+                                       click: (value) => provider.toggleCirconstanceB(i, value),
+                                       enFrancais: enFrancais
+                                    ),
                                   ),
                                 ),
                                 if(i < circonstances.length-1)
@@ -221,21 +219,20 @@ class EcranCirconstances extends StatelessWidget{
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Center(
-                                        child: Text(
-                                          enFrancais ? 'Véhicule A' : 'السيارة "أ"',
+                                        child: TitreSouligne(
+                                          texte: enFrancais ? 'Véhicule A' : 'السيارة "أ"',
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontFamily: enFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold,
-                                            decoration: TextDecoration.underline,
-                                            decorationColor: Colors.white,
-                                            decorationThickness: 5,
-                                            decorationStyle: TextDecorationStyle.solid,
                                           ),
+                                          couleurLigne: Colors.white,
+                                          espacement: 3,
+                                          styleLigne: StyleLigne.wavy,
                                         ),
                                       ),
-                                      const SizedBox(height: 8),
+                                      const SizedBox(height: 10),
                                       Text(
                                         enFrancais ? '- $caseVraiVehA case(s) "Oui"' : '- $caseVraiVehA خانة "نعم"',
                                         style: TextStyle(
@@ -271,21 +268,20 @@ class EcranCirconstances extends StatelessWidget{
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Center(
-                                        child: Text(
-                                          enFrancais ? 'Véhicule B' : 'السيارة "ب"',
+                                        child: TitreSouligne(
+                                          texte: enFrancais ? 'Véhicule B' : 'السيارة "ب"',
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontFamily: enFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold,
-                                            decoration: TextDecoration.underline,
-                                            decorationColor: Colors.white,
-                                            decorationThickness: 5,
-                                            decorationStyle: TextDecorationStyle.solid,
                                           ),
+                                          couleurLigne: Colors.white,
+                                          espacement: 3,
+                                          styleLigne: StyleLigne.wavy,
                                         ),
                                       ),
-                                      const SizedBox(height: 8),
+                                      const SizedBox(height: 10),
                                       Text(
                                         enFrancais ? '- $caseVraiVehB case(s) "Oui"' : '- $caseVraiVehB خانة "نعم"',
                                         style: TextStyle(

@@ -126,6 +126,7 @@ class _CarteTemoin extends StatelessWidget{
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               //Titre de l'étape et l'icone d'un témoin
               Row(

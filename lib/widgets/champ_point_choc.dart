@@ -38,6 +38,7 @@ class _ChampPointChocState extends State <ChampPointChoc> {
         details.localPosition.dy / contraintes.maxHeight, //Position Verticale
       );
     });
+    await WidgetsBinding.instance.endOfFrame;
     final image = await capturerImage();
     widget.pointChoisi(valeurPoint!, image);
   }

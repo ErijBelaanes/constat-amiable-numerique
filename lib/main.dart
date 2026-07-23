@@ -39,7 +39,7 @@ class ConstatApp extends StatelessWidget{
           '/circonstances': (context) => const EcranCirconstances(),
           '/croquis': (context) => const EcranCroquis(),
           '/signatures': (context) => const EcranSignatures(),
-          // '/recapitulation': (context) => const EcranReaupitulatif(),
+          '/recapitulation': (context) => const EcranRecapitulatif(),
         },
       ),
     );

@@ -116,7 +116,7 @@ class _EcranAccidentState extends State<EcranAccident>{
           return;
         }
         //Contrôle du nom (Composé que par des lettres)
-        if(!RegExp(r"^[a-zA-ZÀ-ÿ\s'-]+$").hasMatch(t.nom.trim())){
+        if(!RegExp( r"^[a-zA-ZÀ-ÿ\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\s'-]+$").hasMatch(t.nom.trim())){
           return afficherErreur(
             context,
             enFrancais ? 'Le nom du témoin ne doit contenir que des lettres'
@@ -125,7 +125,7 @@ class _EcranAccidentState extends State<EcranAccident>{
           );
         }
         //Contrôle du prénom (Composé que par des lettres)
-        if(!RegExp(r"^[a-zA-ZÀ-ÿ\s'-]+$").hasMatch(t.prenom.trim())){
+        if(!RegExp( r"^[a-zA-ZÀ-ÿ\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\s'-]+$").hasMatch(t.prenom.trim())){
           return afficherErreur(
             context,
             enFrancais ? 'Le prénom du témoin ne doit contenir que des lettres'

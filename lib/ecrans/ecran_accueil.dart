@@ -84,7 +84,10 @@ class EcranAccueil extends StatelessWidget{
               BoutonPrincipal(
                   label: enFrancais ? 'Commencer' : 'ابدأ',
                   couleur: CouleursApp.titre,
-                  click: () {Navigator.pushNamed(context, '/avertissement');},
+                  click: () {
+                    provider.reinitialiserConstat();
+                    Navigator.pushNamed(context, '/avertissement');
+                    },
                   enFrancais: enFrancais,
               ),
             ],

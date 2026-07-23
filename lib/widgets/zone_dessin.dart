@@ -79,6 +79,9 @@ class ZoneDessinState extends State<ZoneDessin>{
     //Capture de l'image actuelle, appelée plus tard au moment de générer le PDF
     final boundary = _cleCapture.currentContext?.findRenderObject() as RenderRepaintBoundary?;
     if (boundary == null) return null;
+    while (boundary.debugNeedsPaint) {
+      await Future.delayed(const Duration(milliseconds: 16));
+    }
     final image = await boundary.toImage(pixelRatio: 2.0);
     final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
     return byteData?.buffer.asUint8List(); //Retourne les bytes utilisables pour créer un PDF
