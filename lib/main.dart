@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projet_constat/utils/localisation.dart';
 import 'package:provider/provider.dart';
 import 'providers/constat_provider.dart';
 import 'ecrans/ecran_accueil.dart';
@@ -10,8 +11,11 @@ import 'ecrans/ecran_circonstances.dart';
 import 'ecrans/ecran_croquis.dart';
 import 'ecrans/ecran_signatures.dart';
 import 'ecrans/ecran_recapitulatif.dart';
+import 'utils/localisation.dart';
 
-void main(){
+Future<void> main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Localisation.charger();
   runApp(const ConstatApp());
 }
 

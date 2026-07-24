@@ -1,0 +1,40 @@
+{
+  "societe_assurance": "شركة التأمين",
+  "assurance": "اسم شركة التأمين:",
+  "numAssurance": "رقم عقد التأمين:",
+  "agence":  "الوكالة:",
+  "dateDebutAttestation": "بداية الصلاحية:",
+  "dateFinAttestation": "نهاية الصلاحية:",
+
+  "identite_conduxteur": "هوية السائق",
+  "nomConducteur": "اسم السائق:",
+  "prenomConducteur": "لقب السائق:",
+  "adresseConducteur": "عنوان السائق:",
+  "numPermis": "رقم رخصة السياقة:",
+  "datePermis": "تاريخ إصدار الرخصة:",
+
+  "assure": "المؤمَّن له",
+  "nomAssure": "اسم المؤمَّن له:",
+  "prenomAssure": "لقب المؤمَّن له:",
+  "adresseAssure": "عنوان المؤمَّن له:",
+  "numTelAssure": "رقم الهاتف:",
+
+  "identite_vehicule": "هوية المركبة",
+  "marqueVehicule": "العلامة التجارية للمركبة:",
+  "typeVehicule": "نوع المركبة:",
+  "numImmatriculation": "رقم تسجيل المركبة:",
+  "sensSuivi": "الاتجاه المتبع:",
+  "venantDe": "قادم من:",
+  "allantA": "متجه إلى:",
+
+  "pointDeChocInit": "نقطة الاصطدام الأولي",
+  "selection_pointCoc": "حدد نقطة الاصطدام:",
+
+  "finalisation": "الإنهاء",
+  "degatsApparents": "الأضرار الظاهرة:",
+  "observations": "ملاحظات:",
+
+  "choisir": "اختر",
+  "suivant": "التالي",
+  "precedent": "السابق"
+}

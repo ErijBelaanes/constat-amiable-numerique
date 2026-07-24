@@ -12,30 +12,27 @@ import '../widgets/champ_texte.dart';
 import '../utils/dialogues.dart';
 import '../widgets/bouton_principal.dart';
 import '../widgets/champ_point_choc.dart';
+import '../utils/localisation.dart';
 
 class Question{
   final String cle;
-  final String labelFR;
-  final String labelAR;
+  final String cleLabel;
   final String type;
 
   const Question({
     required this.cle,
-    required this.labelFR,
-    required this.labelAR,
+    required this.cleLabel,
     required this.type,  //texte, date ou pointChoc
   });
 }
 
 
 class Groupe{
-  final String titreFR;
-  final String titreAR;
+  final String cleTitre;
   final List<Question> questions;
 
   const Groupe({
-    required this.titreFR,
-    required this.titreAR,
+    required this.cleTitre,
     required this.questions,
   });
 }
@@ -59,153 +56,176 @@ class _EcranVehiculeState extends State<EcranVehicule>{
 
   static const List<Groupe> groupes = [
     Groupe(
-        titreFR: 'Sociéte d\'assurances',
-        titreAR: 'شركة التأمين',
-        questions: [
-          Question(cle: 'assurance',
-              labelFR: "Nom de la société d'assurance:",
-              labelAR: 'اسم شركة التأمين:',
-              type: 'texte'),
+      cleTitre: 'societe_assurance',
+      questions: [
+        Question(
+          cle: 'assurance',
+          cleLabel: 'assurance',
+          type: 'texte',
+        ),
 
-          Question(cle: 'numContrat',
-              labelFR: 'Numéro de contrat:',
-              labelAR: 'رقم عقد التأمين:',
-              type: 'texte'),
+        Question(
+          cle: 'numContrat',
+          cleLabel: 'numAssurance',
+          type: 'texte',
+        ),
 
-          Question(cle: 'agence',
-              labelFR: 'Agence:',
-              labelAR: 'الوكالة:',
-              type: 'texte'),
+        Question(
+          cle: 'agence',
+          cleLabel: 'agence',
+          type: 'texte',
+        ),
 
-          Question(cle: 'dateDebutAttestation',
-              labelFR: "Début de validité de l'attestation:",
-              labelAR: 'بداية الصلاحية:',
-              type: 'date'),
+        Question(
+          cle: 'dateDebutAttestation',
+          cleLabel: 'dateDebutAttestation',
+          type: 'date',
+        ),
 
-          Question(cle: 'dateFinAttestation',
-              labelFR: "Fin de validité de l'attestation:",
-              labelAR: 'نهاية الصلاحية:',
-              type: 'date'),
-        ]
+        Question(
+          cle: 'dateFinAttestation',
+          cleLabel: 'dateFinAttestation',
+          type: 'date',
+        ),
+      ],
     ),
 
+
     Groupe(
-        titreFR: 'Identité du conducteur',
-        titreAR: 'هوية السائق:',
-        questions: [
-          Question(cle: 'nomConducteur',
-              labelFR: 'Nom du conducteur:',
-              labelAR: 'اسم السائق:',
-              type: 'texte'),
+      cleTitre: 'identite_conduxteur',
+      questions: [
+        Question(
+          cle: 'nomConducteur',
+          cleLabel: 'nomConducteur',
+          type: 'texte',
+        ),
 
-          Question(cle: 'prenomConducteur',
-              labelFR: 'Prénom du conducteur:',
-              labelAR: 'لقب السائق:',
-              type: 'texte'),
+        Question(
+          cle: 'prenomConducteur',
+          cleLabel: 'prenomConducteur',
+          type: 'texte',
+        ),
 
-          Question(cle: 'adresseConducteur',
-              labelFR: 'Adresse du conducteur:',
-              labelAR: 'عنوان السائق:',
-              type: 'texte'),
+        Question(
+          cle: 'adresseConducteur',
+          cleLabel: 'adresseConducteur',
+          type: 'texte',
+        ),
 
-          Question(cle: 'numPermis',
-              labelFR: 'Numéro du permis de conduire:',
-              labelAR: 'رقم رخصة السياقة:',
-              type: 'texte'),
+        Question(
+          cle: 'numPermis',
+          cleLabel: 'numPermis',
+          type: 'texte',
+        ),
 
-          Question(cle: 'datePermis',
-              labelFR: 'Date de délivrance du permis:',
-              labelAR: 'تاريخ إصدار الرخصة:',
-              type: 'date'),
-        ]
+        Question(
+          cle: 'datePermis',
+          cleLabel: 'datePermis',
+          type: 'date',
+        ),
+      ],
     ),
 
+
     Groupe(
-        titreFR: 'Assuré',
-        titreAR: 'المؤمَّن له',
-        questions: [
-          Question(cle: 'nomAssure',
-              labelFR: "Nom de l'assuré:",
-              labelAR: 'اسم المؤمَّن له:',
-              type: 'texte'),
+      cleTitre: 'assure',
+      questions: [
+        Question(
+          cle: 'nomAssure',
+          cleLabel: 'nomAssure',
+          type: 'texte',
+        ),
 
-          Question(cle: 'prenomAssure',
-              labelFR: "Prénom de l'assuré:",
-              labelAR: 'لقب المؤمَّن له:',
-              type: 'texte'),
+        Question(
+          cle: 'prenomAssure',
+          cleLabel: 'prenomAssure',
+          type: 'texte',
+        ),
 
-          Question(cle: 'adresseAssure',
-              labelFR: "Adresse de l'assuré:",
-              labelAR: 'عنوان المؤمَّن له:',
-              type: 'texte'),
+        Question(
+          cle: 'adresseAssure',
+          cleLabel: 'adresseAssure',
+          type: 'texte',
+        ),
 
-          Question(cle: 'numTel',
-              labelFR: 'Numéro de téléphone:',
-              labelAR: 'رقم الهاتف:',
-              type: 'texte'),
-        ]
+        Question(
+          cle: 'numTel',
+          cleLabel: 'numTelAssure',
+          type: 'texte',
+        ),
+      ],
     ),
 
+
     Groupe(
-        titreFR: 'Identité du véhicule',
-        titreAR: 'هوية المركبة',
-        questions: [
-          Question(cle: 'marque',
-              labelFR: 'Marque du véhicule:',
-              labelAR: 'العلامة التجارية للمركبة:',
-              type: 'texte'),
+      cleTitre: 'identite_vehicule',
+      questions: [
+        Question(
+          cle: 'marque',
+          cleLabel: 'marqueVehicule',
+          type: 'texte',
+        ),
 
-          Question(cle: 'type',
-              labelFR: 'Type du véhicule:',
-              labelAR: 'نوع المركبة:',
-              type: 'texte'),
+        Question(
+          cle: 'type',
+          cleLabel: 'typeVehicule',
+          type: 'texte',
+        ),
 
-          Question(cle: 'numImmatriculation',
-              labelFR: 'Numéro d\'immatriculation:',
-              labelAR: 'رقم تسجيل المركبة:',
-              type: 'texte'),
+        Question(
+          cle: 'numImmatriculation',
+          cleLabel: 'numImmatriculation',
+          type: 'texte',
+        ),
 
-          Question(cle: 'sensSuivi',
-              labelFR: 'Sens suivi:',
-              labelAR: 'الاتجاه المتبع:',
-              type: 'texte'),
+        Question(
+          cle: 'sensSuivi',
+          cleLabel: 'sensSuivi',
+          type: 'texte',
+        ),
 
-          Question(cle: 'venantDe',
-              labelFR: 'Venant de:',
-              labelAR: 'قادم من:',
-              type: 'texte'),
+        Question(
+          cle: 'venantDe',
+          cleLabel: 'venantDe',
+          type: 'texte',
+        ),
 
-          Question(cle: 'allantA',
-              labelFR: 'Allant à:',
-              labelAR: 'متجه إلى:',
-              type: 'texte'),
-        ]
+        Question(
+          cle: 'allantA',
+          cleLabel: 'allantA',
+          type: 'texte',
+        ),
+      ],
     ),
 
-    Groupe(
-        titreFR: 'Point de choc initial',
-        titreAR: 'نقطة الاصطدام الأولي',
-        questions: [
-          Question(cle: 'pointChoc',
-              labelFR: 'Indiquez le point de choc:',
-              labelAR: 'حدد نقطة الاصطدام:',
-              type: 'pointChoc'),
-        ]
-    ),
 
     Groupe(
-        titreFR: 'Finalisation',
-        titreAR: 'الإنهاء',
-        questions: [
-          Question(cle: 'degatsApparents',
-              labelFR: 'Dégâts apparents:',
-              labelAR: 'الأضرار الظاهرة:',
-              type: 'texte'),
-          Question(cle: 'observations',
-              labelFR: 'Observations:',
-              labelAR: 'ملاحظات:',
-              type: 'texte'),
-        ]
+      cleTitre: 'pointDeChocInit',
+      questions: [
+        Question(
+          cle: 'pointChoc',
+          cleLabel: 'selection_pointCoc',
+          type: 'pointChoc',
+        ),
+      ],
+    ),
+
+
+    Groupe(
+      cleTitre: 'finalisation',
+      questions: [
+        Question(
+          cle: 'degatsApparents',
+          cleLabel: 'degatsApparents',
+          type: 'texte',
+        ),
+
+        Question(
+          cle: 'observations',
+          cleLabel: 'observations',
+          type: 'texte',
+        ),
+      ],
     ),
   ];
   @override
@@ -407,6 +427,15 @@ class _EcranVehiculeState extends State<EcranVehicule>{
       if(!RegExp(r'^[0-9]+$').hasMatch(nPermis)){
         return enFrancais ? 'Le numéro de permis doit contenir que des chiffres'
             : 'يجب أن يحتوي رقم التصريح على أرقام فقط';
+      }
+    }
+
+    //Contrôle du champ numImmatriculation (composé seulement par des chiffres)
+    if(g.questions.any((q) => (q.cle == 'numImmatriculation'))){
+      final numIm = controleursTexte['numImmatriculation']!.text.trim();
+      if(!RegExp(r'^[0-9]+$').hasMatch(numIm)){
+        return enFrancais ? 'Le numéro d\'immatriculation de la véhicule doit contenir que des chiffres'
+            : 'يجب أن يحتوي رقم تسجيل المركبة على أرقام فقط';
       }
     }
 
@@ -627,8 +656,7 @@ class _EcranVehiculeState extends State<EcranVehicule>{
 
                                 //Titre du groupe
                                 TitreSouligne(
-                                  texte: enFrancais ? groupes[groupeAct].titreFR
-                                                    : groupes[groupeAct].titreAR,
+                                  texte: Localisation.get(groupe.cleTitre, enFrancais),
                                   style: TextStyle(
                                     color: (widget.nomVehicule == 'A') ? CouleursApp.texteVehiculeA : CouleursApp.texteVehiculeB,
                                     fontFamily: enFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
@@ -653,7 +681,7 @@ class _EcranVehiculeState extends State<EcranVehicule>{
                                     //Champ texte
                                       case "texte":
                                         champ = ChampTexte(
-                                          label: enFrancais ? q.labelFR : q.labelAR,
+                                          label: Localisation.get(q.cleLabel, enFrancais),
                                           controleur: controleursTexte[q.cle]!,
                                           enFrancais: enFrancais,
                                           changed: (value) {setState(() {});},
@@ -664,7 +692,7 @@ class _EcranVehiculeState extends State<EcranVehicule>{
                                     //Sélection d'une date
                                       case "date":
                                         champ = ChampBouton(
-                                          label: enFrancais ? q.labelFR : q.labelAR,
+                                          label: Localisation.get(q.cleLabel, enFrancais),
                                           valeur: (reponsesDate[q.cle] == null)
                                               ? (enFrancais ? 'Choisir' : 'اختر')
                                               : '${reponsesDate[q.cle]!.day}/${reponsesDate[q.cle]!.month}/${reponsesDate[q.cle]!.year}',
@@ -680,7 +708,7 @@ class _EcranVehiculeState extends State<EcranVehicule>{
                                         champ = Column(
                                           children: [
                                             Text(
-                                               enFrancais ? q.labelFR : q.labelAR,
+                                               Localisation.get(q.cleLabel, enFrancais),
                                                style: TextStyle(
                                                   color: CouleursApp.texteSecondaire,
                                                   fontFamily: enFrancais? 'PlayfairDisplay': 'NoteNaskhArabic',
