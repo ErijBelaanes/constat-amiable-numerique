@@ -5,8 +5,6 @@ import 'package:pdf/widgets.dart' as pw;
 import '../models/constat_model.dart';
 import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
-import 'package:arabic_reshaper/arabic_reshaper.dart';
-
 
 class GenerateurPDF {
 
@@ -32,22 +30,13 @@ class GenerateurPDF {
     return pw.MemoryImage(imageBytes);
   }
 
-  static final ArabicReshaper _reshaper = ArabicReshaper();
-
-  static String _formaterTexte(String texte, bool enFrancais) {
-    if (enFrancais || texte.isEmpty) return texte;
-    return _reshaper.reshape(texte);
-  }
-
-
-
   static pw.Widget _texteSurModele(
       bool enFrancais,
       String texte,
       pw.Font ? font, {
         required double x,
         required double y,
-        double largeurMax = 160,
+        double largeurMax = 200,
       }) {
     return pw.Positioned(
       left: x,
@@ -55,12 +44,12 @@ class GenerateurPDF {
       child: pw.SizedBox(
         width: largeurMax,
         child: pw.Text(
-          _formaterTexte(texte, enFrancais),
+          texte,
           textDirection: enFrancais ? pw.TextDirection.ltr : pw.TextDirection.rtl,
           textAlign: enFrancais ? pw.TextAlign.left : pw.TextAlign.right,
           style: pw.TextStyle(
             fontWeight: pw.FontWeight.bold,
-            fontSize: enFrancais ? 9 : 8,
+            fontSize: 11,
             font: font,
           ),
         ),
@@ -89,102 +78,401 @@ class GenerateurPDF {
     );
   }
 
-  static String _fmtDate(DateTime? d) => (d == null) ? '' : '${d.day}/${d.month}/${d.year}';
+  static String _fmtDate(DateTime? d) => (d == null) ? '' : '${d.day.toString().padLeft(2, '0')}/${d.month.toString().padLeft(2, '0')}/${d.year}';
 
-  static String _fmtHeure(DateTime? d) => (d == null) ? '' : '${d.hour}:${d.minute.toString().padLeft(2, '0')}';
+  static String _fmtHeure(DateTime? d) => (d == null) ? '' : '${d.hour.toString().padLeft(2, '0')}:${d.minute.toString().padLeft(2, '0')}';
 
-  static String _texteTemoins(ConstatModel c) {
-    if (!c.temoins || c.listeTemoins.isEmpty) return '';
-    return c.listeTemoins
-        .map((t) => '${t.nom} ${t.prenom} (${t.numTel})').join('\n');
+  static pw.Widget _texteTemoins(ConstatModel c, bool enFrancais) {
+    if (!c.temoins || c.listeTemoins.isEmpty) return pw.SizedBox();
+    final texte = c.listeTemoins
+        .map((t) => enFrancais
+            ? '${t.nom} ${t.prenom} ( N° tel: ${t.numTel} / Adresse: ${t.adresse})'
+            : '${t.nom} ${t.prenom} ( رقم الهاتف: ${t.numTel} / العنوان: ${t.adresse})'
+        ).join('\n');
+
+    return pw.FittedBox(
+      child: pw.Text(
+        texte,
+        textDirection: enFrancais ? pw.TextDirection.ltr : pw.TextDirection.rtl,
+        textAlign: enFrancais ? pw.TextAlign.left : pw.TextAlign.right,
+        style: pw.TextStyle(
+          fontWeight: pw.FontWeight.bold,
+          fontSize: 11,
+          font: enFrancais ? _maFontFr : _maFontAr,
+        ),
+      ),
+    );
   }
-  static final double _largeurPage = PdfPageFormat.a4.width;
-  static final double _hauteurPage = PdfPageFormat.a4.height;
-
-  // --- Bandeau du haut ---
-  static const _posDate = Offset(25, 95);
-  static const _posHeure = Offset(150, 95);
-  static const _posLieu = Offset(200, 95);
-  static const _posBlessesOui = Offset(500, 93);
-  static const _posBlessesNon = Offset(455, 93);
-  static const _posDegatsOui = Offset(115, 137);
-  static const _posDegatsNon = Offset(60, 137);
-  static const _posTemoins = Offset(200, 125);   //Zone libre pour la liste des témoins
-
-  //Véhicule A (colonne gauche)
-  // static const _ax = 80.0;  // abscisse commune à tous les champs du véhicule A
-  static const _posA_assurance = Offset(125, 200);
-  static const _posA_numContrat = Offset(150, 215);
-  static const _posA_agence = Offset(65, 234);
-  static const _posA_attestationDebut = Offset(46, 270);
-  static const _posA_attestationFin = Offset(150, 270);
-
-  static const _posA_nomConducteur = Offset(80, 304);
-  static const _posA_prenomConducteur = Offset(80, 323);
-  static const _posA_adresseConducteur = Offset(57, 339);
-  static const _posA_numPermis = Offset(150, 357);
-  static const _posA_datePermis = Offset(80, 374);
-
-  static const _posA_nomAssure = Offset(80, 410);
-  static const _posA_prenomAssure = Offset(80, 426);
-  static const _posA_adresseAssure = Offset(57, 443);
-  static const _posA_numTel = Offset(150, 461);
-
-  static const _posA_marqueType = Offset(110, 496);
-  // static const _posA_numImmatriculation = Offset(150, 514);
-  static const _posA_sensSuivi = Offset(100, 530);
-  static const _posA_venantDe = Offset(100, 547);
-  static const _posA_allantA = Offset(100, 565);
-  static const _posA_pointChoc = Offset(25, 616);  //Zone image, ~90x70
-
-  static const _posA_degatsApparents = Offset(20, 717);
-  static const _posA_observations = Offset(20, 750);
-
-  //Véhicule B (colonne droite)
-  static const _posB_assurance = Offset(490, 200);
-  static const _posB_numContrat = Offset(515, 215);
-  static const _posB_agence = Offset(440, 234);
-  static const _posB_attestationDebut = Offset(420, 269);
-  static const _posB_attestationFin = Offset(500, 269);
-
-  static const _posB_nomConducteur = Offset(440, 304);
-  static const _posB_prenomConducteur = Offset(440, 323);
-  static const _posB_adresseConducteur = Offset(440, 339);
-  static const _posB_numPermis = Offset(515, 356);
-  static const _posB_datePermis = Offset(450, 374);
-
-  static const _posB_nomAssure = Offset(440, 410);
-  static const _posB_prenomAssure = Offset(460, 426);
-  static const _posB_adresseAssure = Offset(440, 444);
-  static const _posB_numTel = Offset(515, 460);
-
-  static const _posB_marqueType = Offset(470, 496);
-  // static const _posB_numImmatriculation = Offset(440, 514);
-  static const _posB_sensSuivi = Offset(470, 530);
-  static const _posB_venantDe = Offset(470, 547);
-  static const _posB_allantA = Offset(470, 565);
-  static const _posB_pointChoc = Offset(460, 616);
-
-  static const _posB_degatsApparents = Offset(440, 717);
-  static const _posB_observations = Offset(340, 753);
-
-  //Circonstances (colonne centrale) : une case A et une case B par ligne
-  static const double _circY0 = 210; // hauteur de la 1ère ligne
-  static const double _circEspacement = 20; // espacement vertical entre 2 lignes
-  static const double _circXCaseA = 205;
-  static const double _circXCaseB = 375;
 
   //Croquis (zone centrale, sous les circonstances) ---
-  static const _posCroquis = Offset(250, 616);
-  static const double _croquisLargeur = 350;
-  static const double _croquisHauteur = 100;
+  static const posCroquis = Offset(250, 616);
+  static const double croquisLargeur = 350;
+  static const double croquisHauteur = 100;
 
   //Signature
-  static const _posSignatureA = Offset(30, 780);
-  static const _posSignatureB = Offset(500, 780);
-  static const double _signatureLargeur = 140;
-  static const double _signatureHauteur = 40;
+  static const posSignatureA = Offset(30, 780);
+  static const posSignatureB = Offset(500, 780);
+  static const double signatureLargeur = 140;
+  static const double signatureHauteur = 40;
 
+
+  static const positionsFR = Positions(
+     // --- Bandeau du haut ---
+    posDate: Offset(25, 95),
+    posHeure: Offset(150, 95),
+    posLieu: Offset(200, 95),
+    posBlessesOui: Offset(500, 93),
+    posBlessesNon: Offset(455, 93),
+    posDegatsOui: Offset(113, 137),
+    posDegatsNon: Offset(60, 135),
+    posTemoins: Offset(200, 125),  //Zone libre pour la liste des témoins
+
+     //Véhicule A (colonne gauche)
+     posA_assurance: Offset(127, 197),
+     posA_numContrat: Offset(147, 215),
+     posA_agence: Offset(65, 232),
+     posA_attestationDebut: Offset(46, 266),
+     posA_attestationFin: Offset(138, 266),
+
+     posA_nomConducteur: Offset(80, 302),
+     posA_prenomConducteur: Offset(80, 321),
+     posA_adresseConducteur: Offset(57, 336),
+     posA_numPermis: Offset(150, 355),
+     posA_datePermis: Offset(80, 372),
+
+     posA_nomAssure: Offset(80, 406),
+     posA_prenomAssure: Offset(80, 424),
+     posA_adresseAssure: Offset(57, 441),
+     posA_numTel: Offset(145, 458),
+
+     posA_marqueType: Offset(105, 493),
+     posA_numImmatriculation: Offset(140, 512),
+     posA_sensSuivi: Offset(100, 530),
+     posA_venantDe: Offset(100, 547),
+     posA_allantA: Offset(100, 565),
+     posA_pointChoc: Offset(27, 616),  //Zone image, ~90x70
+
+     posA_degatsApparents: Offset(20, 717),
+     posA_observations: Offset(20, 750),
+
+     //Véhicule B (colonne droite)
+     posB_assurance: Offset(490, 195),
+     posB_numContrat: Offset(515, 215),
+     posB_agence: Offset(440, 234),
+     posB_attestationDebut: Offset(420, 269),
+     posB_attestationFin: Offset(500, 269),
+
+     posB_nomConducteur: Offset(440, 302),
+     posB_prenomConducteur: Offset(440, 320),
+     posB_adresseConducteur: Offset(440, 336),
+     posB_numPermis: Offset(515, 356),
+     posB_datePermis: Offset(450, 372),
+
+     posB_nomAssure: Offset(440, 406),
+     posB_prenomAssure: Offset(460, 424),
+     posB_adresseAssure: Offset(440, 440),
+     posB_numTel: Offset(515, 457),
+
+     posB_marqueType: Offset(470, 493),
+     posB_numImmatriculation: Offset(500, 512),
+     posB_sensSuivi: Offset(470, 528),
+     posB_venantDe: Offset(470, 547),
+     posB_allantA: Offset(470, 565),
+     posB_pointChoc: Offset(460, 612),
+
+     posB_degatsApparents: Offset(440, 717),
+     posB_observations: Offset(335, 753),
+
+     circY0: 213,
+     circEspacement: 20,
+     circXCaseA: 205,
+     circXCaseB: 375,
+  );
+
+  static const positionsAR = Positions(
+    // --- Bandeau du haut ---
+    posDate: Offset(-100, 95),
+    posHeure: Offset(-5, 95),
+    posLieu: Offset(225, 90),
+    posBlessesOui: Offset(349, 93),
+    posBlessesNon: Offset(280, 93),
+    posDegatsOui: Offset(-46, 135),
+    posDegatsNon: Offset(-115, 135),
+    posTemoins: Offset(290, 125), //Zone libre pour la liste des témoins
+
+    //Véhicule A (colonne gauche)
+    posA_assurance: Offset(5, 195),
+    posA_numContrat: Offset(12, 215),
+    posA_agence: Offset(5, 233),
+    posA_attestationDebut: Offset(-90, 266),
+    posA_attestationFin: Offset(10, 266),
+
+    posA_nomConducteur: Offset(-5, 302),
+    posA_prenomConducteur: Offset(-5, 320),
+    posA_adresseConducteur: Offset(25, 336),
+    posA_numPermis: Offset(10, 355),
+    posA_datePermis: Offset(-25, 371),
+
+    posA_nomAssure: Offset(-5, 407),
+    posA_prenomAssure: Offset(-5, 424),
+    posA_adresseAssure: Offset(12, 440),
+    posA_numTel: Offset(15, 459),
+
+    posA_marqueType: Offset(5, 494),
+    posA_numImmatriculation: Offset(8, 512),
+    posA_sensSuivi: Offset(10, 528),
+    posA_venantDe: Offset(10, 545),
+    posA_allantA: Offset(10, 563),
+    posA_pointChoc: Offset(25, 614),  //Zone image, ~90x70
+
+    posA_degatsApparents: Offset(25, 717),
+    posA_observations: Offset(90, 750),
+
+    //Véhicule B (colonne droite)
+    posB_assurance: Offset(390, 200),
+    posB_numContrat: Offset(390, 215),
+    posB_agence: Offset(390, 234),
+    posB_attestationDebut: Offset(288, 269),
+    posB_attestationFin: Offset(385, 269),
+
+    posB_nomConducteur: Offset(360, 304),
+    posB_prenomConducteur: Offset(360, 320),
+    posB_adresseConducteur: Offset(390, 339),
+    posB_numPermis: Offset(385, 356),
+    posB_datePermis: Offset(340, 374),
+
+    posB_nomAssure: Offset(360, 408),
+    posB_prenomAssure: Offset(360, 426),
+    posB_adresseAssure: Offset(390, 442),
+    posB_numTel: Offset(340, 460),
+
+    posB_marqueType: Offset(380, 493),
+    posB_numImmatriculation: Offset(380, 511),
+    posB_sensSuivi: Offset(380, 530),
+    posB_venantDe: Offset(380, 547),
+    posB_allantA: Offset(380, 565),
+    posB_pointChoc: Offset(460, 614),
+
+    posB_degatsApparents: Offset(392, 717),
+    posB_observations: Offset(390, 753),
+
+    circY0: 207,
+    circEspacement: 22,
+    circXCaseA: 193,
+    circXCaseB: 363,
+  );
+
+  static List<pw.Widget> _dessinerVehicule({
+    required bool enFrancais,
+    required VehiculeInfo vehicule,
+    required pw.Font? font,
+
+    required Offset posAssurance,
+    required Offset posNumContrat,
+    required Offset posAgence,
+    required Offset posAttestationDebut,
+    required Offset posAttestationFin,
+
+    required Offset posNomConducteur,
+    required Offset posPrenomConducteur,
+    required Offset posAdresseConducteur,
+    required Offset posNumPermis,
+    required Offset posDatePermis,
+
+    required Offset posNomAssure,
+    required Offset posPrenomAssure,
+    required Offset posAdresseAssure,
+    required Offset posNumTel,
+
+    required Offset posMarqueType,
+    required Offset posNumImmatriculation,
+    required Offset posSensSuivi,
+    required Offset posVenantDe,
+    required Offset posAllantA,
+
+    required Offset posPointChoc,
+    required Offset posDegatsApparents,
+    required Offset posObservations,
+  }) {
+    return [
+      _texteSurModele(
+        enFrancais,
+        vehicule.assurance,
+        font,
+        x: posAssurance.dx,
+        y: posAssurance.dy,
+      ),
+
+      _texteSurModele(
+        enFrancais,
+        vehicule.numContrat,
+        font,
+        x: posNumContrat.dx,
+        y: posNumContrat.dy,
+      ),
+
+      _texteSurModele(
+        enFrancais,
+        vehicule.agence,
+        font,
+        x: posAgence.dx,
+        y: posAgence.dy,
+      ),
+
+      _texteSurModele(
+        enFrancais,
+        _fmtDate(vehicule.dateDebutAttestation),
+        font,
+        x: posAttestationDebut.dx,
+        y: posAttestationDebut.dy,
+      ),
+
+      _texteSurModele(
+        enFrancais,
+        _fmtDate(vehicule.dateFinAttestation),
+        font,
+        x: posAttestationFin.dx,
+        y: posAttestationFin.dy,
+      ),
+
+      _texteSurModele(
+        enFrancais,
+        vehicule.nomConducteur,
+        font,
+        x: posNomConducteur.dx,
+        y: posNomConducteur.dy,
+      ),
+
+      _texteSurModele(
+        enFrancais,
+        vehicule.prenomConducteur,
+        font,
+        x: posPrenomConducteur.dx,
+        y: posPrenomConducteur.dy,
+      ),
+
+      _texteSurModele(
+        enFrancais,
+        vehicule.adresseConducteur,
+        font,
+        x: posAdresseConducteur.dx,
+        y: posAdresseConducteur.dy,
+      ),
+
+      _texteSurModele(
+        enFrancais,
+        vehicule.numPermis,
+        font,
+        x: posNumPermis.dx,
+        y: posNumPermis.dy,
+      ),
+
+      _texteSurModele(
+        enFrancais,
+        _fmtDate(vehicule.datePermis),
+        font,
+        x: posDatePermis.dx,
+        y: posDatePermis.dy,
+      ),
+
+      _texteSurModele(
+        enFrancais,
+        vehicule.nomAssure,
+        font,
+        x: posNomAssure.dx,
+        y: posNomAssure.dy,
+      ),
+
+      _texteSurModele(
+        enFrancais,
+        vehicule.prenomAssure,
+        font,
+        x: posPrenomAssure.dx,
+        y: posPrenomAssure.dy,
+      ),
+
+      _texteSurModele(
+        enFrancais,
+        vehicule.adresseAssure,
+        font,
+        x: posAdresseAssure.dx,
+        y: posAdresseAssure.dy,
+      ),
+
+      _texteSurModele(
+        enFrancais,
+        vehicule.numTel,
+        font,
+        x: posNumTel.dx,
+        y: posNumTel.dy,
+      ),
+
+      _texteSurModele(
+        enFrancais,
+        '${vehicule.marque} ${vehicule.type}',
+        font,
+        x: posMarqueType.dx,
+        y: posMarqueType.dy,
+      ),
+
+      _texteSurModele(
+        enFrancais,
+        vehicule.numImmatriculation,
+        font,
+        x: posNumImmatriculation.dx,
+        y: posNumImmatriculation.dy,
+      ),
+
+      _texteSurModele(
+        enFrancais,
+        vehicule.sensSuivi,
+        font,
+        x: posSensSuivi.dx,
+        y: posSensSuivi.dy,
+      ),
+
+      _texteSurModele(
+        enFrancais,
+        vehicule.venantDe,
+        font,
+        x: posVenantDe.dx,
+        y: posVenantDe.dy,
+      ),
+
+      _texteSurModele(
+        enFrancais,
+        vehicule.allantA,
+        font,
+        x: posAllantA.dx,
+        y: posAllantA.dy,
+      ),
+
+      if (vehicule.imagePointChoc != null)
+        _image(
+          vehicule.imagePointChoc!,
+          110,
+          130,
+          x: posPointChoc.dx,
+          y: posPointChoc.dy,
+        ),
+
+      _texteSurModele(
+        enFrancais,
+        vehicule.degatsApparents,
+        font,
+        x: posDegatsApparents.dx,
+        y: posDegatsApparents.dy,
+      ),
+
+      _texteSurModele(
+        enFrancais,
+        vehicule.observations,
+        font,
+        x: posObservations.dx,
+        y: posObservations.dy,
+      ),
+    ];
+  }
   static Future<Uint8List> genererConstatSurModele(ConstatModel constat, VehiculeInfo vehiculeA, VehiculeInfo vehiculeB, bool enFrancais) async {
     await _chargerPolices();
     final imageFond = await _chargerImageDeFond();
@@ -209,353 +497,108 @@ class GenerateurPDF {
                 (constat.dateAccident != null) ? '${constat.dateAccident!.day}/${constat.dateAccident!.month}/${constat.dateAccident!.year}'
                                                : '' ,
                 font,
-                x: _posDate.dx,
-                y: _posDate.dy,
+                x: enFrancais ? positionsFR.posDate.dx : positionsAR.posDate.dx,
+                y: enFrancais ? positionsFR.posDate.dy : positionsAR.posDate.dy,
               ),
               _texteSurModele(
                 enFrancais,
                 _fmtHeure(constat.dateAccident),
                 font,
-                x: _posHeure.dx,
-                y: _posHeure.dy,
+                x: enFrancais ? positionsFR.posHeure.dx : positionsAR.posHeure.dx,
+                y: enFrancais ? positionsFR.posHeure.dy : positionsAR.posHeure.dy,
               ),
-              _texteSurModele(enFrancais, constat.lieuAccident, font, x: _posLieu.dx, y: _posLieu.dy),
+              _texteSurModele(
+                enFrancais,
+                  constat.lieuAccident,
+                  font,
+                  x: enFrancais ? positionsFR.posLieu.dx : positionsAR.posLieu.dx,
+                  y: enFrancais ? positionsFR.posLieu.dy : positionsAR.posLieu.dy,
+              ),
               _texteSurModele(
                 enFrancais,
                 'X',
                 font,
-                x: (constat.blesses ? _posBlessesOui : _posBlessesNon).dx,
-                y: (constat.blesses ? _posBlessesOui : _posBlessesNon).dy,
+                x: (constat.blesses ? (enFrancais ? positionsFR.posBlessesOui : positionsAR.posBlessesOui)
+                                    : (enFrancais ? positionsFR.posBlessesNon : positionsAR.posBlessesNon)
+                  ).dx,
+                y: (constat.blesses ? (enFrancais ? positionsFR.posBlessesOui : positionsAR.posBlessesOui)
+                                    : (enFrancais ? positionsFR.posBlessesNon : positionsAR.posBlessesNon)
+                  ).dy,
               ),
               _texteSurModele(
                 enFrancais,
                 'X',
                 font,
-                x: (constat.degatsMat ? _posDegatsOui : _posDegatsNon).dx,
-                y: (constat.degatsMat ? _posDegatsOui : _posDegatsNon).dy,
+                x: (constat.degatsMat ? (enFrancais ? positionsFR.posDegatsOui : positionsAR.posDegatsOui)
+                                      : (enFrancais ? positionsFR.posDegatsNon : positionsAR.posDegatsNon)
+                  ).dx,
+                y: (constat.degatsMat ? (enFrancais ? positionsFR.posDegatsOui : positionsAR.posDegatsOui)
+                                      : (enFrancais ? positionsFR.posDegatsNon : positionsAR.posDegatsNon)
+                  ).dy,
               ),
-              _texteSurModele(
-                enFrancais,
-                _texteTemoins(constat),
-                font,
-                x: _posTemoins.dx, y: _posTemoins.dy,
-                largeurMax: 260,
+              pw.Positioned(
+                left: enFrancais ? positionsFR.posTemoins.dx : positionsAR.posTemoins.dx,
+                top: enFrancais ? positionsFR.posTemoins.dy : positionsAR.posTemoins.dy,
+                child: _texteTemoins(constat, enFrancais),
               ),
 
               //Véhicule A
-              _texteSurModele(
-                enFrancais,
-                vehiculeA.assurance,
-                font,
-                x: _posA_assurance.dx,
-                y: _posA_assurance.dy,
-              ),
-              _texteSurModele(
-                enFrancais,
-                vehiculeA.numContrat,
-                font,
-                x: _posA_numContrat.dx,
-                y: _posA_numContrat.dy,
-              ),
-              _texteSurModele(
-                enFrancais,
-                vehiculeA.agence,
-                font,
-                x: _posA_agence.dx,
-                y: _posA_agence.dy,
-              ),
-              _texteSurModele(
-                enFrancais,
-                vehiculeA.assurance,
-                font,
-                x: _posA_assurance.dx,
-                y: _posA_assurance.dy,
-              ),
-              _texteSurModele(
-                enFrancais,
-                _fmtDate(vehiculeA.dateDebutAttestation),
-                font,
-                x: _posA_attestationDebut.dx,
-                y: _posA_attestationDebut.dy,
-              ),
-              _texteSurModele(
-                enFrancais,
-                _fmtDate(vehiculeA.dateFinAttestation),
-                font,
-                x: _posA_attestationFin.dx,
-                y: _posA_attestationFin.dy,
-              ),
-              _texteSurModele(
-                enFrancais,
-                vehiculeA.nomConducteur,
-                font,
-                x: _posA_nomConducteur.dx,
-                y: _posA_nomConducteur.dy,
-              ),
-              _texteSurModele(
-                enFrancais,
-                vehiculeA.prenomConducteur,
-                font,
-                x: _posA_prenomConducteur.dx,
-                y: _posA_prenomConducteur.dy,
-              ),
-              _texteSurModele(
-                enFrancais,
-                vehiculeA.adresseConducteur,
-                font,
-                x: _posA_adresseConducteur.dx,
-                y: _posA_adresseConducteur.dy,
-              ),
-              _texteSurModele(
-                enFrancais,
-                vehiculeA.numPermis,
-                font,
-                x: _posA_numPermis.dx,
-                y: _posA_numPermis.dy,
-              ),
-              _texteSurModele(
-                enFrancais,
-                _fmtDate(vehiculeA.datePermis),
-                font,
-                x: _posA_datePermis.dx,
-                y: _posA_datePermis.dy,
-              ),
-              _texteSurModele(
-                enFrancais,
-                vehiculeA.nomAssure,
-                font,
-                x: _posA_nomAssure.dx,
-                y: _posA_nomAssure.dy,
-              ),
-              _texteSurModele(
-                enFrancais,
-                vehiculeA.prenomAssure,
-                font,
-                x: _posA_prenomAssure.dx,
-                y: _posA_prenomAssure.dy,
-              ),
-              _texteSurModele(
-                enFrancais,
-                vehiculeA.adresseAssure,
-                font,
-                x: _posA_adresseAssure.dx,
-                y: _posA_adresseAssure.dy,
-              ),
-              _texteSurModele(
-                enFrancais,
-                vehiculeA.numTel,
-                font,
-                x: _posA_numTel.dx,
-                y: _posA_numTel.dy,
-              ),
-              _texteSurModele(
-                enFrancais,
-                '${vehiculeA.marque} ${vehiculeA.type}',
-                font,
-                x: _posA_marqueType.dx,
-                y: _posA_marqueType.dy,
-              ),
-              _texteSurModele(
-                enFrancais,
-                vehiculeA.sensSuivi,
-                font,
-                x: _posA_sensSuivi.dx,
-                y: _posA_sensSuivi.dy,
-              ),
-              _texteSurModele(
-                enFrancais,
-                vehiculeA.venantDe,
-                font,
-                x: _posA_venantDe.dx,
-                y: _posA_venantDe.dy,
-              ),
-              _texteSurModele(
-                enFrancais,
-                vehiculeA.allantA,
-                font,
-                x: _posA_allantA.dx,
-                y: _posA_allantA.dy,
-              ),
-              if(vehiculeA.pointChoc != null)
-                _image(
-                  vehiculeA.imagePointChoc!,
-                  110,
-                  130,
-                  x: _posA_pointChoc.dx,
-                  y: _posA_pointChoc.dy,
-                ),
-              _texteSurModele(
-                enFrancais,
-                vehiculeA.degatsApparents,
-                font,
-                x: _posA_degatsApparents.dx,
-                y: _posA_degatsApparents.dy,
-              ),
-              _texteSurModele(
-                enFrancais,
-                vehiculeA.observations,
-                font,
-                x: _posA_observations.dx,
-                y: _posA_observations.dy,
+              ..._dessinerVehicule(
+                  enFrancais: enFrancais,
+                  vehicule: vehiculeA,
+                  font: font,
+                  posAssurance: enFrancais ? positionsFR.posA_assurance : positionsAR.posA_assurance,
+                  posNumContrat: enFrancais ? positionsFR.posA_numContrat : positionsAR.posA_numContrat,
+                  posAgence: enFrancais ? positionsFR.posA_agence : positionsAR.posA_agence,
+                  posAttestationDebut: enFrancais ? positionsFR.posA_attestationDebut : positionsAR.posA_attestationDebut,
+                  posAttestationFin: enFrancais ? positionsFR.posA_attestationFin : positionsAR.posA_attestationFin,
+                  posNomConducteur: enFrancais ? positionsFR.posA_nomConducteur : positionsAR.posA_nomConducteur,
+                  posPrenomConducteur: enFrancais ? positionsFR.posA_prenomConducteur : positionsAR.posA_prenomConducteur,
+                  posAdresseConducteur: enFrancais ? positionsFR.posA_adresseConducteur : positionsAR.posA_adresseConducteur,
+                  posNumPermis: enFrancais ? positionsFR.posA_numPermis : positionsAR.posA_numPermis,
+                  posDatePermis: enFrancais ? positionsFR.posA_datePermis : positionsAR.posA_datePermis,
+                  posNomAssure: enFrancais ? positionsFR.posA_nomAssure : positionsAR.posA_nomAssure,
+                  posPrenomAssure: enFrancais ? positionsFR.posA_prenomAssure : positionsAR.posA_prenomAssure,
+                  posAdresseAssure: enFrancais ? positionsFR.posA_adresseAssure : positionsAR.posA_adresseAssure,
+                  posNumTel: enFrancais ? positionsFR.posA_numTel : positionsAR.posA_numTel,
+                  posMarqueType: enFrancais ? positionsFR.posA_marqueType : positionsAR.posA_marqueType,
+                  posNumImmatriculation: enFrancais ? positionsFR.posA_numImmatriculation : positionsAR.posA_numImmatriculation,
+                  posSensSuivi: enFrancais ? positionsFR.posA_sensSuivi : positionsAR.posA_sensSuivi,
+                  posVenantDe: enFrancais ? positionsFR.posA_venantDe : positionsAR.posA_venantDe,
+                  posAllantA: enFrancais ? positionsFR.posA_allantA : positionsAR.posA_allantA,
+                  posPointChoc: enFrancais ? positionsFR.posA_pointChoc : positionsAR.posA_pointChoc,
+                  posDegatsApparents: enFrancais ? positionsFR.posA_degatsApparents : positionsAR.posA_degatsApparents,
+                  posObservations: enFrancais ? positionsFR.posA_observations : positionsAR.posA_observations,
               ),
 
               //Véhicule B
-              _texteSurModele(
-                enFrancais,
-                vehiculeB.assurance,
-                font,
-                x: _posB_assurance.dx,
-                y: _posB_assurance.dy,
+              ..._dessinerVehicule(
+                enFrancais: enFrancais,
+                vehicule: vehiculeB,
+                font: font,
+                posAssurance: enFrancais ? positionsFR.posB_assurance : positionsAR.posB_assurance,
+                posNumContrat: enFrancais ? positionsFR.posB_numContrat : positionsAR.posB_numContrat,
+                posAgence: enFrancais ? positionsFR.posB_agence : positionsAR.posB_agence,
+                posAttestationDebut: enFrancais ? positionsFR.posB_attestationDebut : positionsAR.posB_attestationDebut,
+                posAttestationFin: enFrancais ? positionsFR.posB_attestationFin : positionsAR.posB_attestationFin,
+                posNomConducteur: enFrancais ? positionsFR.posB_nomConducteur : positionsAR.posB_nomConducteur,
+                posPrenomConducteur: enFrancais ? positionsFR.posB_prenomConducteur : positionsAR.posB_prenomConducteur,
+                posAdresseConducteur: enFrancais ? positionsFR.posB_adresseConducteur : positionsAR.posB_adresseConducteur,
+                posNumPermis: enFrancais ? positionsFR.posB_numPermis : positionsAR.posB_numPermis,
+                posDatePermis: enFrancais ? positionsFR.posB_datePermis : positionsAR.posB_datePermis,
+                posNomAssure: enFrancais ? positionsFR.posB_nomAssure : positionsAR.posB_nomAssure,
+                posPrenomAssure: enFrancais ? positionsFR.posB_prenomAssure : positionsAR.posB_prenomAssure,
+                posAdresseAssure: enFrancais ? positionsFR.posB_adresseAssure : positionsAR.posB_adresseAssure,
+                posNumTel: enFrancais ? positionsFR.posB_numTel : positionsAR.posB_numTel,
+                posMarqueType: enFrancais ? positionsFR.posB_marqueType : positionsAR.posB_marqueType,
+                posNumImmatriculation: enFrancais ? positionsFR.posB_numImmatriculation : positionsAR.posB_numImmatriculation,
+                posSensSuivi: enFrancais ? positionsFR.posB_sensSuivi : positionsAR.posB_sensSuivi,
+                posVenantDe: enFrancais ? positionsFR.posB_venantDe : positionsAR.posB_venantDe,
+                posAllantA: enFrancais ? positionsFR.posB_allantA : positionsAR.posB_allantA,
+                posPointChoc: enFrancais ? positionsFR.posB_pointChoc : positionsAR.posB_pointChoc,
+                posDegatsApparents: enFrancais ? positionsFR.posB_degatsApparents : positionsAR.posB_degatsApparents,
+                posObservations: enFrancais ? positionsFR.posB_observations : positionsAR.posB_observations,
               ),
-              _texteSurModele(
-                enFrancais,
-                vehiculeB.numContrat,
-                font,
-                x: _posB_numContrat.dx,
-                y: _posB_numContrat.dy,
-              ),
-              _texteSurModele(
-                enFrancais,
-                vehiculeB.agence,
-                font,
-                x: _posB_agence.dx,
-                y: _posB_agence.dy,
-              ),
-              _texteSurModele(
-                enFrancais,
-                vehiculeB.assurance,
-                font,
-                x: _posB_assurance.dx,
-                y: _posB_assurance.dy,
-              ),
-              _texteSurModele(
-                enFrancais,
-                _fmtDate(vehiculeB.dateDebutAttestation),
-                font,
-                x: _posB_attestationDebut.dx,
-                y: _posB_attestationDebut.dy,
-              ),
-              _texteSurModele(
-                enFrancais,
-                _fmtDate(vehiculeB.dateFinAttestation),
-                font,
-                x: _posB_attestationFin.dx,
-                y: _posB_attestationFin.dy,
-              ),
-              _texteSurModele(
-                enFrancais,
-                vehiculeB.nomConducteur,
-                font,
-                x: _posB_nomConducteur.dx,
-                y: _posB_nomConducteur.dy,
-              ),
-              _texteSurModele(
-                enFrancais,
-                vehiculeB.prenomConducteur,
-                font,
-                x: _posB_prenomConducteur.dx,
-                y: _posB_prenomConducteur.dy,
-              ),
-              _texteSurModele(
-                enFrancais,
-                vehiculeB.adresseConducteur,
-                font,
-                x: _posB_adresseConducteur.dx,
-                y: _posB_adresseConducteur.dy,
-              ),
-              _texteSurModele(
-                enFrancais,
-                vehiculeB.numPermis,
-                font,
-                x: _posB_numPermis.dx,
-                y: _posB_numPermis.dy,
-              ),
-              _texteSurModele(
-                enFrancais,
-                _fmtDate(vehiculeB.datePermis),
-                font,
-                x: _posB_datePermis.dx,
-                y: _posB_datePermis.dy,
-              ),
-              _texteSurModele(
-                enFrancais,
-                vehiculeB.nomAssure,
-                font,
-                x: _posB_nomAssure.dx,
-                y: _posB_nomAssure.dy,
-              ),
-              _texteSurModele(
-                enFrancais,
-                vehiculeB.prenomAssure,
-                font,
-                x: _posB_prenomAssure.dx,
-                y: _posB_prenomAssure.dy,
-              ),
-              _texteSurModele(
-                enFrancais,
-                vehiculeB.adresseAssure,
-                font,
-                x: _posB_adresseAssure.dx,
-                y: _posB_adresseAssure.dy,
-              ),
-              _texteSurModele(
-                enFrancais,
-                vehiculeB.numTel,
-                font,
-                x: _posB_numTel.dx,
-                y: _posB_numTel.dy,
-              ),
-              _texteSurModele(
-                enFrancais,
-                '${vehiculeB.marque} ${vehiculeB.type}',
-                font,
-                x: _posB_marqueType.dx,
-                y: _posB_marqueType.dy,
-              ),
-              _texteSurModele(
-                enFrancais,
-                vehiculeB.sensSuivi,
-                font,
-                x: _posB_sensSuivi.dx,
-                y: _posB_sensSuivi.dy,
-              ),
-              _texteSurModele(
-                enFrancais,
-                vehiculeB.venantDe,
-                font,
-                x: _posB_venantDe.dx,
-                y: _posB_venantDe.dy,
-              ),
-              _texteSurModele(
-                enFrancais,
-                vehiculeB.allantA,
-                font,
-                x: _posB_allantA.dx,
-                y: _posB_allantA.dy,
-              ),
-              if(vehiculeB.pointChoc != null)
-                _image(
-                  vehiculeB.imagePointChoc!,
-                  110,
-                  130,
-                  x: _posB_pointChoc.dx,
-                  y: _posB_pointChoc.dy,
-                ),
-              _texteSurModele(
-                enFrancais,
-                vehiculeB.degatsApparents,
-                font,
-                x: _posB_degatsApparents.dx,
-                y: _posB_degatsApparents.dy,
-              ),
-              _texteSurModele(
-                enFrancais,
-                vehiculeB.observations,
-                font,
-                x: _posB_observations.dx,
-                y: _posB_observations.dy,
-              ),
-
               //Circonstances
               for(int i = 0; i < 17; i++) ...[
                 if(constat.circonstancesA[i])
@@ -563,8 +606,9 @@ class GenerateurPDF {
                     enFrancais,
                     'X',
                     font,
-                    x: _circXCaseA,
-                    y: _circY0 + i * _circEspacement,
+                    x: enFrancais ? positionsFR.circXCaseA : positionsAR.circXCaseA,
+                    y: enFrancais ? (positionsFR.circY0 + i * positionsFR.circEspacement)
+                                  : (positionsAR.circY0 + i * positionsAR.circEspacement),
                     largeurMax: 20,
                   ),
                 if(constat.circonstancesB[i])
@@ -572,8 +616,9 @@ class GenerateurPDF {
                     enFrancais,
                     'X',
                     font,
-                    x: _circXCaseB,
-                    y: _circY0 + i * _circEspacement,
+                    x: enFrancais ? positionsFR.circXCaseB : positionsAR.circXCaseB,
+                    y: enFrancais ? (positionsFR.circY0 + i * positionsFR.circEspacement)
+                                  : (positionsAR.circY0 + i * positionsAR.circEspacement),
                     largeurMax: 20,
                   ),
               ],
@@ -582,28 +627,28 @@ class GenerateurPDF {
               if(constat.croquis != null)
                 _image(
                   constat.croquis!,
-                  _croquisLargeur,
-                  _croquisHauteur,
-                  x: _posCroquis.dx,
-                  y: _posCroquis.dy,
+                  croquisLargeur,
+                  croquisHauteur,
+                  x: posCroquis.dx,
+                  y: posCroquis.dy,
                 ),
 
               //Signatures
               if(constat.signatureA != null)
                 _image(
                   constat.signatureA!,
-                  _signatureLargeur,
-                  _signatureHauteur,
-                  x: _posSignatureA.dx,
-                  y: _posSignatureA.dy,
+                  signatureLargeur,
+                  signatureHauteur,
+                  x: posSignatureA.dx,
+                  y: posSignatureA.dy,
                 ),
               if(constat.signatureB != null)
                 _image(
                   constat.signatureB!,
-                  _signatureLargeur,
-                  _signatureHauteur,
-                  x: _posSignatureB.dx,
-                  y: _posSignatureB.dy,
+                  signatureLargeur,
+                  signatureHauteur,
+                  x: posSignatureB.dx,
+                  y: posSignatureB.dy,
                 ),
             ],
           );
@@ -612,6 +657,141 @@ class GenerateurPDF {
     );
     return doc.save();
   }
+}
 
+class Positions{
+  final Offset posDate;
+  final Offset posHeure;
+  final Offset posLieu;
+  final Offset posBlessesOui;
+  final Offset posBlessesNon;
+  final Offset posDegatsOui;
+  final Offset posDegatsNon;
+  final Offset posTemoins;
+
+  final Offset posA_assurance;
+  final Offset posA_numContrat;
+  final Offset posA_agence;
+  final Offset posA_attestationDebut;
+  final Offset posA_attestationFin;
+
+  final Offset posA_nomConducteur;
+  final Offset posA_prenomConducteur;
+  final Offset posA_adresseConducteur;
+  final Offset posA_numPermis;
+  final Offset posA_datePermis;
+
+  final Offset posA_nomAssure;
+  final Offset posA_prenomAssure;
+  final Offset posA_adresseAssure;
+  final Offset posA_numTel;
+
+  final Offset posA_marqueType;
+  final Offset posA_numImmatriculation;
+  final Offset posA_sensSuivi;
+  final Offset posA_venantDe;
+  final Offset posA_allantA;
+  final Offset posA_pointChoc;
+  final Offset posA_degatsApparents;
+  final Offset posA_observations;
+
+  final Offset posB_assurance;
+  final Offset posB_numContrat;
+  final Offset posB_agence;
+  final Offset posB_attestationDebut;
+  final Offset posB_attestationFin;
+
+  final Offset posB_nomConducteur;
+  final Offset posB_prenomConducteur;
+  final Offset posB_adresseConducteur;
+  final Offset posB_numPermis;
+  final Offset posB_datePermis;
+
+  final Offset posB_nomAssure;
+  final Offset posB_prenomAssure;
+  final Offset posB_adresseAssure;
+  final Offset posB_numTel;
+
+  final Offset posB_marqueType;
+  final Offset posB_numImmatriculation;
+  final Offset posB_sensSuivi;
+  final Offset posB_venantDe;
+  final Offset posB_allantA;
+  final Offset posB_pointChoc;
+  final Offset posB_degatsApparents;
+  final Offset posB_observations;
+
+  final double circY0;
+  final double circEspacement;
+  final double circXCaseA;
+  final double circXCaseB;
+
+  const Positions({
+    required this.posDate,
+    required this.posHeure,
+    required this.posLieu,
+    required this.posBlessesOui,
+    required this.posBlessesNon,
+    required this.posDegatsOui,
+    required this.posDegatsNon,
+    required this.posTemoins,
+
+    required this.posA_assurance,
+    required this.posA_numContrat,
+    required this.posA_agence,
+    required this.posA_attestationDebut,
+    required this.posA_attestationFin,
+
+    required this.posA_nomConducteur,
+    required this.posA_prenomConducteur,
+    required this.posA_adresseConducteur,
+    required this.posA_numPermis,
+    required this.posA_datePermis,
+
+    required this.posA_nomAssure,
+    required this.posA_prenomAssure,
+    required this.posA_adresseAssure,
+    required this.posA_numTel,
+
+    required this.posA_marqueType,
+    required this.posA_numImmatriculation,
+    required this.posA_sensSuivi,
+    required this.posA_venantDe,
+    required this.posA_allantA,
+    required this.posA_pointChoc,
+    required this.posA_degatsApparents,
+    required this.posA_observations,
+
+    required this.posB_assurance,
+    required this.posB_numContrat,
+    required this.posB_agence,
+    required this.posB_attestationDebut,
+    required this.posB_attestationFin,
+
+    required this.posB_nomConducteur,
+    required this.posB_prenomConducteur,
+    required this.posB_adresseConducteur,
+    required this.posB_numPermis,
+    required this.posB_datePermis,
+
+    required this.posB_nomAssure,
+    required this.posB_prenomAssure,
+    required this.posB_adresseAssure,
+    required this.posB_numTel,
+
+    required this.posB_marqueType,
+    required this.posB_numImmatriculation,
+    required this.posB_sensSuivi,
+    required this.posB_venantDe,
+    required this.posB_allantA,
+    required this.posB_pointChoc,
+    required this.posB_degatsApparents,
+    required this.posB_observations,
+
+    required this.circY0,
+    required this.circEspacement,
+    required this.circXCaseA,
+    required this.circXCaseB,
+  });
 
 }
