@@ -119,4 +119,10 @@ class ConstatProvider extends ChangeNotifier {
     constat.signatureB = imageB;
     notifyListeners();
   }
+
+  void setPhotosScene(List<Uint8List> photos){
+    constat.photosScene = photos;
+    notifyListeners();
+  }
+
 }

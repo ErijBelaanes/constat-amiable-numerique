@@ -13,24 +13,6 @@ class Temoin{
     required this.adresse,
     required this.numTel,
   });
-
-  Map<String, dynamic> toJson(){
-    return {
-      'nom': nom,
-      'prenom': prenom,
-      'adresse': adresse,
-      'numTel': numTel,
-    };
-  }
-
-  factory Temoin.fromJson(Map<String, dynamic> json){
-    return Temoin(
-      nom: json['nom']?? '',
-      prenom: json['prenom']?? '',
-      adresse: json['adresse']?? '',
-      numTel: json['numTel']?? '',
-    );
-  }
 }
 
 class ConstatModel {
@@ -49,45 +31,12 @@ class ConstatModel {
   Uint8List? signatureA;
   Uint8List? signatureB;
 
+  List<Uint8List> photosScene = [];
+  List<Uint8List> photosDegatsApparents = [];
 
   ConstatModel({required this.lieuAccident}){
     dateAccident = DateTime.now();
   }
-
-  Map<String, dynamic> toJson(){
-    return {
-      'dateAccident': dateAccident,
-      'lieuAccident': lieuAccident,
-      'degatsMat': degatsMat,
-      'blesses': blesses,
-      'temoins': temoins,
-      'listeTemoins': listeTemoins.map((t) => t.toJson()).toList(),
-      'vehiculeA': vehiculeA.toJson(),
-      'vehiculeB': vehiculeB.toJson(),
-      'circonstancesA': circonstancesA,
-      'circonstancesB': circonstancesB,
-    };
-  }
-
-  factory ConstatModel.fromJson(Map<String, dynamic> json){
-    final constat = ConstatModel(lieuAccident: json['lieuAccident']?? '');
-    constat.dateAccident = json['dateAccident'] != null
-      ? DateTime.parse(json['dateAccident'])
-      : null;
-    constat.degatsMat = json['degatsMat'] ?? false;
-    constat.blesses = json['blesses'] ?? false;
-    constat.temoins = json['temoins'] ?? false;
-    constat.circonstancesA = (json['circonstancesA'] as List<dynamic>? ?? List.filled(17, false))
-        .map((v) => v as bool)
-        .toList();
-    constat.circonstancesB = (json['circonstancesB'] as List<dynamic>? ?? List.filled(17, false))
-        .map((v) => v as bool)
-        .toList();
-    constat.vehiculeA = VehiculeInfo.fromJson(json['vehiculeA']);
-    constat.vehiculeB = VehiculeInfo.fromJson(json['vehiculeB']);
-    return constat;
-  }
-
 }
 
 class VehiculeInfo{
@@ -125,7 +74,7 @@ class VehiculeInfo{
 
   //Degat apparents
   String degatsApparents;
-
+  List<Uint8List> photosDegatsApparents;
   //Observations
   String observations;
 
@@ -158,76 +107,9 @@ class VehiculeInfo{
     this.imagePointChoc,
 
     this.degatsApparents = '',
+    List<Uint8List>? photosDegatsApparents,
+    this.observations = '',  //Paramètre optionnel
+  }): photosDegatsApparents = photosDegatsApparents ?? [];  //Initialisation par défaut
 
-    this.observations = '',
-  });
-
-  Map<String, dynamic> toJson(){
-    return {
-      'assurance': assurance,
-      'numContrat': numContrat,
-      'agence': agence,
-      'dateDebutAttestation': dateDebutAttestation?.toIso8601String(),
-      'dateFinAttestation': dateFinAttestation?.toIso8601String(),
-
-      'nomConducteur': nomConducteur,
-      'prenomConducteur': prenomConducteur,
-      'adresseConducteur': adresseConducteur,
-      'numPermis': numPermis,
-      'datePermis': datePermis?.toIso8601String(),
-
-      'nomAssure': nomAssure,
-      'prenomAssure': prenomAssure,
-      'adresseAssure': adresseAssure,
-      'numTel': numTel,
-
-      'marque': marque,
-      'type': type,
-      'numImmatriculation': numImmatriculation,
-      'sensSuivi': sensSuivi,
-      'venantDe': venantDe,
-      'allantA': allantA,
-
-      'degatsApparents': degatsApparents,
-      'observations': observations,
-    };
-  }
-
-  factory VehiculeInfo.fromJson(Map<String, dynamic> json){
-    return VehiculeInfo(
-      assurance: json['assurance'] ?? '',
-      numContrat: json['numContrat'] ?? '',
-      agence: json['agence'] ?? '',
-      dateDebutAttestation: json['dateDebutAttestation'] != null
-          ? DateTime.parse(json['dateDebutAttestation'])
-          : null,
-      dateFinAttestation: json['dateFinAttestation'] != null
-          ? DateTime.parse(json['dateFinAttestation'])
-          : null,
-
-      nomConducteur: json['nomConducteur'] ?? '',
-      prenomConducteur: json['prenomConducteur'] ?? '',
-      adresseConducteur: json['adresseConducteur'] ?? '',
-      numPermis: json['numPermis'] ?? '',
-      datePermis: json['datePermis'] != null
-          ? DateTime.parse(json['datePermis'])
-          : null,
-
-      nomAssure: json['nomAssure'] ?? '',
-      prenomAssure: json['prenomAssure'] ?? '',
-      adresseAssure: json['adresseAssure'] ?? '',
-      numTel: json['numTel'] ?? '',
-
-      marque: json['marque'] ?? '',
-      type: json['type'] ?? '',
-      numImmatriculation: json['numImmatriculation'] ?? '',
-      sensSuivi: json['sensSuivi'] ?? '',
-      venantDe: json['venantDe'] ?? '',
-      allantA: json['allantA'] ?? '',
-
-      degatsApparents: json['degatsApparents'] ?? '',
-      observations: json['observations'] ?? '',
-    );
-  }
 }
 

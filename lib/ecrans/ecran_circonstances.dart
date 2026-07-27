@@ -95,8 +95,7 @@ class EcranCirconstances extends StatelessWidget{
               Padding(
                 padding: const EdgeInsets.fromLTRB(10, 20, 20, 20),
                 child: Scrollbar(
-                  thumbVisibility: true,
-                  thickness: 8,
+                  thumbVisibility: false,
                   radius: const Radius.circular(4),
                   child: SingleChildScrollView(
                     child: Padding(

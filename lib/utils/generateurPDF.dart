@@ -655,6 +655,80 @@ class GenerateurPDF {
         },
       ),
     );
+
+    //Photos de la scène et des dégâts, si au moins une photo existe
+    final toutesLesPhotos = <_PhotoAvecLegende> [
+      ...constat.photosScene.map((p) => _PhotoAvecLegende(
+        bytes: p,
+        legendeFr: 'Scène de l\'accident',
+        legendeAr: 'مكان الحادث',
+      )),
+
+      ...vehiculeA.photosDegatsApparents.map((p) => _PhotoAvecLegende(
+        bytes: p,
+        legendeFr: 'Dégâts - Véhicule A',
+        legendeAr: 'أضرار - المركبة أ',
+      )),
+
+      ...vehiculeB.photosDegatsApparents.map((p) => _PhotoAvecLegende(
+        bytes: p,
+        legendeFr: 'Dégâts - Véhicule B',
+        legendeAr: 'أضرار - المركبة ب',
+      )),
+    ];
+    if(toutesLesPhotos.isNotEmpty){
+      doc.addPage(
+        pw.MultiPage(
+          pageFormat: PdfPageFormat.a4,
+          margin: const pw.EdgeInsets.all(24),
+          build: (context) {
+            return [
+              pw.Text(
+                enFrancais ? 'Photos jointes' : 'الصور المرفقة',
+                textDirection: enFrancais ? pw.TextDirection.ltr : pw.TextDirection.rtl,
+                style: pw.TextStyle(
+                  font: font,
+                  fontSize: 18,
+                  fontWeight: pw.FontWeight.bold,
+                ),
+              ),
+              pw.SizedBox(height: 16),
+              pw.Wrap(
+                spacing: 12,
+                runSpacing: 16,
+                children: toutesLesPhotos.map((photo) {
+                  return pw.Column(
+                    crossAxisAlignment: pw.CrossAxisAlignment.center,
+                    children: [
+                      pw.Container(
+                        width: 240,
+                        height: 180,
+                        decoration: pw.BoxDecoration(
+                          border: pw.Border.all(width: 1),
+                        ),
+                        child: pw.Image(
+                          pw.MemoryImage(photo.bytes),
+                          fit: pw.BoxFit.cover,
+                        ),
+                      ),
+                      pw.SizedBox(height: 4),
+                      pw.Text(
+                        enFrancais ? photo.legendeFr : photo.legendeAr,
+                        textDirection: enFrancais ? pw.TextDirection.ltr : pw.TextDirection.rtl,
+                        style: pw.TextStyle(
+                          font: font,
+                          fontSize: 10,
+                        ),
+                      ),
+                    ],
+                  );
+                }).toList(),
+              ),
+            ];
+          },
+        ),
+      );
+    }
     return doc.save();
   }
 }
@@ -794,4 +868,16 @@ class Positions{
     required this.circXCaseB,
   });
 
+}
+
+class _PhotoAvecLegende {
+  final Uint8List bytes;
+  final String legendeFr;
+  final String legendeAr;
+
+  const _PhotoAvecLegende({
+    required this.bytes,
+    required this.legendeFr,
+    required this.legendeAr,
+  });
 }

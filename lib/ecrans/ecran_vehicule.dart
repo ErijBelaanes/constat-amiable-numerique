@@ -13,6 +13,7 @@ import '../utils/dialogues.dart';
 import '../widgets/bouton_principal.dart';
 import '../widgets/champ_point_choc.dart';
 import '../utils/localisation.dart';
+import '../widgets/galerie_photo.dart';
 
 class Question{
   final String cle;
@@ -22,7 +23,7 @@ class Question{
   const Question({
     required this.cle,
     required this.cleLabel,
-    required this.type,  //texte, date ou pointChoc
+    required this.type,  //texte, date, pointChoc ou photos
   });
 }
 
@@ -53,6 +54,7 @@ class _EcranVehiculeState extends State<EcranVehicule>{
 
   Offset? pointChocSelectionne;
   Uint8List? imagePointChocSelectionne;
+  List<Uint8List> photosDegatsApparents = [];
 
   static const List<Groupe> groupes = [
     Groupe(
@@ -221,6 +223,12 @@ class _EcranVehiculeState extends State<EcranVehicule>{
         ),
 
         Question(
+          cle: 'photosDegats',
+          cleLabel: 'photosDegatsApparents',
+          type: 'photos',
+        ),
+
+        Question(
           cle: 'observations',
           cleLabel: 'observations',
           type: 'texte',
@@ -286,6 +294,7 @@ class _EcranVehiculeState extends State<EcranVehicule>{
     imagePointChocSelectionne = info.imagePointChoc;
 
     controleursTexte['degatsApparents']!.text = info.degatsApparents;
+    photosDegatsApparents = List<Uint8List>.from(info.photosDegatsApparents);
     controleursTexte['observations']!.text = info.observations;
 
     setState(() {});
@@ -330,6 +339,8 @@ class _EcranVehiculeState extends State<EcranVehicule>{
       imagePointChoc: imagePointChocSelectionne,
 
       degatsApparents: controleursTexte['degatsApparents']!.text.trim(),
+      photosDegatsApparents: photosDegatsApparents,
+
       observations: controleursTexte['observations']!.text.trim(),
     );
 
@@ -368,7 +379,12 @@ class _EcranVehiculeState extends State<EcranVehicule>{
 
       switch (q.type) {
         case 'texte':
-          questionVide = controleursTexte[q.cle]!.text.trim().isEmpty;
+          if(q.cle == 'degatsApparents'){
+            questionVide = controleursTexte['degatsApparents']!.text.trim().isEmpty
+                && photosDegatsApparents.isEmpty;
+          }else{
+            questionVide = controleursTexte[q.cle]!.text.trim().isEmpty;
+          }
           break;
         case 'date':
           questionVide = (reponsesDate[q.cle] == null);
@@ -376,6 +392,8 @@ class _EcranVehiculeState extends State<EcranVehicule>{
         case 'pointChoc':
           questionVide = (pointChocSelectionne == null) || (imagePointChocSelectionne == null);
           break;
+        case 'photos':
+          continue;
         default:
           questionVide = true;
           break;
@@ -551,8 +569,7 @@ class _EcranVehiculeState extends State<EcranVehicule>{
               Padding(
                 padding: const EdgeInsets.all(20),
                 child: Scrollbar(
-                  thumbVisibility: true,
-                  thickness: 8,
+                  thumbVisibility: false,
                   radius: const Radius.circular(4),
                   child: SingleChildScrollView(
                     child: Padding(
@@ -678,7 +695,7 @@ class _EcranVehiculeState extends State<EcranVehicule>{
                                     final q = groupe.questions[index];
                                     Widget champ;
                                     switch (q.type) {
-                                    //Champ texte
+                                      //Champ texte
                                       case "texte":
                                         champ = ChampTexte(
                                           label: Localisation.get(q.cleLabel, enFrancais),
@@ -689,7 +706,7 @@ class _EcranVehiculeState extends State<EcranVehicule>{
                                         );
                                         break;
 
-                                    //Sélection d'une date
+                                      //Sélection d'une date
                                       case "date":
                                         champ = ChampBouton(
                                           label: Localisation.get(q.cleLabel, enFrancais),
@@ -703,7 +720,7 @@ class _EcranVehiculeState extends State<EcranVehicule>{
                                         );
                                         break;
 
-                                    //Point de choc
+                                      //Point de choc
                                       case "pointChoc":
                                         champ = Column(
                                           children: [
@@ -727,6 +744,19 @@ class _EcranVehiculeState extends State<EcranVehicule>{
                                                },
                                             ),
                                           ],
+                                        );
+                                        break;
+
+                                      //Photos
+                                      case "photos":
+                                        champ = GaleriePhotos(
+                                          photos: photosDegatsApparents,
+                                          changed: (nouvellesPhotos) {
+                                            setState(() {
+                                              photosDegatsApparents = nouvellesPhotos;
+                                            });
+                                          },
+                                          enFrancais: enFrancais,
                                         );
                                         break;
                                       default:

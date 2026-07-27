@@ -9,6 +9,7 @@ import '../theme/couleurs.dart';
 import '../utils/dialogues.dart';
 import '../widgets/bouton_principal.dart';
 import '../widgets/zone_dessin.dart';
+import '../widgets/galerie_photo.dart';
 
 class EcranCroquis extends StatefulWidget{
   const EcranCroquis({super.key});
@@ -18,6 +19,18 @@ class EcranCroquis extends StatefulWidget{
 
 class _EcranCroquisState extends State<EcranCroquis>{
   final GlobalKey<ZoneDessinState> _cleZone = GlobalKey();
+  List<Uint8List> photosAccident = [];
+
+  bool photosChargees = false;
+  @override
+  void didChangeDependencies(){
+    super.didChangeDependencies();
+    if(!photosChargees){
+      final provider = context.read<ConstatProvider>();
+      photosAccident = List<Uint8List>.from(provider.constat.photosScene);
+      photosChargees = true;
+    }
+  }
 
   Future<void> validerCroquis() async {
     final provider = context.read<ConstatProvider>();
@@ -38,6 +51,7 @@ class _EcranCroquisState extends State<EcranCroquis>{
     }
 
     provider.setTraitsCroquis(_cleZone.currentState!.traits);
+    provider.setPhotosScene(photosAccident); //Optionnel
     Navigator.pushNamed(context, '/signatures');
   }
 
@@ -62,113 +76,139 @@ class _EcranCroquisState extends State<EcranCroquis>{
             children: [
               Padding(
                 padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    EnteteEtape(
-                      icone: Icons.car_crash_sharp,
-                      couleurIcone: CouleursApp.alerte,
-                      titreFr: 'Croquis de l\'accident',
-                      titreAr: 'رسم تخطيطي للحادث',
-                      etapeActuelle: 5,
-                      enFrancais: provider.enFrancais,
-                    ),
-                    const SizedBox(height: 36),
-
-                    Text(
-                      enFrancais ? "Dessinez le croquis de l'accident au doigt"
-                                 : 'ارسم مخطط الحادث بإصبعك',
-                      style: TextStyle(
-                        color: CouleursApp.texteSecondaire,
-                        fontSize: 18,
-                        fontFamily: enFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-
-                    //Croquis
-                    Expanded(
+                child: Scrollbar(
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.only(bottom: 100),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          SizedBox(
-                            height: 400,
-                            child: ZoneDessin(
-                                key: _cleZone,
-                                change: dessinChange,
+                          EnteteEtape(
+                            icone: Icons.car_crash_sharp,
+                            couleurIcone: CouleursApp.alerte,
+                            titreFr: 'Croquis de l\'accident',
+                            titreAr: 'رسم تخطيطي للحادث',
+                            etapeActuelle: 5,
+                            enFrancais: provider.enFrancais,
+                          ),
+                          const SizedBox(height: 36),
+
+                          Text(
+                            enFrancais ? "Dessinez le croquis de l'accident au doigt"
+                                : 'ارسم مخطط الحادث بإصبعك',
+                            style: TextStyle(
+                              color: CouleursApp.texteSecondaire,
+                              fontSize: 18,
+                              fontFamily: enFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                           const SizedBox(height: 20),
-                          //Boutons
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              //Bouton "Annuler" (Ce bouton efface le dernier trait)
-                              OutlinedButton.icon(
-                                onPressed: (_cleZone.currentState?.aDesTraits ?? false)
-                                    ? _cleZone.currentState?.annulerTrait
-                                    : null,   //S'il n'y a aucun trait alors le bouton est désactivé
-                                icon: Icon(
-                                  Icons.undo_rounded,
-                                  size: 15,
-                                ),
-                                label: Text(
-                                  enFrancais ? 'Annuler' : 'تراجع',
-                                ),
-                                style: ButtonStyle(
-                                  foregroundColor: WidgetStateProperty.resolveWith<Color>((states) {
-                                    if (states.contains(WidgetState.disabled)) {
-                                      return Colors.grey; //Couleur du texte et de l'icône désactivés
-                                    }
-                                    return CouleursApp.texte;
 
-                                  }),
-                                  minimumSize: WidgetStatePropertyAll(const Size(0, 28),),
-                                  textStyle: WidgetStatePropertyAll(
-                                    TextStyle(
-                                      fontFamily: enFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
+                          //Croquis
+                          Column(
+                            children: [
+                              SizedBox(
+                                height: 400,
+                                child: ZoneDessin(
+                                  key: _cleZone,
+                                  change: dessinChange,
                                 ),
                               ),
+                              const SizedBox(height: 20),
+                              //Boutons
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  //Bouton "Annuler" (Ce bouton efface le dernier trait)
+                                  OutlinedButton.icon(
+                                    onPressed: (_cleZone.currentState?.aDesTraits ?? false)
+                                        ? _cleZone.currentState?.annulerTrait
+                                        : null,   //S'il n'y a aucun trait alors le bouton est désactivé
+                                    icon: Icon(
+                                      Icons.undo_rounded,
+                                      size: 15,
+                                    ),
+                                    label: Text(
+                                      enFrancais ? 'Annuler' : 'تراجع',
+                                    ),
+                                    style: ButtonStyle(
+                                      foregroundColor: WidgetStateProperty.resolveWith<Color>((states) {
+                                        if (states.contains(WidgetState.disabled)) {
+                                          return Colors.grey; //Couleur du texte et de l'icône désactivés
+                                        }
+                                        return CouleursApp.texte;
 
-                              //Bouton "Recommencer" (Ce bouton efface le dessin en entier)
-                              OutlinedButton.icon(
-                                onPressed: (_cleZone.currentState?.aDesTraits ?? false)
-                                    ? _cleZone.currentState?.effacerTrait
-                                    : null,   //S'il n'y a aucun trait alors le bouton est désactivé
-                                icon: Icon(
-                                  Icons.delete_outline,
-                                  size: 15,
-                                ),
-                                label: Text(
-                                  enFrancais ? 'Recommencer' : 'إعادة',
-                                ),
-                                style: ButtonStyle(
-                                  foregroundColor: WidgetStateProperty.resolveWith<Color>((states) {
-                                    if (states.contains(WidgetState.disabled)) {
-                                      return Colors.grey; //Couleur du texte et de l'icône désactivés
-                                    }
-                                    return CouleursApp.texte;
-                                  }),
-                                  minimumSize: WidgetStatePropertyAll(const Size(0, 28),),
-                                  textStyle: WidgetStatePropertyAll(
-                                    TextStyle(
-                                      fontFamily: enFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
+                                      }),
+                                      minimumSize: WidgetStatePropertyAll(const Size(0, 28),),
+                                      textStyle: WidgetStatePropertyAll(
+                                        TextStyle(
+                                          fontFamily: enFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
                                     ),
                                   ),
+
+                                  //Bouton "Recommencer" (Ce bouton efface le dessin en entier)
+                                  OutlinedButton.icon(
+                                    onPressed: (_cleZone.currentState?.aDesTraits ?? false)
+                                        ? _cleZone.currentState?.effacerTrait
+                                        : null,   //S'il n'y a aucun trait alors le bouton est désactivé
+                                    icon: Icon(
+                                      Icons.delete_outline,
+                                      size: 15,
+                                    ),
+                                    label: Text(
+                                      enFrancais ? 'Recommencer' : 'إعادة',
+                                    ),
+                                    style: ButtonStyle(
+                                      foregroundColor: WidgetStateProperty.resolveWith<Color>((states) {
+                                        if (states.contains(WidgetState.disabled)) {
+                                          return Colors.grey; //Couleur du texte et de l'icône désactivés
+                                        }
+                                        return CouleursApp.texte;
+                                      }),
+                                      minimumSize: WidgetStatePropertyAll(const Size(0, 28),),
+                                      textStyle: WidgetStatePropertyAll(
+                                        TextStyle(
+                                          fontFamily: enFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 20),
+
+                              //Section photos (optionnelle)
+                              Text(
+                                enFrancais ? "Vous pouvez aussi ajouter des photos (facultatif)"
+                                    : 'يمكنك أيضًا إضافة صور (اختياري)',
+                                style: TextStyle(
+                                  color: CouleursApp.texteSecondaire,
+                                  fontSize: 16,
+                                  fontFamily: enFrancais ? 'PlayfairDisplay' : 'NoteNaskhArabic',
+                                  fontWeight: FontWeight.bold,
                                 ),
+                              ),
+                              const SizedBox(height: 10),
+                              GaleriePhotos(
+                                photos: photosAccident,
+                                changed: (nouvellesPhotos) {
+                                  setState(() {
+                                    photosAccident = nouvellesPhotos;
+                                  });
+                                },
+                                enFrancais: enFrancais,
                               ),
                             ],
                           ),
                         ],
-                      )
+                      ),
                     ),
-                  ],
                 ),
               ),
 

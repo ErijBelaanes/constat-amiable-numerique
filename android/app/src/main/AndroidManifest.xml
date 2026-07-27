@@ -1,7 +1,20 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Permissions pour la caméra et la galerie -->
+    <uses-permission android:name="android.permission.CAMERA"/>
+
+    <!-- Pour Android 13 et versions ultérieures -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
+
+    <!-- Pour Android 12 et versions antérieures (optionnel mais recommandé pour la compatibilité) -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="29" />
+
+    <!-- Vos autres permissions (si besoin de la localisation pour le constat) -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
     <application
+        android:requestLegacyExternalStorage="true"
         android:label="projet_constat"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
