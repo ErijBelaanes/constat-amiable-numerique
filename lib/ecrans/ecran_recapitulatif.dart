@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:printing/printing.dart';
 import '../providers/constat_provider.dart';
@@ -8,6 +9,9 @@ import '../widgets/bouton_principal.dart';
 import '../theme/couleurs.dart';
 // import '../utils/generateur_pdf.dart';
 import '../utils/generateurPDF.dart';
+import 'dart:io';
+import 'package:share_plus/share_plus.dart';
+import '../ecrans/ecran_pdf.dart';
 
 class EcranRecapitulatif extends StatefulWidget{
   const EcranRecapitulatif({super.key});
@@ -30,12 +34,16 @@ class _EcranRecapitulatifState extends State<EcranRecapitulatif>{
         provider.enFrancais,
       );
 
-      setState(() =>
-      enCoursDeGeneration = false); //Le bouton revient à son état normal
+      if(!mounted) return;
 
-      await Printing.sharePdf(
-          bytes: bytes,
-          filename: 'constat_amiable.pdf'
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => EcranPdf(
+            pdfBytes: bytes,
+            enFrancais: provider.enFrancais,
+          ),
+        ),
       );
     }catch(e, stack){
       debugPrint("Erreur PDF: $e");
@@ -47,7 +55,7 @@ class _EcranRecapitulatifState extends State<EcranRecapitulatif>{
         ),
       );
     } finally {
-      setState(() => enCoursDeGeneration = false);
+      if(mounted) setState(() => enCoursDeGeneration = false);
     }
   }
 
@@ -116,6 +124,27 @@ class _EcranRecapitulatifState extends State<EcranRecapitulatif>{
     return '${d.day}/${d.month}/${d.year}';
   }
 
+  Future<void> partagerPdf(ConstatModel constat, bool enFrancais) async{
+    try{
+      final pdfBytes = await GenerateurPDF.genererConstatSurModele(
+          constat,
+          constat.vehiculeA,
+          constat.vehiculeB,
+          enFrancais,
+      );
+      final tempDir = await getTemporaryDirectory();
+      final file = File('${tempDir.path}/constat_amiable.pdf');
+      await file.writeAsBytes(pdfBytes);
+      await SharePlus.instance.share(
+        ShareParams(
+          files: [XFile(file.path)],
+          text: 'Constat amiable',
+        ),
+      );
+    }catch(e){
+      debugPrint("Erreur partage PDF : $e");
+    }
+  }
   @override
   Widget build(BuildContext context){
     final provider = context.watch<ConstatProvider>();
@@ -502,7 +531,7 @@ class _EcranRecapitulatifState extends State<EcranRecapitulatif>{
                   BoutonPrincipal(
                     label: enCoursDeGeneration
                         ? (enFrancais ? 'Génération...' : 'جارٍ الإنشاء...')
-                        : (enFrancais ? 'Télécharger le PDF' : 'تنزيل PDF'),
+                        : (enFrancais ? 'Générer le PDF' : 'تنزيل PDF'),
                     couleur: CouleursApp.succes,
                     click: enCoursDeGeneration ? null : _telechargerPdf,
                     enFrancais: enFrancais,
