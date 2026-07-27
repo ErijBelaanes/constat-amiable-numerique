@@ -9,6 +9,7 @@ import '../widgets/champ_texte.dart';
 import '../widgets/section_temoins.dart';
 import '../utils/dialogues.dart';
 import '../widgets/bouton_principal.dart';
+import '../services/service_geolocalisation.dart';
 
 class EcranAccident extends StatefulWidget {
   const EcranAccident({super.key});
@@ -160,6 +161,34 @@ class _EcranAccidentState extends State<EcranAccident>{
     Navigator.pushNamed(context, '/vehiculeA');
   }
 
+  bool recherchePositionEnCours = false;
+  Future<void> utiliserPositionActuelle() async {
+    setState(() => recherchePositionEnCours = true);
+    try {
+      final adresse = await ServiceGeolocalisation.obtenirAdresseActuelle();
+      if(!mounted) return;
+      setState(() {
+        lieuController.text = adresse;
+      });
+      context.read<ConstatProvider>().setLieuAccident(adresse);
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erreur : ${e.toString()}')),
+        );
+      }
+    } finally {
+      if(mounted) {
+        setState(() => recherchePositionEnCours = false);
+      }
+    }
+  }
+
+  String _messageErreur(Object e) {
+    final texte = e.toString();
+    return texte.startsWith('Exception: ') ? texte.substring(11) : texte;
+  }
+
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<ConstatProvider>();
@@ -241,6 +270,24 @@ class _EcranAccidentState extends State<EcranAccident>{
                               hintText: enFrancais
                                   ? 'Ex: Avenue Habib Bourguiba, Tunis'
                                   : 'مثال: شارع الحبيب بورقيبة، تونس',
+                            ),
+                            const SizedBox(height: 6),
+                            TextButton.icon(
+                              onPressed: recherchePositionEnCours ? null : utiliserPositionActuelle,
+                              icon: recherchePositionEnCours
+                                  ? const SizedBox(
+                                width: 16,
+                                height: 16,
+                                child: CircularProgressIndicator(strokeWidth: 2, color: CouleursApp.texte),
+                              )
+                                  : const Icon(Icons.my_location, size: 18, color: CouleursApp.texte),
+                              label: Text(
+                                enFrancais ? 'Utiliser ma position actuelle' : 'استخدام موقعي الحالي',
+                                style: TextStyle(
+                                  color: CouleursApp.texte,
+                                  fontFamily: enFrancais ? 'PlayfairDisplay' : 'NotoNaskhArabic',
+                                ),
+                              ),
                             ),
 
                             const SizedBox(height: 35),
