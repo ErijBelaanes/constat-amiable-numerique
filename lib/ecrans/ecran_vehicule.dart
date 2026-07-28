@@ -537,6 +537,7 @@ class _EcranVehiculeState extends State<EcranVehicule>{
 
       //Degat apparents
       degatsApparents: controleursTexte['degatsApparents']!.text.trim(),
+      photosDegatsApparents: photosDegatsApparents,
 
       //Observations
       observations: controleursTexte['observations']!.text.trim(),
@@ -755,6 +756,11 @@ class _EcranVehiculeState extends State<EcranVehicule>{
                                             setState(() {
                                               photosDegatsApparents = nouvellesPhotos;
                                             });
+                                            if (widget.nomVehicule == 'A') {
+                                              provider.setPhotosDegatsVehiculeA(nouvellesPhotos);
+                                            } else {
+                                              provider.setPhotosDegatsVehiculeB(nouvellesPhotos);
+                                            }
                                           },
                                           enFrancais: enFrancais,
                                         );

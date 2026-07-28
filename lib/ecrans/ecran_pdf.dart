@@ -62,73 +62,78 @@ class _EcranPdfState extends State<EcranPdf> {
       child: Scaffold(
         backgroundColor: CouleursApp.fond,
         body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 20, left: 20, right: 20, top: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Align(
-                  alignment: widget.enFrancais ? Alignment.centerLeft : Alignment.centerRight,
-                  child: const BoutonRetour(),
-                ),
-                const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20, left: 20, right: 20, top: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Container(
-                      padding: const EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        color: CouleursApp.succes.withValues(alpha: 0.15),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Icon(Icons.preview_rounded, color: CouleursApp.succes),
+                    Align(
+                      alignment: widget.enFrancais ? Alignment.centerLeft : Alignment.centerRight,
+                      child: const BoutonRetour(),
                     ),
-                    const SizedBox(width: 10),
-                    Text(
-                      widget.enFrancais ? "Aperçu du PDF" : "معاينة PDF",
-                      textAlign: widget.enFrancais ? TextAlign.left : TextAlign.right,
-                      textDirection: widget.enFrancais ? TextDirection.ltr : TextDirection.rtl,
-                      style: TextStyle(
-                        color: CouleursApp.succes,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24.0,
-                        fontFamily: widget.enFrancais ? 'PlayfairDisplay' : 'NotoNaskhArabic',
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            color: CouleursApp.succes.withValues(alpha: 0.15),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Icon(Icons.preview_rounded, color: CouleursApp.succes),
+                        ),
+                        const SizedBox(width: 10),
+                        Text(
+                          widget.enFrancais ? "Aperçu du PDF" : "معاينة PDF",
+                          textAlign: widget.enFrancais ? TextAlign.left : TextAlign.right,
+                          textDirection: widget.enFrancais ? TextDirection.ltr : TextDirection.rtl,
+                          style: TextStyle(
+                            color: CouleursApp.succes,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24.0,
+                            fontFamily: widget.enFrancais ? 'PlayfairDisplay' : 'NotoNaskhArabic',
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+                    Expanded(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: PdfPreview(
+                          build: (format) async => widget.pdfBytes,
+                          canChangePageFormat: false,
+                          canChangeOrientation: false,
+                          canDebug: false,
+                          allowPrinting: false,
+                          allowSharing: false,
+                          scrollViewDecoration: BoxDecoration(
+                            color: CouleursApp.fond,
+                          ),
+                          pdfPreviewPageDecoration: BoxDecoration(
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
+                    ),
+                    const SizedBox(height: 16),
+                    BoutonPrincipal(
+                      label: enCoursDePartage
+                          ? (widget.enFrancais ? 'Partage...' : 'جارٍ المشاركة...')
+                          : (widget.enFrancais ? 'Partager le PDF' : 'مشاركة PDF'),
+                      couleur: CouleursApp.succes,
+                      click: enCoursDePartage ? null : _partagerPdf,
+                      enFrancais: widget.enFrancais,
                     ),
                   ],
                 ),
-                const SizedBox(height: 24),
-                Expanded(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: PdfPreview(
-                      build: (format) async => widget.pdfBytes,
-                      canChangePageFormat: false,
-                      canChangeOrientation: false,
-                      canDebug: false,
-                      allowPrinting: false,
-                      allowSharing: false,
-                      scrollViewDecoration: BoxDecoration(
-                        color: CouleursApp.fond,
-                      ),
-                      pdfPreviewPageDecoration: BoxDecoration(
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                BoutonPrincipal(
-                  label: enCoursDePartage
-                      ? (widget.enFrancais ? 'Partage...' : 'جارٍ المشاركة...')
-                      : (widget.enFrancais ? 'Partager le PDF' : 'مشاركة PDF'),
-                  couleur: CouleursApp.succes,
-                  click: enCoursDePartage ? null : _partagerPdf,
-                  enFrancais: widget.enFrancais,
-                ),
-              ],
-            ),
-          ),
+              ),
+            ],
+          )
         ),
       ),
     );

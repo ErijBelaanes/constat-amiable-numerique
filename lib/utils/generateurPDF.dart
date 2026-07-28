@@ -656,7 +656,10 @@ class GenerateurPDF {
       ),
     );
 
-    //Photos de la scène et des dégâts, si au moins une photo existe
+    //Photos de la scène et des dégâts
+    print("Photos scène : ${constat.photosScene.length}");
+    print("Photos dégâts A : ${vehiculeA.photosDegatsApparents.length}");
+    print("Photos dégâts B : ${vehiculeB.photosDegatsApparents.length}");
     final toutesLesPhotos = <_PhotoAvecLegende> [
       ...constat.photosScene.map((p) => _PhotoAvecLegende(
         bytes: p,
@@ -676,6 +679,7 @@ class GenerateurPDF {
         legendeAr: 'أضرار - المركبة ب',
       )),
     ];
+    print("Total photos : ${toutesLesPhotos.length}");
     if(toutesLesPhotos.isNotEmpty){
       doc.addPage(
         pw.MultiPage(

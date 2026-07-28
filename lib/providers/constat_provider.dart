@@ -125,4 +125,14 @@ class ConstatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setPhotosDegatsVehiculeA(List<Uint8List> photos) {
+    constat.vehiculeA.photosDegatsApparents = photos;
+    notifyListeners();
+  }
+
+  void setPhotosDegatsVehiculeB(List<Uint8List> photos) {
+    constat.vehiculeB.photosDegatsApparents = photos;
+    notifyListeners();
+  }
+
 }

@@ -51,7 +51,6 @@ class _EcranCroquisState extends State<EcranCroquis>{
     }
 
     provider.setTraitsCroquis(_cleZone.currentState!.traits);
-    provider.setPhotosScene(photosAccident); //Optionnel
     Navigator.pushNamed(context, '/signatures');
   }
 
@@ -201,6 +200,7 @@ class _EcranCroquisState extends State<EcranCroquis>{
                                   setState(() {
                                     photosAccident = nouvellesPhotos;
                                   });
+                                  provider.setPhotosScene(nouvellesPhotos);
                                 },
                                 enFrancais: enFrancais,
                               ),

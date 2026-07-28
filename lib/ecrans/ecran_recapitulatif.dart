@@ -27,6 +27,7 @@ class _EcranRecapitulatifState extends State<EcranRecapitulatif>{
     setState(() => enCoursDeGeneration = true);
     try {
       final provider = context.read<ConstatProvider>();
+
       final bytes = await GenerateurPDF.genererConstatSurModele(
         provider.constat,
         provider.constat.vehiculeA,
