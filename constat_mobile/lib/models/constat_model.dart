@@ -1,0 +1,115 @@
+import 'dart:typed_data';
+import 'package:flutter/material.dart';
+
+class Temoin{
+  String nom;
+  String prenom;
+  String adresse;
+  String numTel;
+
+  Temoin({
+    required this.nom,
+    required this.prenom,
+    required this.adresse,
+    required this.numTel,
+  });
+}
+
+class ConstatModel {
+  DateTime? dateAccident;
+  String lieuAccident;
+  bool degatsMat = false;
+  bool blesses = false;
+  bool temoins = false;
+  List<Temoin> listeTemoins = [];  //La liste des témoins ajoutés
+  VehiculeInfo vehiculeA = VehiculeInfo();
+  VehiculeInfo vehiculeB = VehiculeInfo();
+  List<bool> circonstancesA = List.filled(17, false);
+  List<bool> circonstancesB = List.filled(17, false);
+  Uint8List? croquis;  //L'image finale du croquis
+  List<List<Offset>> traitsCroquis = [];  //Les traits du croquis
+  Uint8List? signatureA;
+  Uint8List? signatureB;
+
+  List<Uint8List> photosScene = [];
+  List<Uint8List> photosDegatsApparents = [];
+
+  ConstatModel({required this.lieuAccident}){
+    dateAccident = DateTime.now();
+  }
+}
+
+class VehiculeInfo{
+  //Societe d'assurances
+  String assurance;
+  String numContrat;
+  String agence;
+  DateTime? dateDebutAttestation;
+  DateTime? dateFinAttestation;
+
+  //Identite du conducteur
+  String nomConducteur;
+  String prenomConducteur;
+  String adresseConducteur;
+  String numPermis;
+  DateTime? datePermis;
+
+  //Assure
+  String nomAssure;
+  String prenomAssure;
+  String adresseAssure;
+  String numTel;
+
+  //Identite du vehicule
+  String marque;
+  String type;
+  String numImmatriculation;
+  String sensSuivi;
+  String venantDe;
+  String allantA;
+
+  //Point de choc
+  Offset? pointChoc;
+  Uint8List? imagePointChoc;
+
+  //Degat apparents
+  String degatsApparents;
+  List<Uint8List> photosDegatsApparents;
+  //Observations
+  String observations;
+
+  VehiculeInfo({
+    this.assurance = '',
+    this.numContrat = '',
+    this.agence = '',
+    this.dateDebutAttestation,
+    this.dateFinAttestation,
+
+    this.nomConducteur = '',
+    this.prenomConducteur = '',
+    this.adresseConducteur = '',
+    this.numPermis = '',
+    this.datePermis,
+
+    this.nomAssure = '',
+    this.prenomAssure = '',
+    this.adresseAssure = '',
+    this.numTel = '',
+
+    this.marque = '',
+    this.type = '',
+    this.numImmatriculation = '',
+    this.sensSuivi = '',
+    this.venantDe = '',
+    this.allantA = '',
+
+    this.pointChoc,
+    this.imagePointChoc,
+
+    this.degatsApparents = '',
+    List<Uint8List>? photosDegatsApparents,
+    this.observations = '',  //Paramètre optionnel
+  }): photosDegatsApparents = photosDegatsApparents ?? [];  //Initialisation par défaut
+
+}
+

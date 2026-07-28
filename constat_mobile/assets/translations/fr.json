@@ -1,0 +1,40 @@
+{
+  "societe_assurance": "Société d'assurances",
+  "assurance": "Nom de la société d'assurance :",
+  "numAssurance": "Numéro de contrat :",
+  "agence": "Agence :",
+  "dateDebutAttestation": "Début de validité de l'attestation :",
+  "dateFinAttestation": "Fin de validité de l'attestation :",
+
+  "identite_conduxteur": "Identité du conducteur",
+  "nomConducteur": "Nom du conducteur :",
+  "prenomConducteur": "Prénom du conducteur :",
+  "adresseConducteur": "Adresse du conducteur :",
+  "numPermis": "Numéro du permis de conduire :",
+  "datePermis": "Date de délivrance du permis :",
+
+  "assure": "Assuré",
+  "nomAssure": "Nom de l'assuré :",
+  "prenomAssure": "Prénom de l'assuré :",
+  "adresseAssure": "Adresse de l'assuré :",
+  "numTelAssure": "Numéro de téléphone :",
+
+  "identite_vehicule": "Identité du véhicule",
+  "marqueVehicule": "Marque du véhicule :",
+  "typeVehicule": "Type du véhicule :",
+  "numImmatriculation": "Numéro d'immatriculation :",
+  "sensSuivi": "Sens suivi :",
+  "venantDe": "Venant de :",
+  "allantA": "Allant à :",
+
+  "pointDeChocInit": "Point de choc initial",
+  "selection_pointCoc": "Indiquez le point de choc :",
+
+  "finalisation": "Finalisation",
+  "degatsApparents": "Dégâts apparents :",
+  "observations": "Observations :",
+
+  "choisir": "Choisir",
+  "suivant": "Suivant",
+  "precedent": "Précédent"
+}
