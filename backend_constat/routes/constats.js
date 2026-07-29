@@ -43,4 +43,47 @@ router.get("/:id", async(req,res)=>{
         });
     }
 });
+
+//Modifier un constat
+router.put("/:id", async(req, res) => {
+    try{
+        const constat = await Constat.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            {
+                new: true,  //Retourner le document mis à jour
+                runValidators: true  //Vérifier les données
+            }
+        );
+        if(!constat){
+            return res.status(404).json({
+                message: "Constat introuvable"
+            });
+        }
+        res.json(constat);
+    }catch(error){
+        res.status(500).json({
+            message: error.message
+        });
+    }
+});
+
+//Supprimer un constat
+router.put("/:id", async(req, res) => {
+    try{
+        const constat = await Constat.findByIdAndDelete(req.params.id);
+        if(!constat){
+            return res.status(404).json({
+                message: "Constat introuvable"
+            });
+        }
+        res.json({
+            message: "Constat supprimé avec succès"
+        });
+    }catch(error){
+        res.status(500).json({
+            message: error.message
+        });
+    }
+});
 module.exports = router;  //Rend ces routes disponibles pour être importé et utilisé dans le fichier principale
