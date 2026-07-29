@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+:root { 
+  --fond1: #1E2A38;   /*sidebar et headers*/
+  --fond2: #F7F5F1;   /*fond principal*/
+  --text1: #4A5568;   /*texte secondaire*/
+  --text2: #FBFFFF;   /*texte clair sur fond sombre*/
+  --accent: #C6613F;  /*accent, logo*/
+  --alerte: #B23A48;  /*alerte, suppression, dégâts */
+  --degatsMat: #3E7A52; /*dégâts matériels*/
+
+  --accent-border: rgba(198, 97, 63, 0.5);
+  --social-bg: rgba(184, 183, 181, 0.5);
+  --shadow:
+    rgba(0, 0, 0, 0.1) 0 10px 15px -3px,
+    rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+
+  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --mono: ui-monospace, Consolas, monospace;
+
+  font: 18px/145% var(--sans);
+  letter-spacing: 0.18px;
+  color-scheme: light dark;
+  color: var(--text1);
+  background: var(--fond2);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  @media (max-width: 1024px) {
+    font-size: 16px;
+  }
+}
+
+*{
+
+   margin:0;
+   padding:0;
+   box-sizing:border-box;
+
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--fond2);
+  color: var(--text1);
+  font-family: var(--sans);
+  overflow-x: hidden;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4 {
+  color: var(--fond1);
+}
+
+p {
+  margin: 0;
+}
+
