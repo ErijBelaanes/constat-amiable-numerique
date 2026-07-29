@@ -67,6 +67,11 @@ const constatSchema = new mongoose.Schema({
     signatureB: String,
     photosScene: [String],
     photosDegatsApparents: [String],
+
+    pdfPath: {
+      type: String,
+      default: null,
+    }
 },
   {
     timestamps: true,
