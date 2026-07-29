@@ -121,9 +121,9 @@ class GenerateurPDF {
     posDate: Offset(25, 95),
     posHeure: Offset(150, 95),
     posLieu: Offset(200, 95),
-    posBlessesOui: Offset(500, 93),
+    posBlessesOui: Offset(527, 93),
     posBlessesNon: Offset(455, 93),
-    posDegatsOui: Offset(113, 137),
+    posDegatsOui: Offset(127, 137),
     posDegatsNon: Offset(60, 135),
     posTemoins: Offset(200, 125),  //Zone libre pour la liste des témoins
 
@@ -147,9 +147,9 @@ class GenerateurPDF {
 
      posA_marqueType: Offset(105, 493),
      posA_numImmatriculation: Offset(140, 512),
-     posA_sensSuivi: Offset(100, 530),
-     posA_venantDe: Offset(100, 547),
-     posA_allantA: Offset(100, 565),
+     posA_sensSuivi: Offset(69, 530),
+     posA_venantDe: Offset(67, 547),
+     posA_allantA: Offset(67, 565),
      posA_pointChoc: Offset(27, 616),  //Zone image, ~90x70
 
      posA_degatsApparents: Offset(20, 717),
@@ -175,9 +175,9 @@ class GenerateurPDF {
 
      posB_marqueType: Offset(470, 493),
      posB_numImmatriculation: Offset(500, 512),
-     posB_sensSuivi: Offset(470, 528),
-     posB_venantDe: Offset(470, 547),
-     posB_allantA: Offset(470, 565),
+     posB_sensSuivi: Offset(447, 528),
+     posB_venantDe: Offset(447, 547),
+     posB_allantA: Offset(447, 565),
      posB_pointChoc: Offset(460, 612),
 
      posB_degatsApparents: Offset(440, 717),

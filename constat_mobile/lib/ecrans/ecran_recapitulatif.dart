@@ -29,14 +29,10 @@ class _EcranRecapitulatifState extends State<EcranRecapitulatif>{
     try {
       final provider = context.read<ConstatProvider>();
 
-      //Envoi du constat vers le backend
-      await ApiService.envoyerConstat(provider.constat);
-
-      final bytes = await GenerateurPDF.genererConstatSurModele(
+      //Envoi + Génération + Upload du constat en un seul appel
+      final bytes = await ApiService.finaliserConstat(
         provider.constat,
-        provider.constat.vehiculeA,
-        provider.constat.vehiculeB,
-        provider.enFrancais,
+        enFrancais: provider.enFrancais,
       );
 
       if(!mounted) return;

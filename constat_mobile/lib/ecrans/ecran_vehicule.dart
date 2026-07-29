@@ -448,15 +448,6 @@ class _EcranVehiculeState extends State<EcranVehicule>{
       }
     }
 
-    //Contrôle du champ numImmatriculation (composé seulement par des chiffres)
-    if(g.questions.any((q) => (q.cle == 'numImmatriculation'))){
-      final numIm = controleursTexte['numImmatriculation']!.text.trim();
-      if(!RegExp(r'^[0-9]+$').hasMatch(numIm)){
-        return enFrancais ? 'Le numéro d\'immatriculation de la véhicule doit contenir que des chiffres'
-            : 'يجب أن يحتوي رقم تسجيل المركبة على أرقام فقط';
-      }
-    }
-
     return null;  //Tous les champs sont valide
   }
 
