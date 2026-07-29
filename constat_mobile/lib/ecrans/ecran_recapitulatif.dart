@@ -12,6 +12,7 @@ import '../utils/generateurPDF.dart';
 import 'dart:io';
 import 'package:share_plus/share_plus.dart';
 import '../ecrans/ecran_pdf.dart';
+import '../services/service_api.dart';
 
 class EcranRecapitulatif extends StatefulWidget{
   const EcranRecapitulatif({super.key});
@@ -27,6 +28,9 @@ class _EcranRecapitulatifState extends State<EcranRecapitulatif>{
     setState(() => enCoursDeGeneration = true);
     try {
       final provider = context.read<ConstatProvider>();
+
+      //Envoi du constat vers le backend
+      await ApiService.envoyerConstat(provider.constat);
 
       final bytes = await GenerateurPDF.genererConstatSurModele(
         provider.constat,
