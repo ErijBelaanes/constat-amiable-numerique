@@ -69,7 +69,7 @@ router.put("/:id", async(req, res) => {
 });
 
 //Supprimer un constat
-router.put("/:id", async(req, res) => {
+router.delete("/:id", async(req, res) => {
     try{
         const constat = await Constat.findByIdAndDelete(req.params.id);
         if(!constat){
