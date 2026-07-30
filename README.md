@@ -64,16 +64,12 @@ Sommaire:
 <p align="center">
   <img src="captures/accueil_mobileFR.png" width="220">
   <img src="captures/accueil_mobileAR.png" width="220">
-</p>
-<p align="center">
   <img src="captures/accident_mobileFR.png"width="220">
   <img src="captures/vehiculeA_mobileFR.png" width="220">
 </p>
 <p align="center">
   <img src="captures/vehiculeB_mobileFR.png" width="220">
   <img src="captures/circonstances_mobileFR.png" width="220">
-</p>
-<p align="center">
   <img src="captures/croquis_mobileFR.png" width="220">
   <img src="captures/signatures_mobileFR.png" width="220">
 </p>
