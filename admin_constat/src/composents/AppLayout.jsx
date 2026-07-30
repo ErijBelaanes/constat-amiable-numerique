@@ -3,7 +3,7 @@ import Sidebar from "./Sidebar";
 import Dashboard from "../pages/dashboard";
 import Constats from "../pages/constats";
 
-const DEFAULT_API_URL = "http://localhost:3000/api";
+const DEFAULT_API_URL = "https://constat-backend.onrender.com/api";
 
 export default function AppLayout() {
   const [page, setPage] = useState("dashboard");
@@ -42,7 +42,10 @@ export default function AppLayout() {
       />
 
       <main className="flex-1 p-10 overflow-y-auto" style={{ maxHeight: "100vh", margin: "15px"}}>
-        {page === "dashboard" && <Dashboard constats={constats} />}
+        {page === "dashboard" && <Dashboard 
+          constats={constats} 
+          setPage={setPage}
+        />}
         {page === "constats" && <Constats 
           constats={constats} 
           apiUrl={apiUrl}
