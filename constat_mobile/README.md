@@ -15,14 +15,14 @@ L'application guide l'utilisateur tout au long du processus de déclaration de l
   - [Configuration](#5-configuration)
 
 ### 1. Fonctionnalités:
-  a. Choix de la langue (Français / Arabe)
-  b. Saisie des informations de l'accident
-  c. Saisie des informations des véhicules A et B
-  d. Sélection des circonstances
-  e. Réalisation d'un croquis de l'accident
-  f. Signature des deux conducteurs
-  g. Génération du PDF du constat
-  h. Partage du PDF du constat
+ - Choix de la langue (Français / Arabe)
+ - Saisie des informations de l'accident
+ - Saisie des informations des véhicules A et B
+ - Sélection des circonstances
+ - Réalisation d'un croquis de l'accident
+ - Signature des deux conducteurs
+ - Génération du PDF du constat
+ - Partage du PDF du constat
 
 ### 2. Technologies utilisées:
   - Flutter
