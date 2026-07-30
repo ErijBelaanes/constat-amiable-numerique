@@ -102,6 +102,7 @@ L'application guide l'utilisateur tout au long du processus de déclaration de l
   <img src="captures/circonstances_mobileFR.png" width="220">
   <img src="captures/croquis_mobileFR.png" width="220">
   <img src="captures/signatures_mobileFR.png" width="220">
+  <img src="captures/recapitulatif_mobileFR.png" width="220">
 </p>
 📄[Exemple de PDF généré en FR](captures/constatFR.pdf)
 
