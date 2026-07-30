@@ -117,7 +117,7 @@ L'application guide l'utilisateur tout au long du processus de déclaration de l
 <p align="center">
   <img src="captures/vehiculeB_mobileAR.png" width="220">
   <img src="captures/circonstances_mobileAR.png" width="220">
-  <img src="captures/croquis_mobilAR.png" width="220">
+  <img src="captures/croquis_mobileAR.png" width="220">
   <img src="captures/signatures_mobileAR.png" width="220">
   <img src="captures/recapitulatif_mobileAR.png" width="220">
 </p>
