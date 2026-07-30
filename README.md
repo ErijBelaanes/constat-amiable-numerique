@@ -46,7 +46,7 @@ Sommaire:
  #Lancer le serveur: 
  npm start
 ```
-
+![Serveur démarré avec succès](captures/captures_backend.png)
 #### _b. Configuration de l'application mobile_
 ```bash
  #Se placer dans le dossier constat_mobile: 
@@ -61,6 +61,22 @@ Sommaire:
  #Générer un APK installable: 
  flutter build apk --release
 ```
+<p align="center">
+  <img src="captures/accueil_mobileFR.png" width="220">
+  <img src="captures/accueil_mobileAR.png" width="220">
+  <img src="captures/accident_mobileFR.png" width="220">
+</p>
+<p align="center">
+  <img src="captures/vehiculeA_mobileFR.png" width="220">
+  <img src="captures/vehiculeB_mobileFR.png" width="220">
+</p>
+
+<p align="center">
+  <img src="captures/circonstances_mobileFR.png" width="220">
+  <img src="captures/croquis_mobileFR.png" width="220">
+</p>
+📄[Exemple de PDF généré en FR](captures/constatFR.pdf)
+📄[Exemple de PDF généré en AR](captures/constatFR.pdf)
 
 #### _c. Configuration de l'interface admin_
 ```bash
@@ -73,6 +89,7 @@ Sommaire:
  #Lancer le serveur de développement: 
  npm run dev
 ```
-
+![Dashboard](captures/dashboard_admin.png)
+![Listes des constats enregistrés](captures/listeConstats_admin.png)
 ## 4. Historique des commits:
 L'historique complet du développement (implémentation des fonctionnalités, corrections de bugs et évolutions de l'architecture) est disponible sur le dépôt GitLab du projet, via l'onglet **Repository > Commits**.
