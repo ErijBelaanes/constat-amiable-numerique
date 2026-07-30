@@ -1,16 +1,53 @@
-# React + Vite
+# Admin Constat
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Description
+**Admin Constat** est une interface web développé avec React permettant aux administrateurs de consulter et de gérer les constats d'accidents enregistrés.
 
-Currently, two official plugins are available:
+## Sommaire
+  - [Fonctionnalités](#1-fonctionnalites)
+  - [Technologies utilisées](#2-technologies-utilisees)
+  - [Organistation du code](#3-organisation-du-code)
+  - [Captures d'écran](#4-captures-decran)
+  - [Configuration](#5-configuration)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+### 1. Fonctionnalités
+ - Consultation des constats
+ - Recherche et filtrage (Par lieu, ID ...)
+ - Affichage des détailsd'un constat
+ - Suppression d'un constat 
+ - Interface responsive
 
-## React Compiler
+### 2. Technologies utilisées:
+  - React
+  - Vite 
+  - JavaScript
+  - TailWindCss
+  - Axios
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 3. Organistation du code:
+```text
+  src/
+│
+├── assets/
+│
+├── composents/
+│   ├── AppLayout.jsx
+│   ├── confirmationSuppression.jsx
+│   ├── Sidebar.jsx
+│   └── TableConstats.jsx
+│
+├── pages/
+│   ├── constats.jsx
+│   ├── dashboard.jsx
+│   └── detailConstat.jsx
+│
+└── services/
+   └── api.js
+```
 
-## Expanding the ESLint configuration
+### 4. Captures d'écran:
+![Dashboard](captures/dashboard_admin.png)
+![Listes des constats enregistrés](captures/listeConstats_admin.png)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 5. Configuration:
+La documentation complète du projet est disponible dans le fichier README principal situé à la racine du projet: ```Constat/README.md```

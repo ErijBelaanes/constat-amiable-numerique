@@ -15,14 +15,14 @@ L'application guide l'utilisateur tout au long du processus de déclaration de l
   - [Configuration](#5-configuration)
 
 ### 1. Fonctionnalités:
-  a. Choix de la langue (Français / Arabe)
-  b. Saisie des informations de l'accident
-  c. Saisie des informations des véhicules A et B
-  d. Sélection des circonstances
-  e. Réalisation d'un croquis de l'accident
-  f. Signature des deux conducteurs
-  g. Génération du PDF du constat
-  h. Partage du PDF du constat
+ - Choix de la langue (Français / Arabe)
+ - Saisie des informations de l'accident
+ - Saisie des informations des véhicules A et B
+ - Sélection des circonstances
+ - Réalisation d'un croquis de l'accident
+ - Signature des deux conducteurs
+ - Génération du PDF du constat
+ - Partage du PDF du constat
 
 ### 2. Technologies utilisées:
   - Flutter
@@ -94,11 +94,12 @@ L'application guide l'utilisateur tout au long du processus de déclaration de l
 #### _a. Version Française_
 <p align="center">
   <img src="captures/accueil_mobileFR.png" width="220">
+  <img src="captures/avertissement_mobileFR.png" width="220">
   <img src="captures/accident_mobileFR.png"width="220">
   <img src="captures/vehiculeA_mobileFR.png" width="220">
-  <img src="captures/vehiculeB_mobileFR.png" width="220">
 </p>
 <p align="center">
+  <img src="captures/vehiculeB_mobileFR.png" width="220">
   <img src="captures/circonstances_mobileFR.png" width="220">
   <img src="captures/croquis_mobileFR.png" width="220">
   <img src="captures/signatures_mobileFR.png" width="220">
@@ -107,6 +108,20 @@ L'application guide l'utilisateur tout au long du processus de déclaration de l
 📄[Exemple de PDF généré en FR](captures/constatFR.pdf)
 
 #### _a. Version Arabe_
+<p align="center">
+  <img src="captures/accueil_mobileAR.png" width="220">
+  <img src="captures/avertissement_mobileAR.png" width="220">
+  <img src="captures/accident_mobileAR.png"width="220">
+  <img src="captures/vehiculeA_mobileAR.png" width="220">
+</p>
+<p align="center">
+  <img src="captures/vehiculeB_mobileAR.png" width="220">
+  <img src="captures/circonstances_mobileAR.png" width="220">
+  <img src="captures/croquis_mobileAR.png" width="220">
+  <img src="captures/signatures_mobileAR.png" width="220">
+  <img src="captures/recapitulatif_mobileAR.png" width="220">
+</p>
+📄[Exemple de PDF généré en AR](captures/constatAR.pdf)
 
 ### 5. Configuration:
 Pour l'installation et l'exécution de l'application, veuillez consulter le README principal situé à la racine du projet: ```Constat/README.md```
