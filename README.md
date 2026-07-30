@@ -3,7 +3,7 @@
 ## Description
 Le projet **Constat Amiable Numérique** est une solution permettant de numériser le constat amiable d'accident automobile. Il comprend une application mobile destinée aux conducteurs, une API backend pour la gestion des données et une interface web d'administration.
 
-## Application de gestion de constats amiables d'accidents, composée de trois modules:
+## Modules du projet:
   - **constat_mobile**: Application Flutter (bilingue) destinée aux conducteurs, les permet de remplir un constat (informations de l'accident, informations des véhicules, circonstances, croquis, signatures) et de générer un PDF officiel.
 
   - **backend_constat**: API REST Node.js/ Express/ MongoDB, permettant la gestion des données et le stockage des PDF générés.
@@ -11,14 +11,13 @@ Le projet **Constat Amiable Numérique** est une solution permettant de numéris
   - **admin_constat**: Interface web React permettant aux administrateurs de consulter, filtrer et gérer les constats enregistrés.
 
 Sommaire:
-  1. Architecture du projet
-  2. Technologies utilisées
-  3. Guide d'installation
-   - a. Configuration du backend
-   - b. Configuration de l'application mobile
-   - c. Configuration de l'interface admin
-  4. Historique des commits
-
+  - [Architecture du projet](#1-architecture-du-projet)
+  - [Technologies utilisées](#2-technologies-utilisées)
+  - [Guide d'installation](#3-guide-dinstallation)
+   - [Configuration du backend](#a-configuration-du-backend)
+   - [Configuration de l'application mobile](#b-configuration-de-lapplication-mobile)
+   - [Configuration de l'interface admin](#c-configuration-de-linterface-admin)
+  - [Historique des commits](#4-historique-des-commits)
 ## 1. Architecture du projet:
 ```text
     Constat
