@@ -87,7 +87,11 @@ class _EcranCroquisState extends State<EcranCroquis>{
                     thumbVisibility: true,
                     trackVisibility: true,
                     interactive: true,
+                    thickness: 8,
+                    radius: const Radius.circular(8),
                     child: SingleChildScrollView(
+                      controller: _controleurScroll,
+                      physics: const NeverScrollableScrollPhysics(),
                       padding: const EdgeInsets.only(bottom: 100),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
