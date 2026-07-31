@@ -56,7 +56,7 @@ const constatSchema = new mongoose.Schema({
     lieuAccident: String,
     degatsMateriels: Boolean,
     blesses: Boolean,
-    temoins: Boolean,
+    temoins: Boolean, 
     listeTemoins: [temoinSchema],
     vehiculeA: vehiculeSchema,
     vehiculeB: vehiculeSchema,
@@ -68,9 +68,13 @@ const constatSchema = new mongoose.Schema({
     photosScene: [String],
     photosDegatsApparents: [String],
 
-    pdfPath: {
-      type: String,
+    pdfData: {
+      type: Buffer,
       default: null,
+    },
+    pdfContentType: {
+      type: String,
+      default: "application/pdf"
     }
 },
   {

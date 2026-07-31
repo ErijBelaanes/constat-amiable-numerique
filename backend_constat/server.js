@@ -6,7 +6,11 @@ require("dotenv").config();
 const app = express();
 
 app.use(cors({
-    origin: "*",
+    origin: [
+    'http://localhost:5173',
+    'https://admin-constat.vercel.app'
+    ],
+    credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
 }));
 app.use(express.json());

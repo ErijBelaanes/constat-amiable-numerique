@@ -3,7 +3,6 @@ const router = express.Router();  //Crée un sous-modèle de routage
 const Constat = require("../models/Constat");
 const upload = require("../middlewares/upload");
 const path = require("path");
-const fs = require("fs");
 
 //Uploader le PDF généré par l'app mobile
 router.post("/:id/pdf", upload.single("pdf"), async (req, res) => {
@@ -20,7 +19,8 @@ router.post("/:id/pdf", upload.single("pdf"), async (req, res) => {
     if (constat.pdfPath && fs.existsSync(constat.pdfPath)) {
       fs.unlinkSync(constat.pdfPath);
     }
-    constat.pdfPath = req.file.path;
+    constat.pdfPath = req.file.buffer;
+    constat.pdfContentType = req.file.mimetype;
     await constat.save();
     res.status(201).json({ message: "PDF enregistré avec succès" });
   } catch (error) {
@@ -38,12 +38,12 @@ router.get("/:id/pdf", async (req, res) => {
     if (!fs.existsSync(constat.pdfPath)) {
       return res.status(404).json({ message: "Fichier PDF manquant sur le serveur" });
     }
-    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Type", constat.pdfContentType || "application/pdf");
     res.setHeader(
       "Content-Disposition",
       `inline; filename=constat-${constat._id}.pdf`
     );
-    fs.createReadStream(constat.pdfPath).pipe(res);
+    res.send(constat.pdfData);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -135,21 +135,5 @@ router.delete("/:id", async(req, res) => {
     }
 });
 
-
-// router.get("/:id/pdf", async(req, res) => {
-//     try{
-//         const constat = await Constat.findById(req.params.id);
-//         if(!constat){
-//             return res.status(404).json({message: "Constat introuvable"});
-//         }
-//         const doc = new PDFDocument();
-//         res.setHeader("Content-Type", "application/pdf");
-//         res.setHeader(
-//             "Content-Disposition",
-//             `inline; filename=constat-${constat._id}.pdf`
-//         );
-//         doc.pipe(res);
-//     }
-// });
 
 module.exports = router;  //Rend ces routes disponibles pour être importé et utilisé dans le fichier principale
