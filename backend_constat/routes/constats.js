@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();  //Crée un sous-modèle de routage
 const Constat = require("../models/Constat");
 const upload = require("../middlewares/upload");
-const path = require("path");
 
 //Uploader le PDF généré par l'app mobile
 router.post("/:id/pdf", upload.single("pdf"), async (req, res) => {
@@ -32,10 +31,10 @@ router.post("/:id/pdf", upload.single("pdf"), async (req, res) => {
 router.get("/:id/pdf", async (req, res) => {
   try {
     const constat = await Constat.findById(req.params.id);
-    if (!constat || !constat.pdfPath) {
+    if (!constat || !constat.pdfData) {
       return res.status(404).json({ message: "PDF introuvable" });
     }
-    if (!fs.existsSync(constat.pdfPath)) {
+    if (!fs.existsSync(constat.pdfData)) {
       return res.status(404).json({ message: "Fichier PDF manquant sur le serveur" });
     }
     res.setHeader("Content-Type", constat.pdfContentType || "application/pdf");
