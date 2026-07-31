@@ -13,12 +13,8 @@ router.post("/:id/pdf", upload.single("pdf"), async (req, res) => {
     if (!req.file) {
       return res.status(400).json({ message: "Aucun fichier PDF envoyé" });
     }
-
-    // Supprimer l'ancien PDF s'il existe (remplacement)
-    if (constat.pdfPath && fs.existsSync(constat.pdfPath)) {
-      fs.unlinkSync(constat.pdfPath);
-    }
-    constat.pdfPath = req.file.buffer;
+    
+    constat.pdfData = req.file.buffer;
     constat.pdfContentType = req.file.mimetype;
     await constat.save();
     res.status(201).json({ message: "PDF enregistré avec succès" });
