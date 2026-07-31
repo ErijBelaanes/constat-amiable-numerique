@@ -6,7 +6,7 @@ import '../models/constat_model.dart';
 import '../utils/generateurPDF.dart';
 
 class ApiService {
-  static const String baseUrl = "https://constat-backend.onrender.com/api";  //Adresse du serveur
+  static const String baseUrl = "https://constat-backend.onrender.com";  //Adresse du serveur
 
   static Future<String> envoyerConstat(ConstatModel constat) async {
     final response = await http.post(

@@ -19,6 +19,7 @@ class EcranCroquis extends StatefulWidget{
 
 class _EcranCroquisState extends State<EcranCroquis>{
   final GlobalKey<ZoneDessinState> _cleZone = GlobalKey();
+  final ScrollController _controleurScroll = ScrollController();
   List<Uint8List> photosAccident = [];
 
   bool photosChargees = false;
@@ -60,6 +61,12 @@ class _EcranCroquisState extends State<EcranCroquis>{
   }
 
   @override
+  void dispose() {
+    _controleurScroll.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context){
     final provider = context.watch<ConstatProvider>();
     final enFrancais = provider.enFrancais;
@@ -76,6 +83,10 @@ class _EcranCroquisState extends State<EcranCroquis>{
               Padding(
                 padding: const EdgeInsets.all(20),
                 child: Scrollbar(
+                    controller: _controleurScroll,
+                    thumbVisibility: true,
+                    trackVisibility: true,
+                    interactive: true,
                     child: SingleChildScrollView(
                       padding: const EdgeInsets.only(bottom: 100),
                       child: Column(

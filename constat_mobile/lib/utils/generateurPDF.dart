@@ -49,7 +49,7 @@ class GenerateurPDF {
           textAlign: enFrancais ? pw.TextAlign.left : pw.TextAlign.right,
           style: pw.TextStyle(
             fontWeight: pw.FontWeight.bold,
-            fontSize: 11,
+            fontSize: 9,
             font: font,
           ),
         ),
@@ -97,7 +97,7 @@ class GenerateurPDF {
         textAlign: enFrancais ? pw.TextAlign.left : pw.TextAlign.right,
         style: pw.TextStyle(
           fontWeight: pw.FontWeight.bold,
-          fontSize: 8,
+          fontSize: 9,
           font: enFrancais ? _maFontFr : _maFontAr,
         ),
       ),
@@ -156,7 +156,7 @@ class GenerateurPDF {
      posA_observations: Offset(20, 750),
 
      //Véhicule B (colonne droite)
-     posB_assurance: Offset(490, 195),
+     posB_assurance: Offset(490, 197),
      posB_numContrat: Offset(515, 215),
      posB_agence: Offset(440, 234),
      posB_attestationDebut: Offset(420, 269),
