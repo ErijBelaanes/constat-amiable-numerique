@@ -13,7 +13,7 @@ router.post("/:id/pdf", upload.single("pdf"), async (req, res) => {
     if (!req.file) {
       return res.status(400).json({ message: "Aucun fichier PDF envoyé" });
     }
-    
+
     constat.pdfData = req.file.buffer;
     constat.pdfContentType = req.file.mimetype;
     await constat.save();
@@ -29,9 +29,6 @@ router.get("/:id/pdf", async (req, res) => {
     const constat = await Constat.findById(req.params.id);
     if (!constat || !constat.pdfData) {
       return res.status(404).json({ message: "PDF introuvable" });
-    }
-    if (!fs.existsSync(constat.pdfData)) {
-      return res.status(404).json({ message: "Fichier PDF manquant sur le serveur" });
     }
     res.setHeader("Content-Type", constat.pdfContentType || "application/pdf");
     res.setHeader(
