@@ -18,6 +18,7 @@ export default function Constats({ constats, apiUrl, onRefresh }) {
         if (!recherche.trim()) return true;
         const q = recherche.toLowerCase();
         return (
+          String(c._id ?? "").toLowerCase().includes(q) ||
           c.lieuAccident?.toLowerCase().includes(q) || 
           c.vehiculeA?.marque?.toLowerCase().includes(q) ||
           c.vehiculeB?.marque?.toLowerCase().includes(q) ||
@@ -50,7 +51,7 @@ export default function Constats({ constats, apiUrl, onRefresh }) {
   }
 
   function handlePdf(id) {
-    console.log("apiUrl utilisé:", apiUrl);
+    // console.log("apiUrl utilisé:", apiUrl);
     window.open(`${apiUrl}/constats/${id}/pdf`, "_blank", "noopener,noreferrer");
   }
 
@@ -79,7 +80,7 @@ export default function Constats({ constats, apiUrl, onRefresh }) {
           <Search size={18} color="var(--text1)" />
           <input
             type="text"
-            placeholder="Rechercher un lieu..."
+            placeholder="Rechercher un lieu ou ID ..."
             value={recherche}
             onChange={(e) => setRecherche(e.target.value)}
             className="w-full outline-none text-sm bg-transparent"

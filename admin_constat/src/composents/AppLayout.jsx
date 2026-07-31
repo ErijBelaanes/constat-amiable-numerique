@@ -18,6 +18,7 @@ export default function AppLayout() {
         throw new Error("Erreur serveur");
       }  
       const data = await res.json();
+      console.log("Constats reçus :", data);
       setConstats(data);
       setError(null);
     } catch (err) {

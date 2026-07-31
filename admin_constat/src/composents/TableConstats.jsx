@@ -52,6 +52,7 @@ export default function TableConstats({constats, onDelete, onViewPdf}) {
       <table className="w-full text-sm">
         <thead>
           <tr style={{ background: "var(--fond2)" }}>
+            {/* <th className="text-left px-5 py-8" style={{ color: "var(--fond1)" }}>ID</th> */}
             <th className="text-left px-5 py-8" style={{ color: "var(--fond1)" }}>Date</th>
             <th className="text-left px-5 py-8" style={{ color: "var(--fond1)" }}>Lieu</th>
             <th className="text-left px-5 py-8" style={{ color: "var(--fond1)" }}>Véhicule A</th>
@@ -67,6 +68,10 @@ export default function TableConstats({constats, onDelete, onViewPdf}) {
               style={{ borderTop: "1px solid #EEE" }}
               className="border-t hover:bg-black/[0.02]"
             >
+              {/* <td className="px-5 py-8" style={{ color: "var(--fond1)" }}>
+                {c._id}
+                {c._id.slice(-8)}
+              </td> */}
               <td className="px-5 py-8" style={{ color: "var(--fond1)" }}>
                 {formatDate(c.dateAccident)}
               </td>

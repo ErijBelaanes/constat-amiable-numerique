@@ -97,7 +97,7 @@ class GenerateurPDF {
         textAlign: enFrancais ? pw.TextAlign.left : pw.TextAlign.right,
         style: pw.TextStyle(
           fontWeight: pw.FontWeight.bold,
-          fontSize: 11,
+          fontSize: 8,
           font: enFrancais ? _maFontFr : _maFontAr,
         ),
       ),

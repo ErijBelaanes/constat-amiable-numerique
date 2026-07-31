@@ -10,7 +10,7 @@ import {
 
 const MOIS = ["Jan", "Fév", "Mar", "Avr", "Mai", "Jun", "Jul", "Aoû", "Sep", "Oct", "Nov", "Déc"];
 
-export default function Dashboard({ constats }) {
+export default function Dashboard({ constats, setPage }) {
   const total = constats.length;
   const avecBlesses = constats.filter((c) => c.blesses).length;
   const avecTemoins = constats.filter((c) => c.temoins).length;
@@ -44,6 +44,7 @@ export default function Dashboard({ constats }) {
           <p style={{ color: "var(--text1)", paddingBottom: "5px"}}>Vue d'ensemble des constats enregistrés</p>
         </div>
         <button
+          onClick={() => setPage("constats")}
           className="px-4 py-2 rounded-md text-sm font-medium"
           style={{ background: "white", color: "var(--fond1)", boxShadow: "var(--shadow)", padding: "10px"}}
         >

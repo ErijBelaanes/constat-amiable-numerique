@@ -6,11 +6,11 @@ import '../models/constat_model.dart';
 import '../utils/generateurPDF.dart';
 
 class ApiService {
-  static const String baseUrl = "http://10.0.2.2:3000/api/constats";  //Adresse du serveur
+  static const String baseUrl = "https://constat-backend.onrender.com/api";  //Adresse du serveur
 
   static Future<String> envoyerConstat(ConstatModel constat) async {
     final response = await http.post(
-      Uri.parse(baseUrl),
+      Uri.parse('$baseUrl/constats'),
       headers: {"Content-Type": "application/json",},
       body: jsonEncode(constat.toJson()),
     );
@@ -26,7 +26,7 @@ class ApiService {
 
   static Future<void> envoyerPdf(String constatId, Uint8List pdfBytes) async{
     print("Taille du PDF à envoyer: ${(pdfBytes.length / 1024 / 1024).toStringAsFixed(2)} Mo");
-    final uri = Uri.parse('$baseUrl/$constatId/pdf');
+    final uri = Uri.parse('$baseUrl/constats/$constatId/pdf');
     final request = http.MultipartRequest("POST", uri);
 
     request.files.add(
