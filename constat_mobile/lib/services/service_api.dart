@@ -6,7 +6,7 @@ import '../models/constat_model.dart';
 import '../utils/generateurPDF.dart';
 
 class ApiService {
-  static const String baseUrl = "https://constat-backend.onrender.com";  //Adresse du serveur
+  static const String baseUrl = "https://constat-backend.onrender.com/api";  //Adresse du serveur
 
   static Future<String> envoyerConstat(ConstatModel constat) async {
     final response = await http.post(
@@ -42,28 +42,36 @@ class ApiService {
     print("Statut upload PDF: ${response.statusCode}");
     print("Réponse: ${response.body}");
     if (response.statusCode == 201) {
-      print("PDF envoyé avec succès");
-    } else {
       print(response.body);
       throw Exception("Erreur lors de l'envoi du PDF");
     }
+    print("PDF envoyé avec succès");
   }
 
   static Future<Uint8List> finaliserConstat(
       ConstatModel constat, {
         required bool enFrancais,
       }) async {
-        // 1. Sauvegarder le constat en base, récupérer l'id
-        final constatId = await envoyerConstat(constat);
-        // 2. Générer le PDF avec ton générateur existant
+        // 1. Générer le PDF avec ton générateur existant
         final Uint8List pdfBytes = await GenerateurPDF.genererConstatSurModele(
           constat,
           constat.vehiculeA,
           constat.vehiculeB,
           enFrancais,
         );
-        // 3. Uploader le PDF généré
-        await envoyerPdf(constatId, pdfBytes);
+        // 2. Tentation de sauvegarde le constat en base, récupérer l'id
+        try{
+          final constatId = await envoyerConstat(constat);
+          try{
+            // 3. Uploader le PDF généré
+            await envoyerPdf(constatId, pdfBytes);
+            return pdfBytes;
+          }catch(e){
+            print("⚠ PDF généré mais échec de l'upload vers le serveur: $e");
+          }
+        }catch(e){
+          print("⚠️ PDF généré mais échec de l'enregistrement du constat en base: $e");
+        }
         return pdfBytes;
   }
 }
