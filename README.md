@@ -72,7 +72,9 @@ Le projet **Constat Amiable Numérique** est une solution permettant de numéris
   <img src="captures/croquis_mobileFR.png" width="220">
   <img src="captures/signatures_mobileFR.png" width="220">
 </p>
+
 📄[Exemple de PDF généré en FR](captures/constatFR.pdf)
+
 📄[Exemple de PDF généré en AR](captures/constatAR.pdf)
 
 #### _c. Configuration de l'interface admin_
