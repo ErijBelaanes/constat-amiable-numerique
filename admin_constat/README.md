@@ -46,8 +46,8 @@
 ```
 
 ### 4. Captures d'écran:
-![Dashboard](captures/dashboard_admin.png)
-![Listes des constats enregistrés](captures/listeConstats_admin.png)
+![Dashboard](../captures/dashboard_admin.png)
+![Listes des constats enregistrés](../captures/listeConstats_admin.png)
 
 ### 5. Configuration:
 La documentation complète du projet est disponible dans le fichier README principal situé à la racine du projet: ```Constat/README.md```
